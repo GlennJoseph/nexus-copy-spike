@@ -1,0 +1,24 @@
+{
+  "name": "nexus-copy-spike",
+  "version": "0.1.0",
+  "description": "Feasibility spike for MM Nexus x Perplexity copy service (Camel)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
+    "helmet": "^7.1.0",
+    "pino": "^9.2.0",
+    "pino-http": "^10.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
