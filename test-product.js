@@ -48,28 +48,14 @@ const TEST_PRODUCT = {
   },
 };
 
-// Rough, simplified stand-in for the real reconstructed prompt (that's
-// Phase 2 work — extracting Shikha's actual Space instructions). This is
-// only here to prove the API round-trip and see Perplexity's raw output
-// shape. Field limits match MM's confirmed numbers.
-const SYSTEM_PROMPT = `You are a product copywriter for an appliance retailer.
-Given a product's data, generate marketing copy and return ONLY strict JSON,
-no markdown, no commentary, no code fences.
+const fs = require("fs");
 
-Return exactly this shape:
-{
-  "npr_heading": "string, max 100 characters",
-  "npr_short_copy": "string, max 500 characters",
-  "npr_long_copy": "string, max 2000 characters",
-  "disclaimers": "string, empty string if none applicable"
-}
+const path = require("path");
 
-Rules:
-- npr_heading, npr_short_copy, npr_long_copy must never be empty.
-- disclaimers must be an empty string "" if you have no verified basis for one
-  (this spike has no document retrieval, so default to "" unless the product
-  data itself implies a standard safety/energy-rating disclaimer).
-- Do not invent specs not present in the product data.`;
+const SYSTEM_PROMPT = fs.readFileSync(
+  path.join(__dirname, "prompts", "v0.1", "system.md"),
+  "utf8"
+);
 
 function buildUserPrompt(product) {
   return `Generate NPR copy for this product:\n\n${JSON.stringify(product, null, 2)}`;
