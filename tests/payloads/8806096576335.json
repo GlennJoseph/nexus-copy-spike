@@ -1,0 +1,60 @@
+{
+    "id": "8806096576335",
+    "type": "Product",
+    "depth": 305,
+    "ean": "8806096576335",
+    "finish": "Grey",
+    "heading": "CordZero A9L-TOWER Stick Vacuum with All-in-One Tower",
+    "height": 1120,
+    "modelNo": "A9L-TOWER",
+    "productFeatures": "Max 220W Suction Power, All in one Tower, Dual Nozzle, Washable Dustbin and filters, One Touch Control, Kompressor Technology, Smart inverter",
+    "shortDesc": "The LG CordZero Handstick Vacuum with All-In-One Tower combines powerful suction and smart convenience for effortless cleaning. With an impressive 220aW suction power and Kompressor technology, it compresses dirt to maximise capacity while maintaining performance. The innovative All-in-One Tower provides hygienic auto dust emptying, charging, and accessory storage in one sleek design. Featuring a dual nozzle system and power drive mop, it seamlessly tackles carpets, hard floors, and wet cleaning. The washable dust bin and filters make maintenance simple, while the smart inverter motor ensures long-lasting, reliable performance. Stylish, efficient, and versatile, this vacuum transforms home cleaning into a faster, cleaner, and smarter experience.",
+    "warranty": "2 years",
+    "webCopy": "This LG CordZero A9L-TOWER Stick Vacuum with All-in-One Tower delivers powerful 220W suction, smart auto dust emptying, and handy on-board storage in a sleek grey tower. With dual nozzles, Power Drive mop and washable filters, it keeps carpets and hard floors cleaner with less effort every day!\r\n\r\n",
+    "weight": null,
+    "width": 265,
+    "brand": {
+        "id": 607,
+        "type": "Brand",
+        "name": "LG"
+    },
+    "defaultdisplaycategory": {
+        "id": 604,
+        "type": "Category",
+        "name": "Cordless Vacuums",
+        "hierarchy": "Floor Care > Cordless Vacuums"
+    },
+    "productbrochures": [],
+    "productdocuments": [],
+    "productusermanuals": [],
+    "productwarranties": [],
+    "categoryAttributes": {
+        "No. of Programs": null,
+        "Display Type": null,
+        "Remote Control": false,
+        "Smart Control": false,
+        "Power (W)": "220",
+        "Run Time (Mins)": "60",
+        "Charge Time (Hrs)": null,
+        "Filtration Type": null,
+        "Battery Type": null,
+        "Ergonomic Handle": true,
+        "Cyclone Technology": null,
+        "Filter Indicator": false,
+        "Eco Mode": false,
+        "Dust Capacity (ml)": "2500",
+        "Surface Types": "Hard floors, Carpets",
+        "Charging Dock": false,
+        "Wall Mountable": false,
+        "Additional Features": "Washable dust bin & filters"
+    },
+    "countries": [
+        {
+            "id": 1,
+            "type": "Country",
+            "name": "Australia"
+        }
+    ],
+    "isAUProduct": true,
+    "isNZProduct": false
+}

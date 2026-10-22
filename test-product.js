@@ -47,18 +47,36 @@ const TEST_PRODUCT = {
     "Additional Features": "Quick Freeze",
   },
 };
-
 const fs = require("fs");
-
 const path = require("path");
 
+const PROMPT_VERSION = process.env.PROMPT_VERSION || "v0.2";
 const SYSTEM_PROMPT = fs.readFileSync(
-  path.join(__dirname, "prompts", "v0.1", "system.md"),
+  path.join(__dirname, "prompts", PROMPT_VERSION, "system.md"),
   "utf8"
 );
+
+// Strips what we can't use yet and fixes the stray tabs in attribute keys.
+function cleanPayload(p) {
+  const out = { ...p };
+  for (const k of ["productbrochures", "productdocuments", "productusermanuals", "productwarranties"]) {
+    delete out[k];
+  }
+  if (out.categoryAttributes) {
+    out.categoryAttributes = Object.fromEntries(
+      Object.entries(out.categoryAttributes).map(([k, v]) => [k.trim(), v])
+    );
+  }
+  return out;
+}
+
+function loadPayload(ean) {
+  const file = path.join(__dirname, "tests", "payloads", `${ean}.json`);
+  return cleanPayload(JSON.parse(fs.readFileSync(file, "utf8")));
+}
 
 function buildUserPrompt(product) {
   return `Generate NPR copy for this product:\n\n${JSON.stringify(product, null, 2)}`;
 }
 
-module.exports = { TEST_PRODUCT, SYSTEM_PROMPT, buildUserPrompt };
+module.exports = { TEST_PRODUCT, SYSTEM_PROMPT, PROMPT_VERSION, buildUserPrompt, loadPayload };

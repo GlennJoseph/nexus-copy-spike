@@ -1,0 +1,72 @@
+{
+    "id": "9313139336898",
+    "type": "Product",
+    "depth": 15,
+    "ean": "9313139336898",
+    "finish": "Grey",
+    "heading": "Lower Back Heating Pad",
+    "height": 370,
+    "modelNo": "HPB5400",
+    "productFeatures": "Focused heat, multipurpose use, Flexes to improve body contact",
+    "shortDesc": "The Sunbeam Lower Back Heating Pad is designed to bring targeted heat for soothing relief. With an adjustable strap that comfortably fits waists up to 54 inches, it ensures a perfect fit delivering the heat where it’s needed. It delivers gentle warmth, easing lower back muscle pain and tension with a gentle touch. Sunbeam heating pads feature easy-to-use controllers with 5 heat intensities and 90 second fast heat-up. When in use, the built-in Intellisense Technology prevents overheating and maintains consistent heat pad temperature. In addition, the safety auto-off feature means power is automatically cut from the heating pad after 3 hours of continuous use. Made with a softy velvety fabric that's machine washable, enjoy the comfort of soothing warmth while working on your laptop or relaxing with Sunbeam's heating pad.",
+    "warranty": "2 Year",
+    "webCopy": "Melt away lower back pain with the targeted heat from Sunbeam’s Lower Back Heating Pad. Designed to fit around your lower back and waist, this heating pad comes with an adjustable strap, digital remote controller, five heat settings and machine washable qualities. It’s the ideal solution for those with back pain from injuries, age or poor posture. ",
+    "weight": 0.95,
+    "width": 370,
+    "brand": {
+        "id": 549,
+        "type": "Brand",
+        "name": "Sunbeam"
+    },
+    "defaultdisplaycategory": {
+        "id": 662,
+        "type": "Category",
+        "name": "Electric Blankets",
+        "hierarchy": "Heating & Cooling > Heaters > Electric Blankets"
+    },
+    "productbrochures": [],
+    "productdocuments": [],
+    "productusermanuals": [
+        {
+            "id": "DoO26D4q5rbUOFSHpubk20",
+            "type": "ProductUserManual",
+            "uri": "http://127.0.0.1:10225/cgi-bin/WebObjects/NARTAStaging.woa/ra/NPRFile/DoO26D4q5rbUOFSHpubk20/nprFile"
+        }
+    ],
+    "productwarranties": [],
+    "categoryAttributes": {
+        "Electric Blanket": false,
+        "Heated Throw": false,
+        "Control Type": "Digital",
+        "Included Accessories": null,
+        "Material / Construction": "Polyester",
+        "Size (e.g. Queen, King)": null,
+        "Wattage": "110",
+        "Heat Up Time (Mins)": "90 seconds.",
+        "Cord Length (cm)\t": "220",
+        "Fully Fitted": false,
+        "No. of Heat Settings\t": "5",
+        "Feet Heating": false,
+        "Auto Off": true,
+        "Mattress Protector": false,
+        "Dual Controls": false,
+        "Temperature Sensing Technology": true,
+        "Detachable Controls": true,
+        "Antibacterial Treated": false,
+        "Machine Washable": true
+    },
+    "countries": [
+        {
+            "id": 1,
+            "type": "Country",
+            "name": "Australia"
+        },
+        {
+            "id": 2,
+            "type": "Country",
+            "name": "New Zealand"
+        }
+    ],
+    "isAUProduct": true,
+    "isNZProduct": true
+}

@@ -13,7 +13,7 @@ const pinoHttp = require("pino-http");
 const rateLimit = require("express-rate-limit");
 
 const { callPerplexity } = require("./perplexity-client");
-const { TEST_PRODUCT, SYSTEM_PROMPT, buildUserPrompt } = require("./test-product");
+const { TEST_PRODUCT, SYSTEM_PROMPT, PROMPT_VERSION, buildUserPrompt, loadPayload } = require("./test-product");
 
 const app = express();
 const logger = pino(); // JSON output — Cloud Logging parses this natively
@@ -74,7 +74,19 @@ app.post("/v1/generate-test", requireApiKey, async (req, res) => {
     return res.status(500).json({ status: "failed", error: { code: "server_misconfigured" } });
   }
 
-  const userPrompt = buildUserPrompt(TEST_PRODUCT);
+  const ean = String(req.query.ean || "");
+  if (!/^\d+$/.test(ean)) {
+    return res.status(400).json({ status: "failed", error: { code: "invalid_input", message: "ean query param required" } });
+  }
+
+  let product;
+  try {
+    product = loadPayload(ean);
+  } catch (e) {
+    return res.status(404).json({ status: "failed", error: { code: "invalid_input", message: "no test payload for that ean" } });
+  }
+
+  const userPrompt = buildUserPrompt(product);
 
   try {
     const result = await callPerplexity({
@@ -108,6 +120,7 @@ app.post("/v1/generate-test", requireApiKey, async (req, res) => {
       extractedMessageContent: messageContent,
       parsedCopyObject: attemptedParse,
       parseError, // non-null means the model's content was NOT clean JSON as-is
+      promptVersion: PROMPT_VERSION,
     });
   } catch (err) {
     req.log.error({ err: err.message, status: err.status, rawBody: err.rawBody }, "perplexity call failed");
