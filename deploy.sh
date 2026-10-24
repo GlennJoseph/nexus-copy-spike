@@ -10,9 +10,9 @@
 
 set -e  # stop immediately if any command fails
 
-PROJECT_ID="tcdeph-mm-nexus"
+PROJECT_ID="${PROJECT_ID:-tcdeph-mm-nexus}"
 REGION="australia-southeast1"
-SERVICE_NAME="nexus-copy-spike"
+SERVICE_NAME="nexus-copy-service"
 
 echo "Deploying $SERVICE_NAME to project $PROJECT_ID in $REGION..."
 
@@ -22,6 +22,8 @@ gcloud run deploy "$SERVICE_NAME" \
   --source . \
   --region "$REGION" \
   --allow-unauthenticated \
+  --max-instances=3 \
+  --timeout=90 \
   --set-secrets=SERVICE_API_KEY=service-api-key:latest,PERPLEXITY_API_KEY=perplexity-api-key:latest
 
 echo "Deploy finished. Test with:"

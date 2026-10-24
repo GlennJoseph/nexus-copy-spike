@@ -1,0 +1,23 @@
+# Files that should NOT be uploaded to Cloud Build when you run ./deploy.sh
+#
+# Note: once this file exists, gcloud stops using .gitignore, so the
+# things .gitignore normally hides (.env, node_modules) are listed here too.
+# Do not add prompts/ or any *.md inside it: the prompt files must ship.
+
+.git
+.gitignore
+.gcloudignore
+node_modules
+.env
+.env.*
+*.log
+
+# Test files stay on your machine
+tests/
+run-tests.js
+checks.test.js
+
+# Project notes at the top level only
+/MIGRATION.md
+/DEPLOY.md
+/README.md
