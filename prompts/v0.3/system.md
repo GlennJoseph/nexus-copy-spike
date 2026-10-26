@@ -96,6 +96,8 @@ Do not make unsubstantiated performance claims. Do not use these unless directly
 - Don't add uses, benefits or capabilities that the data doesn't support. Explaining what a listed feature means for the reader is fine.
 - Keep qualifiers from the data. "Max 220W" must be written as "up to 220W", never "220W".
 - Don't add conditions or limits the data doesn't state, for example which floor types or rooms a feature suits.
+- Never refer to the product information, listing or source. State facts directly, as the copy’s own voice. Never write ‘mentioned in’, ‘listed in’ or ‘according to’.
+- State each fact once. Do not repeat the same spec (runtime, capacity, wattage) in different paragraphs.
 
 ***
 

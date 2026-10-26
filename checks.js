@@ -58,6 +58,11 @@ const BANNED_CLAIMS = [
 const US_SPELLINGS =
   /\b(?:optimiz\w*|recogniz\w*|organiz\w*|personaliz\w*|customiz\w*|color\w*|flavor\w*|favorite)\b/i;
 
+// Copy must state facts directly, never talk about where they came from
+// ("mentioned in the product information", "the listing says", "according to").
+const SOURCE_TALK =
+  /\b(?:product (?:information|data|details|listing|description)|(?:mentioned|listed|stated|noted|described) (?:in|on|by)|according to|as (?:listed|stated|mentioned|noted)|the (?:listing|manufacturer'?s? (?:information|data)|source) (?:says|states|lists|shows))\b/i;
+
 const CONTRACTION =
   /\b(?:it|you|that|there|they|we|here|what|let)['’](?:s|ll|re|ve|d)\b|\b(?:don|doesn|didn|isn|aren|wasn|weren|can|won|wouldn|couldn|shouldn|hasn|haven)['’]t\b/gi;
 
@@ -302,6 +307,14 @@ function checkCopy(copy, { product = {}, sourceText = "" } = {}) {
     if (m && !source.includes(m[0].toLowerCase())) {
       err("banned_claim", `The reply makes an unsupported claim (${label}). Remove it.`);
     }
+  }
+
+  const talk = all.match(SOURCE_TALK);
+  if (talk) {
+    err(
+      "source_talk",
+      `The copy refers to its source ("${talk[0]}"). State facts directly. Never mention product information, listings or where a fact came from.`
+    );
   }
 
   if (short && long && sameOpening(short, long)) {

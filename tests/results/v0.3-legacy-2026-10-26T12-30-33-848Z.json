@@ -1,0 +1,104 @@
+{
+  "promptVersion": "v0.3",
+  "mode": "legacy",
+  "ranAt": "2026-10-26T12:30:33.848Z",
+  "results": [
+    {
+      "ean": "8806096576335",
+      "file": "8806096576335.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-8806096576335",
+        "product_id": "8806096576335",
+        "ean": "8806096576335",
+        "prompt_version": "v0.3",
+        "generated_at": "2026-10-26T12:30:30.217Z",
+        "copy": {
+          "npr_heading": "LG CordZero Stick Vacuum with All-in-One Tower – Grey",
+          "npr_short_copy": "This LG CordZero stick vacuum combines up to 220W suction with a 60-minute runtime for convenient cleaning across hard floors and carpets. The All-in-One Tower empties dust hygienically, charges this vacuum and stores accessories, while washable filters and Kompressor technology simplify everyday care.",
+          "npr_long_copy": "Cleaning different floor surfaces is easier with this LG CordZero stick vacuum, which runs for up to 60 minutes and includes dual nozzles for hard floors and carpets. Its ergonomic handle also makes everyday cleaning more comfortable.\n\nUp to 220W suction power helps lift dirt during regular cleaning, while Smart Inverter technology supports dependable operation. Kompressor technology compresses collected dirt, helping make better use of this vacuum’s 2,500ml dust capacity.\n\nThe All-in-One Tower brings charging, hygienic auto dust emptying and accessory storage together in one convenient place. One Touch Control keeps operation straightforward, and the Power Drive mop adds wet-cleaning versatility. The washable dustbin and filters make routine maintenance simpler.\n\nFinished in grey, this LG CordZero suits homes that need flexible cleaning across hard floors and carpets. This vacuum comes with a two-year warranty, while its tower helps keep accessories organised between cleaning sessions.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.3",
+        "attempts": 1,
+        "durationMs": 3345,
+        "usage": {
+          "inputTokens": 2498,
+          "outputTokens": 284,
+          "costUsd": 0.00212
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "long_words_low",
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 53,
+          "shortWords": 43,
+          "shortChars": 303,
+          "longWords": 144,
+          "longChars": 1001,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy"
+      },
+      "knownIssues": [
+        "UNRESOLVED, waiting on MM: is the 2,500ml dust capacity the tower bin or the vacuum itself?"
+      ]
+    },
+    {
+      "ean": "9313139336898",
+      "file": "9313139336898.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9313139336898",
+        "product_id": "9313139336898",
+        "ean": "9313139336898",
+        "prompt_version": "v0.3",
+        "generated_at": "2026-10-26T12:30:33.847Z",
+        "copy": {
+          "npr_heading": "Sunbeam Lower Back Heating Pad – Grey",
+          "npr_short_copy": "This Sunbeam heating pad delivers targeted warmth with five heat settings, fast 90-second heat-up and an adjustable strap for waists up to 54 inches. Temperature sensing technology helps maintain consistent heat, while machine-washable fabric and three-hour auto-off make it easy to use.",
+          "npr_long_copy": "This Sunbeam Lower Back Heating Pad wraps around your lower back and waist to provide focused warmth where you need it. The adjustable strap fits waists up to 54 inches, while its flexible design helps improve body contact for comfortable use while working or relaxing.\n\nFive heat settings let you choose the level of warmth that feels right, and the pad heats up in 90 seconds for less waiting. Its soft, velvety polyester fabric adds a comfortable feel as you settle in, while the targeted format makes it practical for lower back use.\n\nThe digital detachable controller keeps adjustments within easy reach. Intellisense temperature sensing technology helps maintain consistent heat and prevents overheating, while the three-hour auto-off feature cuts power after continuous use. A 220cm cord gives you room to position the pad comfortably.\n\nWhen it’s time for cleaning, the machine-washable construction makes care simpler. This grey heating pad weighs 0.95kg and measures 370mm wide by 370mm high, with a two-year warranty. It’s a practical choice for anyone wanting adjustable warmth and hands-free positioning around the lower back and waist.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.3",
+        "attempts": 1,
+        "durationMs": 3628,
+        "usage": {
+          "inputTokens": 2565,
+          "outputTokens": 320,
+          "costUsd": 0.00143
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "long_words_low"
+        ],
+        "stats": {
+          "headingChars": 37,
+          "shortWords": 42,
+          "shortChars": 287,
+          "longWords": 180,
+          "longChars": 1148,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy"
+      },
+      "knownIssues": [
+        "UNRESOLVED, waiting on MM: Nexus says 110 W, the old Perplexity Project output said 75 W. Neither is confirmed."
+      ]
+    }
+  ]
+}

@@ -152,6 +152,15 @@ test("different opening sentences pass (both real v0.2 outputs)", () => {
   assert.ok(!names(run(SUNBEAM).errors).includes("same_opening"));
 });
 
+test("copy that talks about its source is blocked (v0.3 agent-mode LG run)", () => {
+  const bad1 = "A Power Drive mop is also mentioned in the product information, adding another cleaning option.";
+  const bad2 = "The product information lists a 60-minute runtime, giving you time to clean before recharging.";
+  assert.ok(names(run(LG, { npr_long_copy: LG.copy.npr_long_copy + "\n\n" + bad1 }).errors).includes("source_talk"));
+  assert.ok(names(run(LG, { npr_long_copy: LG.copy.npr_long_copy + "\n\n" + bad2 }).errors).includes("source_talk"));
+  assert.ok(!names(run(LG).errors).includes("source_talk"));
+  assert.ok(!names(run(SUNBEAM).errors).includes("source_talk"));
+});
+
 // ---- Input handling --------------------------------------------------------
 test("validateInput lists what is missing", () => {
   assert.deepStrictEqual(validateInput({ ean: "1", heading: "x", modelNo: "M", brand: { name: "B" }, defaultdisplaycategory: { name: "C" }, categoryAttributes: {} }), []);
