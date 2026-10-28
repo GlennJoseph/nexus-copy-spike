@@ -179,6 +179,45 @@ function extractJson(text) {
 }
 
 // ---------------------------------------------------------------------
+// Disclaimers must come from the product's documents
+// ---------------------------------------------------------------------
+const normText = (t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
+// True when the disclaimer wording is found in the document text. PDF text
+// extraction can break lines and hyphenate words, so a near-exact match is fine:
+// 85% of the disclaimer's three-word runs must appear in the document.
+function isTraceable(disclaimer, docNorm) {
+  const d = normText(disclaimer);
+  if (!d) return false;
+  if (docNorm.includes(d)) return true;
+  const words = d.split(" ");
+  if (words.length < 4) return false;
+  let hit = 0;
+  let total = 0;
+  for (let i = 0; i + 3 <= words.length; i++) {
+    total++;
+    if (docNorm.includes(words.slice(i, i + 3).join(" "))) hit++;
+  }
+  return total > 0 && hit / total >= 0.85;
+}
+
+// "<sup>1</sup> Footnote text" lines. Returns { entries, problems }.
+function parseDisclaimers(text) {
+  const entries = [];
+  const problems = [];
+  const lines = String(text).split(/\n+/).map((l) => l.trim()).filter(Boolean);
+  for (const line of lines) {
+    const m = line.match(/^<sup>\s*(\d+)\s*<\/sup>\s+(\S.*)$/);
+    if (!m) {
+      problems.push(`Line "${line.slice(0, 40)}" is not in the form: <sup>1</sup> Footnote text`);
+      continue;
+    }
+    entries.push({ n: Number(m[1]), text: m[2] });
+  }
+  return { entries, problems };
+}
+
+// ---------------------------------------------------------------------
 // Short and long copy must not open with the same sentence
 // ---------------------------------------------------------------------
 function firstSentenceWords(text) {
@@ -186,7 +225,7 @@ function firstSentenceWords(text) {
   return first.toLowerCase().match(/[a-z0-9]+/g) || [];
 }
 
-// True when the long copy's first sentence repeats the short copy's:
+// Returns true when the long copy's first sentence repeats the short copy's:
 // either 8+ opening words in a row match, or 60%+ of the words are shared.
 function sameOpening(short, long) {
   const a = firstSentenceWords(short);
@@ -209,7 +248,7 @@ function sameOpening(short, long) {
 // product   = the cleaned payload (for modelNo, brand, finish)
 // sourceText= JSON text of the cleaned payload (so a banned claim that the
 //             product data itself makes is allowed)
-function checkCopy(copy, { product = {}, sourceText = "" } = {}) {
+function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = {}) {
   const errors = [];
   const warnings = [];
   const err = (check, message) => errors.push({ check, message });
@@ -330,6 +369,36 @@ function checkCopy(copy, { product = {}, sourceText = "" } = {}) {
   }
   if (/<sup/i.test(long) && !disclaimers) {
     err("orphan_sup", "npr_long_copy has <sup> tags but disclaimers is empty. Remove the tags.");
+  }
+  if (/[^\s]<sup>/i.test(long)) {
+    err("sup_spacing", "Leave a space before every <sup> tag, for example: fade-free power <sup>1</sup>.");
+  }
+
+  // With no document text there is no verified source, so disclaimers must be empty.
+  const docNorm = normText(documentText);
+  if (!docNorm && disclaimers) {
+    err("disclaimer_no_source", 'No disclaimer source was provided. Set disclaimers to "" and remove every <sup> tag.');
+  }
+  if (docNorm && disclaimers) {
+    const { entries, problems } = parseDisclaimers(disclaimers);
+    for (const p of problems) err("disclaimer_format", p);
+    if (!problems.length) {
+      const inOrder = entries.every((e, i) => e.n === i + 1);
+      if (!inOrder) err("disclaimer_numbering", "Number the disclaimers 1, 2, 3 in order, with no gaps.");
+      const used = [...new Set([...long.matchAll(/<sup>\s*(\d+)\s*<\/sup>/gi)].map((m) => Number(m[1])))].sort((a, b) => a - b);
+      const listed = entries.map((e) => e.n).sort((a, b) => a - b);
+      if (used.join(",") !== listed.join(",")) {
+        err("sup_mismatch", `The <sup> numbers in npr_long_copy (${used.join(", ") || "none"}) must match the numbered disclaimers (${listed.join(", ")}).`);
+      }
+      for (const e of entries) {
+        if (!isTraceable(e.text, docNorm)) {
+          err(
+            "disclaimer_untraceable",
+            `Disclaimer ${e.n} is not worded like any footnote in the documents. Copy a footnote exactly as written, or remove this disclaimer and its <sup> tag.`
+          );
+        }
+      }
+    }
   }
 
   // Warnings

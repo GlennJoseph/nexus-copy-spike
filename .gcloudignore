@@ -16,6 +16,9 @@ node_modules
 tests/
 run-tests.js
 checks.test.js
+documents.test.js
+generate-docs.test.js
+check-doc.js
 
 # Project notes at the top level only
 /MIGRATION.md

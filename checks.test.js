@@ -161,6 +161,46 @@ test("copy that talks about its source is blocked (v0.3 agent-mode LG run)", () 
   assert.ok(!names(run(SUNBEAM).errors).includes("source_talk"));
 });
 
+// ---- Disclaimers (Phase 4) -------------------------------------------------
+const DOC = "Independently tested to eliminate greater than 99.9% of staphylococcus aureus and E. coli using the Allergy Care cycle.";
+const withDisc = (longText, disclaimers, documentText = DOC) =>
+  run(SUNBEAM, { npr_long_copy: longText, disclaimers }, { documentText });
+const LONG_SUP = SUNBEAM.copy.npr_long_copy.replace("in 90 seconds,", "in 90 seconds <sup>1</sup>,");
+
+test("a disclaimer copied from the document passes", () => {
+  assert.deepStrictEqual(names(withDisc(LONG_SUP, `<sup>1</sup> ${DOC}`).errors), []);
+});
+
+test("a disclaimer that is not in the document is blocked", () => {
+  const r = withDisc(LONG_SUP, "<sup>1</sup> Kills every germ in the house within five minutes of use.");
+  assert.ok(names(r.errors).includes("disclaimer_untraceable"));
+});
+
+test("PDF line breaks and hyphenation do not break the match", () => {
+  const messy = "Independently tested to eliminate greater\nthan 99.9% of staphylococcus aureus and E. coli\nusing the Allergy Care cycle.";
+  assert.deepStrictEqual(names(withDisc(LONG_SUP, `<sup>1</sup> ${DOC}`, messy).errors), []);
+});
+
+test("disclaimers with no document text are blocked", () => {
+  const r = withDisc(LONG_SUP, `<sup>1</sup> ${DOC}`, "");
+  assert.ok(names(r.errors).includes("disclaimer_no_source"));
+});
+
+test("sup numbers must match the numbered disclaimers", () => {
+  const r = withDisc(LONG_SUP, `<sup>1</sup> ${DOC}\n<sup>2</sup> ${DOC}`);
+  assert.ok(names(r.errors).includes("sup_mismatch"));
+});
+
+test("disclaimers must be numbered in order and in the <sup> form", () => {
+  assert.ok(names(withDisc(LONG_SUP, `<sup>2</sup> ${DOC}`).errors).includes("disclaimer_numbering"));
+  assert.ok(names(withDisc(LONG_SUP, `(1) ${DOC}`).errors).includes("disclaimer_format"));
+});
+
+test("a <sup> tag needs a space before it", () => {
+  const tight = SUNBEAM.copy.npr_long_copy.replace("in 90 seconds,", "in 90 seconds<sup>1</sup>,");
+  assert.ok(names(withDisc(tight, `<sup>1</sup> ${DOC}`).errors).includes("sup_spacing"));
+});
+
 // ---- Input handling --------------------------------------------------------
 test("validateInput lists what is missing", () => {
   assert.deepStrictEqual(validateInput({ ean: "1", heading: "x", modelNo: "M", brand: { name: "B" }, defaultdisplaycategory: { name: "C" }, categoryAttributes: {} }), []);

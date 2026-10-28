@@ -14,6 +14,7 @@
 const fs = require("fs");
 const path = require("path");
 const { callPerplexity } = require("./perplexity-client");
+const { DOCS_ENABLED, retrieveDocuments } = require("./documents");
 const {
   validateInput,
   preparePayload,
@@ -44,8 +45,35 @@ function loadPrompt(version) {
   return promptCache[version];
 }
 
-function buildUserPrompt(product) {
-  return `Generate NPR copy for this product:\n\n${JSON.stringify(product, null, 2)}`;
+function buildUserPrompt(product, docText = "") {
+  let p = `Generate NPR copy for this product:\n\n${JSON.stringify(product, null, 2)}`;
+  if (docText) {
+    p +=
+      "\n\nDISCLAIMER SOURCES (documents attached to this product in Nexus. " +
+      "Use them only to find footnotes for disclaimers, never as a source of new product claims):\n\n" +
+      docText;
+  }
+  return p;
+}
+
+// Checks that only concern disclaimers. If these are the only thing wrong after
+// the retry, the copy is returned without disclaimers instead of failing.
+const DISCLAIMER_CHECKS = new Set([
+  "orphan_sup",
+  "sup_spacing",
+  "disclaimer_no_source",
+  "disclaimer_format",
+  "disclaimer_numbering",
+  "sup_mismatch",
+  "disclaimer_untraceable",
+]);
+
+function dropDisclaimers(obj) {
+  return {
+    ...obj,
+    npr_long_copy: String(obj.npr_long_copy).replace(/\s*<sup>\s*\d+\s*<\/sup>/gi, ""),
+    disclaimers: "",
+  };
 }
 
 function feedbackText(errors) {
@@ -103,6 +131,7 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
     stats: {},
     retailerSources: [],
     mode: null,
+    documents: [],
   };
   const finish = (result) => {
     meta.durationMs = Date.now() - started;
@@ -117,12 +146,26 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
   const product = preparePayload(rawProduct);
   if (!ids.product_id) ids.product_id = ids.ean;
 
-  // 2. Generate, check, retry once with feedback
+  // 2. Disclaimer documents (only when DOCS_ENABLED=on). Never blocks the copy.
+  let docText = "";
+  if (DOCS_ENABLED) {
+    try {
+      const docs = await retrieveDocuments(rawProduct, { log });
+      docText = docs.text;
+      meta.documents = docs.report;
+      log.info({ request_id: ids.request_id, found: docs.found, used: docs.used, ms: docs.ms }, "documents retrieved");
+    } catch (e) {
+      log.warn({ request_id: ids.request_id, err: e.message }, "document retrieval failed, continuing without");
+    }
+  }
+
+  // 3. Generate, check, retry once with feedback
   const systemPrompt = loadPrompt(promptVersion);
-  const userPrompt = buildUserPrompt(product);
+  const userPrompt = buildUserPrompt(product, docText);
   const sourceText = JSON.stringify(product);
 
   let lastProblem = null; // { type: "api", ...classify } or { type: "checks", errors }
+  let lastObj = null; // last parsed reply, for the disclaimer fallback
   let feedback = "";
   const urls = [];
 
@@ -170,7 +213,8 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
     }
 
     if (obj) {
-      const checked = checkCopy(obj, { product, sourceText });
+      lastObj = obj;
+      const checked = checkCopy(obj, { product, sourceText, documentText: docText });
       errors = checked.errors;
       meta.warnings = checked.warnings.map((w) => w.check);
       meta.stats = checked.stats;
@@ -206,8 +250,44 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
     feedback = feedbackText(errors);
   }
 
-  // 3. Out of attempts
+  // 4. Out of attempts
   meta.retailerSources = findRetailerSources(urls);
+
+  // Only the disclaimers are wrong: return the copy without them (empty fallback).
+  if (
+    lastProblem &&
+    lastProblem.type === "checks" &&
+    lastObj &&
+    lastProblem.errors.length &&
+    lastProblem.errors.every((e) => DISCLAIMER_CHECKS.has(e.check))
+  ) {
+    const trimmed = dropDisclaimers(lastObj);
+    const again = checkCopy(trimmed, { product, sourceText, documentText: "" });
+    if (again.errors.length === 0) {
+      meta.warnings = again.warnings.map((w) => w.check).concat("disclaimers_dropped");
+      meta.stats = again.stats;
+      meta.failedChecks = lastProblem.errors.map((e) => e.check);
+      log.warn({ request_id: ids.request_id, checks: meta.failedChecks }, "disclaimers dropped");
+      return finish({
+        httpStatus: 200,
+        body: {
+          status: "success",
+          request_id: ids.request_id,
+          product_id: ids.product_id,
+          ean: ids.ean,
+          prompt_version: promptVersion,
+          generated_at: new Date().toISOString(),
+          copy: {
+            npr_heading: trimmed.npr_heading.trim(),
+            npr_short_copy: trimmed.npr_short_copy.trim(),
+            npr_long_copy: trimmed.npr_long_copy.trim(),
+            disclaimers: "",
+          },
+        },
+        meta,
+      });
+    }
+  }
   if (lastProblem && lastProblem.type === "api") {
     return finish(failed(lastProblem.httpStatus, ids, lastProblem.code, lastProblem.message, meta));
   }

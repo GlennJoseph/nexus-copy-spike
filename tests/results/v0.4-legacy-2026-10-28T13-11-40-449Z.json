@@ -1,0 +1,68 @@
+{
+  "promptVersion": "v0.4",
+  "mode": "legacy",
+  "ranAt": "2026-10-28T13:11:40.449Z",
+  "results": [
+    {
+      "ean": "9313139336898",
+      "file": "9313139336898.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9313139336898",
+        "product_id": "9313139336898",
+        "ean": "9313139336898",
+        "prompt_version": "v0.4",
+        "generated_at": "2026-10-28T13:11:40.447Z",
+        "copy": {
+          "npr_heading": "Sunbeam Lower Back Heating Pad – Grey",
+          "npr_short_copy": "This Sunbeam Lower Back Heating Pad delivers focused warmth where you need it, with five heat settings, a flexible fit and an adjustable strap for waists up to 54 inches. Intellisense Technology helps maintain consistent temperature, while machine-washable fabric makes care simple.",
+          "npr_long_copy": "Focused warmth makes this Sunbeam Lower Back Heating Pad a practical way to relax while working on a laptop or unwinding at home. Its adjustable strap fits waists up to 54 inches, helping keep heat close to your lower back as you sit or relax.\n\nFive heat settings let you choose the warmth that feels right, while the 90-second fast heat-up gets this pad ready quickly. The flexible design improves body contact, and the multipurpose shape lets you use it in more than one position. Soft velvety polyester fabric adds comfort while you use it.\n\nA digital detachable controller makes adjustments straightforward, and Intellisense Technology helps prevent overheating while maintaining a consistent temperature. The built-in auto-off function cuts power after three hours, adding reassurance during longer sessions. For fast heat-up, use the highest setting only, then select a lower setting for continuous or prolonged use.\n\nWhen it needs freshening up, this heating pad is machine washable once you’ve removed the controller. The 2-year warranty adds ongoing support, while the Grey finish gives it a discreet look. With its 370mm width and height, this pad suits anyone wanting focused warmth around the lower back and waist.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.4",
+        "attempts": 1,
+        "durationMs": 11436,
+        "usage": {
+          "inputTokens": 5944,
+          "outputTokens": 334,
+          "costUsd": 0.00398
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "long_words_low",
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 37,
+          "shortWords": 42,
+          "shortChars": 282,
+          "longWords": 195,
+          "longChars": 1226,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "user manual",
+            "id": "DoO26D4q5rbUOFSHpubk20",
+            "ok": true,
+            "reason": null,
+            "pages": 12,
+            "bytes": 2701485,
+            "chars": 12530,
+            "ms": 4269
+          }
+        ]
+      },
+      "knownIssues": [
+        "UNRESOLVED, waiting on MM: Nexus says 110 W, the old Perplexity Project output said 75 W. Neither is confirmed."
+      ]
+    }
+  ]
+}

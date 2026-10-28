@@ -82,6 +82,11 @@ async function main() {
     if (!ok) console.log(`   ${out.body.error.message}`);
     if (m.retriedBecause.length) console.log(`   retried because: ${m.retriedBecause.join(", ")}`);
     if (m.warnings.length) console.log(`   warnings: ${m.warnings.join(", ")}`);
+    if (m.documents && m.documents.length) {
+      const d = m.documents.map((x) => (x.ok ? `${x.kind} ok (${x.pages}p, ${x.chars}c)` : `${x.kind} SKIPPED (${x.reason})`));
+      console.log(`   documents: ${d.join("; ")}`);
+    }
+    if (ok && out.body.copy.disclaimers) console.log(`   disclaimers: ${out.body.copy.disclaimers.replace(/\n/g, " | ")}`);
     if (m.retailerSources.length) console.log(`   RETAILER SOURCES SEEN: ${m.retailerSources.join(", ")}`);
     for (const note of known[ean] || []) console.log(`   KNOWN DATA ISSUE: ${note}`);
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 # deploy.sh
 #
-# Deploys the nexus-copy-spike service to Cloud Run.
+# Deploys the nexus-copy-service service to Cloud Run.
 # Run this from inside the project folder: ./deploy.sh
 #
 # Before running: fill in PROJECT_ID and REGION below, and make sure
@@ -24,6 +24,7 @@ gcloud run deploy "$SERVICE_NAME" \
   --allow-unauthenticated \
   --max-instances=3 \
   --timeout=90 \
+  --memory=1Gi \
   --set-secrets=SERVICE_API_KEY=service-api-key:latest,PERPLEXITY_API_KEY=perplexity-api-key:latest
 
 echo "Deploy finished. Test with:"

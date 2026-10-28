@@ -1,0 +1,59 @@
+{
+  "promptVersion": "v0.4",
+  "mode": "legacy",
+  "ranAt": "2026-10-28T13:30:09.309Z",
+  "results": [
+    {
+      "ean": "8806096576335",
+      "file": "8806096576335.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-8806096576335",
+        "product_id": "8806096576335",
+        "ean": "8806096576335",
+        "prompt_version": "v0.4",
+        "generated_at": "2026-10-28T13:30:09.307Z",
+        "copy": {
+          "npr_heading": "LG CordZero Stick Vacuum with All-in-One Tower – Grey",
+          "npr_short_copy": "This LG CordZero stick vacuum combines up to 220W suction with an All-in-One Tower that empties dust, charges this vacuum and stores accessories. Dual nozzles, a Power Drive mop and washable filters help simplify cleaning across hard floors and carpets.",
+          "npr_long_copy": "An All-in-One Tower gives this LG CordZero stick vacuum a tidy home between cleaning sessions, with hygienic auto dust emptying, charging and accessory storage in one place. Its grey finish and ergonomic handle add practical touches for everyday use.\n\nUp to 220W suction helps lift dirt from hard floors and carpets, while the dual nozzle system gives you options for different cleaning tasks. A Power Drive mop supports wet cleaning, so you can tackle more than dry debris with one versatile appliance.\n\nKompressor technology compresses collected dirt to help make better use of the 2,500ml dust capacity. One Touch Control keeps operation straightforward, and the Smart Inverter motor supports reliable performance. This vacuum offers up to 60 minutes of runtime for longer cleaning sessions.\n\nWhen maintenance is due, the washable dust bin and filters make cleaning this vacuum simpler. Measuring 265mm wide, 305mm deep and 1,120mm high, it fits neatly with its tower setup. A two-year warranty adds support, making this LG CordZero a practical choice for homes with hard floors and carpets.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.4",
+        "attempts": 2,
+        "durationMs": 20712,
+        "usage": {
+          "inputTokens": 5570,
+          "outputTokens": 642,
+          "costUsd": 0.00278
+        },
+        "failedChecks": [],
+        "retriedBecause": [
+          "same_opening"
+        ],
+        "warnings": [
+          "long_words_low",
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 53,
+          "shortWords": 40,
+          "shortChars": 253,
+          "longWords": 173,
+          "longChars": 1094,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": [
+        "UNRESOLVED, waiting on MM: is the 2,500ml dust capacity the tower bin or the vacuum itself?"
+      ]
+    }
+  ]
+}
