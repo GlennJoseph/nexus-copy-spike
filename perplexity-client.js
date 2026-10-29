@@ -29,6 +29,31 @@ const AGENT_EFFORT = process.env.PERPLEXITY_EFFORT || "fast";
 // Agent mode only. Set PERPLEXITY_WEB_SEARCH=off to write from the payload alone.
 const AGENT_WEB_SEARCH = (process.env.PERPLEXITY_WEB_SEARCH || "on").toLowerCase() !== "off";
 
+// Optional (legacy mode): ask Perplexity not to search retailer sites at all.
+// Set PERPLEXITY_DENY_RETAILERS=on. A leading "-" means "exclude this domain".
+// Perplexity allows about 20 domains. Check the result with run-tests.js: the
+// "RETAILER SOURCES SEEN" line should disappear. If Perplexity rejects the
+// field, turn this off and tell Camel.
+const DENY_RETAILERS = (process.env.PERPLEXITY_DENY_RETAILERS || "off").toLowerCase() === "on";
+const RETAILER_DOMAINS = [
+  "harveynorman.com.au",
+  "thegoodguys.com.au",
+  "jbhifi.com.au",
+  "binglee.com.au",
+  "appliancesonline.com.au",
+  "winnings.com.au",
+  "amazon.com.au",
+  "ebay.com.au",
+  "kogan.com",
+  "catch.com.au",
+  "bunnings.com.au",
+  "bigw.com.au",
+  "myer.com.au",
+  "davidjones.com",
+  "officeworks.com.au",
+  "costco.com.au",
+].map((d) => "-" + d);
+
 class PerplexityError extends Error {
   constructor(kind, message, extra = {}) {
     super(message);
@@ -40,17 +65,16 @@ class PerplexityError extends Error {
 }
 
 function buildLegacyRequest({ systemPrompt, userPrompt, maxOutputTokens }) {
-  return {
-    url: LEGACY_URL,
-    body: {
-      model: LEGACY_MODEL,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      max_tokens: maxOutputTokens,
-    },
+  const body = {
+    model: LEGACY_MODEL,
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userPrompt },
+    ],
+    max_tokens: maxOutputTokens,
   };
+  if (DENY_RETAILERS) body.search_domain_filter = RETAILER_DOMAINS;
+  return { url: LEGACY_URL, body };
 }
 
 function buildAgentRequest({ systemPrompt, userPrompt, maxOutputTokens }) {

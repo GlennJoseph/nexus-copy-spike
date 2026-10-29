@@ -118,7 +118,7 @@ async function main() {
   );
   console.log(`Saved ${path.relative(__dirname, outFile)}`);
 
-  process.exit(passed === results.length ? 0 : 1);
+  process.exitCode = passed === results.length ? 0 : 1;
 }
 
 main();

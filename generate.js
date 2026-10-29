@@ -68,6 +68,11 @@ const DISCLAIMER_CHECKS = new Set([
   "disclaimer_untraceable",
 ]);
 
+// Style rules that matter, but not enough to fail the whole request. The model
+// gets one retry. If one of these is still broken, the copy goes back anyway
+// (a person reviews every draft in Nexus) and the check is logged as a warning.
+const SOFT_CHECKS = new Set(["long_words_low", "opening_product_first", "same_opening", "health_claim"]);
+
 function dropDisclaimers(obj) {
   return {
     ...obj,
@@ -253,21 +258,26 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
   // 4. Out of attempts
   meta.retailerSources = findRetailerSources(urls);
 
-  // Only the disclaimers are wrong: return the copy without them (empty fallback).
+  // Only disclaimers and soft style rules are wrong: return the copy anyway.
+  const allowed = (c) => DISCLAIMER_CHECKS.has(c) || SOFT_CHECKS.has(c);
   if (
     lastProblem &&
     lastProblem.type === "checks" &&
     lastObj &&
     lastProblem.errors.length &&
-    lastProblem.errors.every((e) => DISCLAIMER_CHECKS.has(e.check))
+    lastProblem.errors.every((e) => allowed(e.check))
   ) {
-    const trimmed = dropDisclaimers(lastObj);
-    const again = checkCopy(trimmed, { product, sourceText, documentText: "" });
-    if (again.errors.length === 0) {
-      meta.warnings = again.warnings.map((w) => w.check).concat("disclaimers_dropped");
+    const hasDisclaimerProblem = lastProblem.errors.some((e) => DISCLAIMER_CHECKS.has(e.check));
+    const final = hasDisclaimerProblem ? dropDisclaimers(lastObj) : lastObj;
+    const again = checkCopy(final, { product, sourceText, documentText: hasDisclaimerProblem ? "" : docText });
+    if (again.errors.every((e) => SOFT_CHECKS.has(e.check))) {
+      meta.warnings = again.warnings
+        .map((w) => w.check)
+        .concat(again.errors.map((e) => e.check))
+        .concat(hasDisclaimerProblem ? ["disclaimers_dropped"] : []);
       meta.stats = again.stats;
       meta.failedChecks = lastProblem.errors.map((e) => e.check);
-      log.warn({ request_id: ids.request_id, checks: meta.failedChecks }, "disclaimers dropped");
+      log.warn({ request_id: ids.request_id, checks: meta.failedChecks }, "returned with soft check failures");
       return finish({
         httpStatus: 200,
         body: {
@@ -278,16 +288,17 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
           prompt_version: promptVersion,
           generated_at: new Date().toISOString(),
           copy: {
-            npr_heading: trimmed.npr_heading.trim(),
-            npr_short_copy: trimmed.npr_short_copy.trim(),
-            npr_long_copy: trimmed.npr_long_copy.trim(),
-            disclaimers: "",
+            npr_heading: final.npr_heading.trim(),
+            npr_short_copy: final.npr_short_copy.trim(),
+            npr_long_copy: final.npr_long_copy.trim(),
+            disclaimers: final.disclaimers.trim(),
           },
         },
         meta,
       });
     }
   }
+
   if (lastProblem && lastProblem.type === "api") {
     return finish(failed(lastProblem.httpStatus, ids, lastProblem.code, lastProblem.message, meta));
   }

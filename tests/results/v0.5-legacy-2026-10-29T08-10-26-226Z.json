@@ -1,0 +1,56 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-29T08:10:26.226Z",
+  "results": [
+    {
+      "ean": "9313139336898",
+      "file": "9313139336898.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9313139336898",
+        "product_id": "9313139336898",
+        "ean": "9313139336898",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-29T08:10:26.224Z",
+        "copy": {
+          "npr_heading": "Sunbeam Lower Back Heating Pad – Grey",
+          "npr_short_copy": "Lower back aches can make working or relaxing uncomfortable. This heating pad delivers focused warmth with five heat settings, a strap for waists up to 54 inches and a soft, machine-washable cover. Its digital controller, fast heat-up and auto-off feature make soothing warmth simple to use.",
+          "npr_long_copy": "Lower back discomfort can make sitting at a laptop or relaxing on the sofa harder than it should be. This heating pad wraps around the lower back and waist, using focused warmth to help ease muscle pain and tension while you get on with your day. The adjustable strap fits waists up to 54 inches, so it stays positioned where warmth is needed.\n\nChoose from five heat settings with the digital controller, whether you want gentle warmth or a higher setting for more targeted comfort. This pad heats up in 90 seconds, so you won't have to wait long before using it. Its flexible construction improves body contact, helping the pad follow the shape of your lower back as you sit or rest.\n\nIntellisense Technology helps prevent overheating and maintains a consistent temperature while this pad is switched on. The three-hour auto-off feature cuts power after continuous use, which means you won't need to stay awake to switch it off. The detachable controller makes machine washing easier, while the soft polyester fabric feels comfortable against clothing or skin.\n\nWith a 2.2m cord, this pad gives you room to settle near a power outlet while working or unwinding. Its grey finish suits everyday use at home, and the 110W output supports targeted heat rather than heating a whole room. This lower back heating pad is a useful choice for people managing muscle tension linked to posture, age or injuries.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 3932,
+        "usage": {
+          "inputTokens": 3182,
+          "outputTokens": 375,
+          "costUsd": 0.00111
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "vague_benefit"
+        ],
+        "stats": {
+          "headingChars": 37,
+          "shortWords": 46,
+          "shortChars": 291,
+          "longWords": 238,
+          "longChars": 1401,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": [
+        "UNRESOLVED, waiting on MM: Nexus says 110 W, the old Perplexity Project output said 75 W. Neither is confirmed."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-29T08:46:37.017Z",
+  "results": [
+    {
+      "ean": "8806096576335",
+      "file": "8806096576335.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-8806096576335",
+        "product_id": "8806096576335",
+        "ean": "8806096576335",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-29T08:46:31.866Z",
+        "copy": {
+          "npr_heading": "LG CordZero Stick Vacuum with All-in-One Tower – Grey",
+          "npr_short_copy": "A small dustbin can interrupt cleaning just when you’re getting somewhere. This LG CordZero stick vacuum compresses dirt into its 2.5L tower bag, then auto-empties, charges and stores accessories in one place, with dual nozzles, a Power Drive mop and washable filters for hard floors and carpets.",
+          "npr_long_copy": "Cleaning can quickly become a stop-start job when dirt needs emptying and accessories are scattered around the house. This LG CordZero stick vacuum answers with an All-in-One Tower that auto-empties dust, charges this vacuum and stores its accessories together, so you can finish the floors without hunting for attachments.\n\nWith up to 220W suction power, this vacuum tackles everyday mess across hard floors and carpets. Dual nozzles help you switch between cleaning tasks, while the Power Drive mop adds wet cleaning for homes that need more than dry vacuuming. A 60-minute runtime gives you room to move through larger cleaning jobs before recharging.\n\nKompressor Technology compresses collected dirt to help make better use of the tower bag’s 2.5L capacity. One Touch Control keeps operation simple while you clean, and the ergonomic handle makes this vacuum easier to hold as you move between rooms. The Smart Inverter motor supports reliable performance, while the washable dustbin and filters make routine maintenance easier.\n\nFinished in Grey, this vacuum measures 265mm wide, 305mm deep and 1120mm high. The tower keeps charging and accessory storage in one dedicated spot, helping reduce clutter in a utility area or cupboard. With a two-year warranty, this LG CordZero suits households that want one cleaner for carpets, hard floors and wet cleaning, ready for the next spill or tracked-in dirt.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 3586,
+        "usage": {
+          "inputTokens": 3157,
+          "outputTokens": 387,
+          "costUsd": 0.00271
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 53,
+          "shortWords": 47,
+          "shortChars": 296,
+          "longWords": 221,
+          "longChars": 1406,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": [
+        "RESOLVED by MM (29 Oct 2026): the 2,500ml figure is the tower BAG capacity, not the vacuum's dustbin. Write it as 2.5L (vendor convention)."
+      ]
+    },
+    {
+      "ean": "9313139336898",
+      "file": "9313139336898.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9313139336898",
+        "product_id": "9313139336898",
+        "ean": "9313139336898",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-29T08:46:37.016Z",
+        "copy": {
+          "npr_heading": "Sunbeam Lower Back Heating Pad – Grey",
+          "npr_short_copy": "Lower back tension can make sitting at your laptop or relaxing uncomfortable. This heating pad wraps around your waist to deliver focused warmth, with five heat settings, a digital controller, adjustable strap, temperature sensing and automatic shut-off for comfortable use.",
+          "npr_long_copy": "Sitting at a desk or relaxing at home can leave your lower back feeling tight and uncomfortable. This heating pad wraps around your waist with an adjustable strap, helping keep focused warmth against the area while you work on your laptop or unwind. Its flexible design improves body contact, while the soft polyester fabric adds comfort against your skin.\n\nWhen you need targeted warmth, five heat settings let you choose the level that feels right. The pad heats up in 90 seconds, so you won't be waiting long before settling in. Its multipurpose design can also be used on other areas of the body, giving you one heating pad for different moments of the day.\n\nThe digital controller is detachable and easy to use, so you can adjust the heat without moving from your seat. Intellisense temperature sensing technology helps prevent overheating and maintains a consistent pad temperature during use. Automatic shut-off cuts power after three hours, while the 220cm cord gives you room to use this near a power point.\n\nWhen it needs freshening up, detach the controller and machine wash this pad. The grey polyester finish suits everyday home use, and the adjustable strap fits waists up to 54 inches. Backed by a two-year warranty, this heating pad is ready for a work session at the kitchen table or a quiet evening on the sofa.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 5147,
+        "usage": {
+          "inputTokens": 3224,
+          "outputTokens": 349,
+          "costUsd": 0.0068
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "few_contractions",
+          "vague_benefit",
+          "health_claim"
+        ],
+        "stats": {
+          "headingChars": 37,
+          "shortWords": 40,
+          "shortChars": 274,
+          "longWords": 227,
+          "longChars": 1329,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": [
+        "UNRESOLVED, waiting on MM: Nexus says 110 W, the old Perplexity Project output said 75 W. Neither is confirmed."
+      ]
+    }
+  ]
+}

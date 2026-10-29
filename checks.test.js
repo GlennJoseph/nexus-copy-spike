@@ -22,9 +22,9 @@ const LG = {
   copy: {
     npr_heading: "LG CordZero Stick Vacuum with All-in-One Tower – Grey",
     npr_short_copy:
-      "This LG CordZero stick vacuum combines 220W suction with a 60-minute runtime to handle hard floors and carpets. Its All-in-One Tower charges this vacuum, empties dust hygienically and stores accessories, while the mop, washable filters and Kompressor technology make everyday cleaning simpler.",
+      "Dust bins that fill up mid-clean slow everyone down. This LG CordZero stick vacuum pairs 220W suction and a 60-minute runtime with a tower that charges it, empties dust hygienically and stores accessories, so cleaning hard floors and carpets takes less effort.",
     npr_long_copy:
-      "This LG CordZero stick vacuum is designed for households that want flexible cleaning without a separate storage setup. With 220W suction power and a 60-minute runtime, this vacuum helps you move from quick daily tidy-ups to more thorough cleaning across hard floors and carpets. Its ergonomic handle also makes it easier to guide around your home.\n\nThe All-in-One Tower brings charging, hygienic auto dust emptying and accessory storage together in one place, so this vacuum is ready for the next clean without leaving dust and attachments scattered around. Kompressor technology compresses collected dirt to help make better use of the 2,500ml dust capacity, while the dual nozzle system gives you more flexibility across different floor surfaces.\n\nFor more than dry vacuuming, this model includes a Power Drive mop to help tackle wet cleaning on suitable hard floors. One Touch Control keeps operation straightforward, and the Smart Inverter motor is designed to support reliable performance. When it’s time for maintenance, the washable dust bin and filters can be cleaned and reused, helping keep ongoing care simple.\n\nFinished in Grey, this LG CordZero suits homes that need a versatile cordless cleaner for carpets, hard floors and wet cleaning. The All-in-One Tower also provides a neat home for this vacuum and its accessories, while the included two-year warranty offers added reassurance. It’s a practical choice for anyone who wants powerful cleaning and less effort between uses.",
+      "Juggling a vacuum, a charger and a pile of attachments makes a quick clean feel like a chore. With 220W suction power and a 60-minute runtime, this vacuum helps you move from quick daily tidy-ups to more thorough cleaning across hard floors and carpets. Its ergonomic handle also makes it easier to guide around your home.\n\nThe All-in-One Tower brings charging, hygienic auto dust emptying and accessory storage together in one place, so this vacuum is ready for the next clean without leaving dust and attachments scattered around. Kompressor technology compresses collected dirt to help make better use of the 2,500ml dust capacity, while the dual nozzle system gives you more flexibility across different floor surfaces.\n\nFor more than dry vacuuming, this model includes a Power Drive mop to help tackle wet cleaning on suitable hard floors. One Touch Control keeps operation straightforward, and the Smart Inverter motor is designed to support reliable performance. When it’s time for maintenance, the washable dust bin and filters can be cleaned and reused, helping keep ongoing care simple.\n\nFinished in Grey, this LG CordZero suits homes that need a versatile cordless cleaner for carpets, hard floors and wet cleaning. The All-in-One Tower also provides a neat home for this vacuum and its accessories, while the included two-year warranty offers added reassurance. It’s a practical choice for anyone who wants powerful cleaning and less effort between uses.",
     disclaimers: "",
   },
 };
@@ -34,9 +34,9 @@ const SUNBEAM = {
   copy: {
     npr_heading: "Sunbeam Lower Back Heating Pad – Grey",
     npr_short_copy:
-      "This Sunbeam Lower Back Heating Pad delivers focused warmth for lower back comfort, with five heat settings, 90-second fast heat-up and an adjustable strap for a secure fit. Intellisense Technology helps maintain consistent heat, while auto-off and machine-washable fabric make everyday use easier.",
+      "Holding a heat pack against your back gets old fast. This Sunbeam Lower Back Heating Pad stays put with an adjustable strap, heats up in 90 seconds and offers five heat settings, with auto-off and machine-washable fabric for easy care.",
     npr_long_copy:
-      "This Sunbeam Lower Back Heating Pad is designed for targeted warmth while you're working at your laptop or relaxing at home. Its adjustable strap fits waists up to 54 inches, helping keep this pad comfortably in place so heat reaches your lower back. The flexible design improves body contact for a more comfortable fit.\n\nChoose from five heat settings using this pad's digital controller, so you'll have more control over the warmth that suits you. It heats up in 90 seconds, helping you settle into soothing comfort without a long wait. The multipurpose design also makes this pad useful beyond the lower back when focused warmth is wanted.\n\nIntellisense Technology helps prevent overheating and maintain a consistent temperature during use. The three-hour automatic switch-off cuts power after continuous use, adding reassurance when you're relaxing. A detachable controller makes this pad simpler to prepare for washing, while the soft polyester fabric is machine washable for easier care.\n\nFinished in Grey, this 110-watt heating pad measures 370mm wide by 370mm high and weighs 0.95kg. Its 220cm cord gives you flexibility when positioning it near a power point. This Sunbeam heating pad is suitable for anyone seeking adjustable, focused warmth at home, and it includes a two-year warranty.",
+      "Holding a heat pack in place while you work or relax rarely lasts long. Its adjustable strap fits waists up to 54 inches, helping keep this pad comfortably in place so heat reaches your lower back. The flexible design improves body contact for a more comfortable fit.\n\nChoose from five heat settings using this pad's digital controller, so you'll have more control over the warmth that suits you. It heats up in 90 seconds, helping you settle into comfort without a long wait. The multipurpose design also makes this pad useful beyond the lower back when focused warmth is wanted.\n\nIntellisense Technology helps prevent overheating and maintain a consistent temperature during use. The three-hour automatic switch-off cuts power after continuous use, adding reassurance when you're relaxing. A detachable controller makes this pad simpler to prepare for washing, while the soft polyester fabric is machine washable for easier care.\n\nFinished in Grey, this 110-watt heating pad measures 370mm wide by 370mm high and weighs 0.95kg. Its 220cm cord gives you flexibility when positioning it near a power point. This Sunbeam heating pad is suitable for anyone seeking adjustable, focused warmth at home, and it includes a two-year warranty. If you spend long hours at a desk, it gives your lower back steady warmth without a hot water bottle to refill.",
     disclaimers: "",
   },
 };
@@ -199,6 +199,69 @@ test("disclaimers must be numbered in order and in the <sup> form", () => {
 test("a <sup> tag needs a space before it", () => {
   const tight = SUNBEAM.copy.npr_long_copy.replace("in 90 seconds,", "in 90 seconds<sup>1</sup>,");
   assert.ok(names(withDisc(tight, `<sup>1</sup> ${DOC}`).errors).includes("sup_spacing"));
+});
+
+// ---- MM feedback, 29 Oct 2026 --------------------------------------------
+test("opening with the product name is blocked, short and long (v0.3 live runs)", () => {
+  const short = run(LG, { npr_short_copy: "This LG CordZero stick vacuum combines up to 220W suction with a 2.5L tower bag for longer cleaning sessions." });
+  assert.ok(names(short.errors).includes("opening_product_first"));
+  const long = run(LG, { npr_long_copy: LG.copy.npr_long_copy.replace(/^[^.]*\./, "This LG CordZero stick vacuum is built for everyday cleaning.") });
+  assert.ok(names(long.errors).includes("opening_product_first"));
+});
+
+test("a problem sentence that uses a category word is not flagged (Sunbeam retry loop)", () => {
+  const r = run(SUNBEAM, {
+    npr_short_copy: "Lower back aches after a long day at the desk are hard to ignore. This Sunbeam pad offers focused warmth with five heat settings and an adjustable strap.",
+    npr_long_copy: SUNBEAM.copy.npr_long_copy.replace(/^[^.]*\./, "Lower back stiffness after hours at a laptop can make it hard to relax."),
+  });
+  assert.ok(!names(r.errors).includes("opening_product_first"));
+});
+
+test("brand-first and 'This <product>' openings are flagged", () => {
+  const brand = run(SUNBEAM, { npr_short_copy: "Sunbeam heating pads give focused warmth with five heat settings and a strap." });
+  assert.ok(names(brand.errors).includes("opening_product_first"));
+  const thisProduct = run(SUNBEAM, { npr_short_copy: "This heating pad gives focused warmth with five heat settings and a strap." });
+  assert.ok(names(thisProduct.errors).includes("opening_product_first"));
+});
+
+test("near-identical problem openings in short and long copy are blocked (v0.5 Sunbeam, live)", () => {
+  const r = run(SUNBEAM, {
+    npr_short_copy: "Lower back tension can make working or relaxing uncomfortable. This heating pad has an adjustable strap and five heat settings.",
+    npr_long_copy: SUNBEAM.copy.npr_long_copy.replace(/^[^.]*\./, "Lower back tension can make sitting at a laptop or relaxing at home uncomfortable."),
+  });
+  assert.ok(names(r.errors).includes("same_opening"));
+});
+
+test("generic closers give a warning, not an error", () => {
+  const r = run(SUNBEAM, { npr_short_copy: "Warmth for your lower back. This pad is a useful choice for anyone seeking a strap-on heat pad." });
+  assert.ok(names(r.warnings).includes("vague_benefit"));
+  assert.ok(!names(r.errors).includes("vague_benefit"));
+});
+
+test("health-benefit wording is blocked unless the product data uses it (v0.5 Sunbeam, live)", () => {
+  const long = SUNBEAM.copy.npr_long_copy.replace(/^[^.]*\./, "Lower back pain can make sitting at a laptop uncomfortable.");
+  const r = run(SUNBEAM, { npr_long_copy: long + " It offers soothing heat for muscle tension." });
+  assert.ok(names(r.errors).includes("health_claim"));
+  const allowed = run(SUNBEAM, { npr_long_copy: long + " It offers soothing heat for muscle tension." }, { sourceText: "relieves lower back pain, soothing heat, muscle tension" });
+  assert.ok(!names(allowed.errors).includes("health_claim"));
+});
+
+test("problem-first openings pass", () => {
+  assert.ok(!names(run(LG).errors).includes("opening_product_first"));
+  assert.ok(!names(run(SUNBEAM).errors).includes("opening_product_first"));
+});
+
+test("long copy under 200 words is now a blocking error", () => {
+  const short3 = LG.copy.npr_long_copy.split("\n\n").map((p) => p.split(". ").slice(0, 2).join(". ") + ".").join("\n\n");
+  assert.ok(names(run(LG, { npr_long_copy: short3 }).errors).includes("long_words_low"));
+});
+
+test("vague benefit words and big ml figures give warnings, not errors", () => {
+  const r = run(SUNBEAM, { npr_short_copy: "A convenient pad with more flexibility and a 2,500ml tank." });
+  assert.ok(names(r.warnings).includes("vague_benefit"));
+  assert.ok(names(r.warnings).includes("unit_ml"));
+  assert.ok(!names(r.errors).includes("vague_benefit"));
+  assert.ok(!names(run(SUNBEAM, { npr_short_copy: "A 2.5L tank keeps going." }).warnings).includes("unit_ml"));
 });
 
 // ---- Input handling --------------------------------------------------------

@@ -63,6 +63,20 @@ const US_SPELLINGS =
 const SOURCE_TALK =
   /\b(?:product (?:information|data|details|listing|description)|(?:mentioned|listed|stated|noted|described) (?:in|on|by)|according to|as (?:listed|stated|mentioned|noted)|the (?:listing|manufacturer'?s? (?:information|data)|source) (?:says|states|lists|shows))\b/i;
 
+// Vague benefit words. NPR wants benefits tied to a real everyday situation,
+// so these are flagged (warning only, they are sometimes fine).
+const VAGUE_BENEFITS =
+  /\b(?:convenient|convenience|flexible|flexibility|versatile|versatility|practical|effortless(?:ly)?|seamless(?:ly)?|hassle-free|peace of mind|(?:a|an) (?:useful|practical|great|smart|solid|sensible) (?:choice|option|addition)|suits a (?:range|variety) of|ideal for anyone|for anyone (?:who|seeking|looking|wanting))\b/gi;
+
+// 1,000 ml or more should be written in litres (2.5L), as the vendors do.
+// Words that sound like health claims. Blocked (soft) unless the product data
+// uses the word itself. MM to confirm what is acceptable for heating pads,
+// massagers and similar products; relax this list if they say so.
+const HEALTH_WORDS =
+  /\b(?:pain|aches?|aching|sore(?:ness)?|stiff(?:ness)?|tension|muscles?|relieve|relief|soothing|soothe|therapeutic|treat(?:s|ment)?|injury|recovery)\b/gi;
+
+const BIG_ML = /\b\d{1,3}(?:,\d{3})+\s?ml\b|\b\d{4,}\s?ml\b/i;
+
 const CONTRACTION =
   /\b(?:it|you|that|there|they|we|here|what|let)['’](?:s|ll|re|ve|d)\b|\b(?:don|doesn|didn|isn|aren|wasn|weren|can|won|wouldn|couldn|shouldn|hasn|haven)['’]t\b/gi;
 
@@ -226,19 +240,41 @@ function firstSentenceWords(text) {
 }
 
 // Returns true when the long copy's first sentence repeats the short copy's:
-// either 8+ opening words in a row match, or 60%+ of the words are shared.
+// either 5+ opening words in a row match, or half or more of the words are shared.
 function sameOpening(short, long) {
   const a = firstSentenceWords(short);
   const b = firstSentenceWords(long);
   if (a.length < 6 || b.length < 6) return false;
   let lead = 0;
   while (lead < a.length && lead < b.length && a[lead] === b[lead]) lead++;
-  if (lead >= 8) return true;
+  if (lead >= 5) return true;
   const sa = new Set(a);
   const sb = new Set(b);
   let shared = 0;
   for (const w of sa) if (sb.has(w)) shared++;
-  return shared / new Set([...sa, ...sb]).size >= 0.6;
+  return shared / new Set([...sa, ...sb]).size >= 0.5;
+}
+
+// Problem-first openings: the first sentence should start with the buyer's
+// everyday problem, not with the product. It counts as product-first when
+//   (a) the brand name is in the first four words ("LG CordZero vacuum ..."), or
+//   (b) it starts with This / The / Our / Introducing / Meet and a word from the
+//       heading follows within four words ("This stick vacuum ...").
+// A problem sentence that merely uses a category word ("Lower back aches ...")
+// is fine.
+const OPENING_STOP = new Set(["with", "this", "that", "from", "your", "have", "also", "into", "more", "the", "and", "for"]);
+function opensWithProduct(text, heading, brand = "") {
+  const words = firstSentenceWords(text);
+  if (!words.length) return false;
+  const brandWord = String(brand || String(heading).split(/\s+/)[0] || "").toLowerCase().match(/[a-z0-9]+/);
+  if (brandWord && words.slice(0, 4).includes(brandWord[0])) return true;
+  if (/^(this|the|our|introducing|meet|these)$/.test(words[0])) {
+    const headWords = new Set(
+      (String(heading).toLowerCase().match(/[a-z0-9]+/g) || []).filter((w) => w.length >= 3 && !OPENING_STOP.has(w))
+    );
+    return words.slice(1, 5).some((w) => headWords.has(w));
+  }
+  return false;
 }
 
 // ---------------------------------------------------------------------
@@ -267,6 +303,7 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
   const short = copy.npr_short_copy.trim();
   const long = copy.npr_long_copy.trim();
   const disclaimers = copy.disclaimers.trim();
+  const brand0 = product.brand && product.brand.name ? String(product.brand.name).trim() : "";
 
   if (!heading) err("empty", "npr_heading must not be empty.");
   if (!short) err("empty", "npr_short_copy must not be empty.");
@@ -299,7 +336,10 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
     err("long_words", `npr_long_copy is ${stats.longWords} words. Maximum is ${LIMITS.longWordsMax}. Shorten it.`);
   }
   if (long && stats.longWords < LIMITS.longWordsMin) {
-    warn("long_words_low", `npr_long_copy is ${stats.longWords} words. Target is ${LIMITS.longWordsMin} or more.`);
+    err(
+      "long_words_low",
+      `npr_long_copy is ${stats.longWords} words. It must be 200 to 300 words. Write 230 to 280 words, about 60 to 70 words per paragraph, by adding specific everyday detail from the product data. Do not pad.`
+    );
   }
   if (long && (stats.paragraphs < LIMITS.paragraphsMin || stats.paragraphs > LIMITS.paragraphsMax)) {
     err(
@@ -356,6 +396,19 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
     );
   }
 
+  if (short && heading && opensWithProduct(short, heading, brand0)) {
+    err(
+      "opening_product_first",
+      "npr_short_copy opens with the product name. Open with the everyday problem this product solves, then show how this product answers it."
+    );
+  }
+  if (long && heading && opensWithProduct(long, heading, brand0)) {
+    err(
+      "opening_product_first",
+      "npr_long_copy opens with the product name. Open with the everyday problem this product solves, then show how this product answers it."
+    );
+  }
+
   if (short && long && sameOpening(short, long)) {
     err(
       "same_opening",
@@ -405,6 +458,23 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
   const contractions = (long + " " + short).match(CONTRACTION) || [];
   if (long && contractions.length < 2) {
     warn("few_contractions", `Only ${contractions.length} contraction(s) in the copy. Tone should use them throughout.`);
+  }
+  const vague = [...new Set((all.match(VAGUE_BENEFITS) || []).map((w) => w.toLowerCase()))];
+  if (vague.length) {
+    warn("vague_benefit", `Vague benefit words: ${vague.join(", ")}. Say what it means in everyday use instead.`);
+  }
+  // Health-benefit wording is blocked unless the product data itself uses the word.
+  const healthHits = [...new Set((all.match(HEALTH_WORDS) || []).map((w) => w.toLowerCase()))].filter(
+    (w) => !source.includes(w) && !source.includes(w.replace(/s$/, ""))
+  );
+  if (healthHits.length) {
+    err(
+      "health_claim",
+      `The copy uses health-benefit wording (${healthHits.join(", ")}) that the product data does not use. Describe the everyday situation (long hours at a desk, cold evenings, holding a heat pack in place) and comfort, never pain, tension, muscles or relief.`
+    );
+  }
+  if (BIG_ML.test(all)) {
+    warn("unit_ml", "A capacity of 1,000 ml or more should be written in litres, for example 2.5L.");
   }
   if (US_SPELLINGS.test(all)) {
     warn("us_spelling", "Possible US spelling. Australian English is required.");
