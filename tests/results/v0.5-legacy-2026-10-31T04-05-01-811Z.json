@@ -1,0 +1,52 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:05:01.811Z",
+  "results": [
+    {
+      "ean": "3838783091253",
+      "file": "3838783091253.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-3838783091253",
+        "product_id": "3838783091253",
+        "ean": "3838783091253",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:05:01.809Z",
+        "copy": {
+          "npr_heading": "ASKO Essence 60cm Pyrolytic Oven – Black Glass",
+          "npr_short_copy": "Cooking residue can leave you facing a messy oven after dinner. This ASKO Essence oven turns residue to ash with pyrolytic cleaning, while precise temperature control, air fry functionality, auto programmes and ConnectLife controls help you prepare everyday meals with less guesswork.",
+          "npr_long_copy": "Dinner is done, but baked-on splashes and grease still leave the oven needing attention. This ASKO Essence oven tackles that residue with pyrolytic cleaning, which turns it to ash for easy wiping, while its 50L capacity gives home cooks room for everyday meals and larger dishes.\n\nPrecise temperature control and a calibrating system help keep heat consistent when you're baking, roasting or grilling. Air fry functionality adds another way to prepare food, while the grill and multifunction cooking options help you handle different recipes without changing appliances. Auto programmes take care of the settings when you want a simpler starting point.\n\nThe 3-inch TFT display and ConnectLife controls put cooking functions and programmes within easy reach. Telescopic runners help you slide trays out when checking or serving food, so you won't need to reach as far into the oven. Lighting on both sides and at different heights helps you see food clearly, while active cooling helps manage the oven and door glass during use.\n\nThis oven includes a grill rack, glass baking tray and middle baking pan, giving you the key accessories for roasting, grilling and baking. Its black glass finish brings a clean, contemporary look to a 60cm kitchen layout. With its app-connected controls and self-cleaning function, it's a useful fit for busy households preparing weekday dinners or weekend meals.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 3463,
+        "usage": {
+          "inputTokens": 3332,
+          "outputTokens": 370,
+          "costUsd": 0.00155
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 46,
+          "shortWords": 42,
+          "shortChars": 284,
+          "longWords": 221,
+          "longChars": 1393,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": []
+    }
+  ]
+}

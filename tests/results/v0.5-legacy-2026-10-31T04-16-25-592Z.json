@@ -1,0 +1,115 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:16:25.592Z",
+  "results": [
+    {
+      "ean": "9319731147146",
+      "file": "9319731147146.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9319731147146",
+        "product_id": "9319731147146",
+        "ean": "9319731147146",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:16:25.590Z",
+        "copy": {
+          "npr_heading": "Zip HydroTap G5 BCS Home Classic Plus Tap – Chrome",
+          "npr_short_copy": "Need boiling, chilled or sparkling water without reaching for separate appliances? This Zip tap delivers filtered water at a touch, with bottle-fill control, a boiling water safety lock, three energy-saving modes and a chrome finish for the kitchen bench.",
+          "npr_long_copy": "Making tea, filling bottles and serving sparkling water can mean juggling kettles, jugs and benchtop appliances. This Zip tap brings boiling, chilled, sparkling and filtered water together, so you can choose what you need from one kitchen fitting. Its continuous-flow bottle-fill function helps when you're preparing water for the fridge or setting the table.\n\nThe touch-pad provides simple controls for each water type, while the boiling water safety lock helps prevent an accidental dispense when children are nearby. SteriTouch® antimicrobial protection is built into the touch-pad and key water paths, giving you added hygiene support during everyday use. A 0.2 micron filter helps provide filtered water for drinking, cooking and making hot drinks.\n\nAn under-bench command centre keeps the system controls together, with a full-colour interactive touch screen, PIN code protection and customisable settings. Three energy-saving modes include on/off timers and a sensor that can put this system to sleep when it's dark. Quiet mode adjusts fan speed automatically, while leak-guard detection helps identify leaks. Air-cooled technology uses water efficiently.\n\nThis chrome tap measures 339mm wide, 483mm deep and 333mm high, with a 35mm cut-out size and a 1/2-inch BSP water connection. Two disposable CO2 cylinders are included for sparkling water, and WaterMark, RCM and ARC approvals support installation in Australian homes. The five-year warranty includes 36 months for this appliance plus an additional 24 months for this tank, making it a considered choice for a busy kitchen where one tap handles morning drinks, cooking water and evening entertaining.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 2,
+        "durationMs": 14285,
+        "usage": {
+          "inputTokens": 39467,
+          "outputTokens": 816,
+          "costUsd": 0.01968
+        },
+        "failedChecks": [],
+        "retriedBecause": [
+          "same_opening"
+        ],
+        "warnings": [],
+        "stats": {
+          "headingChars": 50,
+          "shortWords": 39,
+          "shortChars": 255,
+          "longWords": 249,
+          "longChars": 1663,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "brochure",
+            "id": "K5YwUJnwFM7nh9xhAuFzrg",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 938351,
+            "chars": 2274,
+            "ms": 3496
+          },
+          {
+            "kind": "brochure",
+            "id": "pY0bvtwePbVGGska9jcOnM",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 938351,
+            "chars": 2274,
+            "ms": 3413
+          },
+          {
+            "kind": "document",
+            "id": "bKMrrjrdhZGUJqxEeLae6g",
+            "ok": true,
+            "reason": null,
+            "pages": 40,
+            "bytes": 7604018,
+            "chars": 47914,
+            "ms": 6295
+          },
+          {
+            "kind": "document",
+            "id": "gsaGPtU2GYz0zBq7JSgjXw",
+            "ok": true,
+            "reason": null,
+            "pages": 44,
+            "bytes": 6958575,
+            "chars": 32867,
+            "ms": 6724
+          },
+          {
+            "kind": "document",
+            "id": "FgxECatAOBR3hZgVaPrbO0",
+            "ok": true,
+            "reason": null,
+            "pages": 3,
+            "bytes": 827654,
+            "chars": 2768,
+            "ms": 3437
+          },
+          {
+            "kind": "document",
+            "id": "UIHtgizKmseKCCwQZkUsTM",
+            "ok": false,
+            "reason": "too_large",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 1670
+          }
+        ]
+      },
+      "knownIssues": []
+    }
+  ]
+}

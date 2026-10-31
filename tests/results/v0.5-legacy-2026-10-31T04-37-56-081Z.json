@@ -1,0 +1,52 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:37:56.081Z",
+  "results": [
+    {
+      "ean": "9343415010228",
+      "file": "9343415010228.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9343415010228",
+        "product_id": "9343415010228",
+        "ean": "9343415010228",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:37:56.079Z",
+        "copy": {
+          "npr_heading": "Schweigen Silent Inline Motor Undermount Rangehood 120cm – Black Steel",
+          "npr_short_copy": "Cooking several dishes can leave the kitchen full of steam and cooking smells. This 120cm ducted rangehood uses five speed levels, powerful inline extraction and LED lighting to clear the air, while soft-touch controls and dishwasher-safe filters make everyday use and cleaning easier.",
+          "npr_long_copy": "Steam and cooking smells can quickly build up when you're using a large cooktop or island bench. This 120cm ducted undermount rangehood keeps extraction discreet by fitting into 300mm-deep cabinetry, so your kitchen can maintain a clean, concealed look while you cook.\n\nThe Isodrive® SPINL motor provides powerful inline extraction for high-heat stir-fries and multi-burner meals when properly ducted and installed. Five speed levels let you match airflow to what's on the cooktop, while the 15-minute auto shut-off timer keeps extraction running after cooking without needing another trip back to the controls.\n\nSoft-touch controls and a digital display make it easier to select a fan speed and operate the lighting while you're preparing food. The 3W LED light helps illuminate the cooking area, and the black stainless steel mesh filters can go in the dishwasher, so routine cleaning doesn't require scrubbing by hand.\n\nThis rangehood includes Schweigen SteelFlex™ and a matte Black Steel finish that suits contemporary kitchens and dark overhead joinery. It comes with a 10-year motor warranty, five-year canopy warranty, lifetime filter warranty and lifetime GU10 LED globe warranty. It's a discreet choice for large cooktops, island benches and busy evenings when several pans are on at once.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 3281,
+        "usage": {
+          "inputTokens": 3222,
+          "outputTokens": 366,
+          "costUsd": 0.00148
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 70,
+          "shortWords": 43,
+          "shortChars": 285,
+          "longWords": 200,
+          "longChars": 1298,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": []
+    }
+  ]
+}

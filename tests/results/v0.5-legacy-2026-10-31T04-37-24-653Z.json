@@ -1,0 +1,52 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:37:24.653Z",
+  "results": [
+    {
+      "ean": "9319731147146",
+      "file": "9319731147146.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9319731147146",
+        "product_id": "9319731147146",
+        "ean": "9319731147146",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:37:24.651Z",
+        "copy": {
+          "npr_heading": "Zip HydroTap G5 BCS Home Classic Plus Tap – Chrome",
+          "npr_short_copy": "Waiting for the kettle, buying chilled water and preparing drinks can crowd the kitchen routine. This Zip tap provides boiling, chilled, sparkling and filtered water at the touch of a button, with a safety lock, quiet mode, energy-saving settings and a Chrome finish.",
+          "npr_long_copy": "A busy kitchen can quickly fill with kettle waiting, water bottles and drink preparation. This Zip tap brings boiling, chilled, sparkling and filtered water to one point, so you can make tea, fill bottles or prepare drinks at the touch of a button. Its continuous flow also helps when you're filling larger bottles.\n\nThe 0.2 micron filtration system gives you filtered water for drinking and everyday kitchen tasks. Two disposable CO2 cylinders provide sparkling water, while 100% water-efficient air-cooled technology supports the system as it runs. You can choose from three energy-saving modes, including timers and a sensor that puts this system to sleep when it's dark.\n\nSimple controls make it easier to select the water you need, while the full-colour interactive touch screen lets you adjust settings. Pin code protection helps keep settings under your control, and two boiling water safety modes add protection when children are nearby. Quiet mode automatically adjusts fan speed to help reduce operating noise. SteriTouch antimicrobial protection is built into the touch-pad and key water paths for enhanced hygiene.\n\nThis tap has a Chrome finish and fits a 35mm cut-out, with a 1/2-inch BSP (G1/2) water connection for installation. The under-bench command centre keeps the main system below the worktop, leaving this tap ready for daily use. A five-year warranty covers the appliance for 36 months, plus an additional 24 months for the tank. It's a useful fit for kitchens where tea, cold drinks and sparkling water are part of the daily routine.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 3404,
+        "usage": {
+          "inputTokens": 3204,
+          "outputTokens": 406,
+          "costUsd": 0.00157
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 50,
+          "shortWords": 43,
+          "shortChars": 267,
+          "longWords": 249,
+          "longChars": 1558,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": []
+    }
+  ]
+}

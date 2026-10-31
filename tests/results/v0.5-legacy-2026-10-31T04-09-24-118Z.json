@@ -1,0 +1,93 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:09:24.118Z",
+  "results": [
+    {
+      "ean": "3838782623042",
+      "file": "3838782623042.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-3838782623042",
+        "product_id": "3838782623042",
+        "ean": "3838782623042",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:09:24.116Z",
+        "copy": {
+          "npr_heading": "ASKO Style 86cm XXL 16 Place Fully Integrated Dishwasher – Grey",
+          "npr_short_copy": "When a full load leaves no room for large cookware, this dishwasher’s XXL tub fits 16 place settings and larger items in one cycle. Auto dosing, 16 wash programs, Turbo Combi Drying and floor projection help take care of washing, drying and status checks.",
+          "npr_long_copy": "Large cookware can be awkward to fit when a dishwasher is packed with plates and cutlery. This fully integrated ASKO dishwasher has an XXL tub with space for 16 place settings, so you can load family-sized meals and larger items without needing multiple cycles. Its cabinetry-matched design keeps the kitchen looking consistent.\n\nSensi Clean™ Sensor detects how dirty the load is, helping this dishwasher adjust the wash to what’s inside. Auto dosing releases detergent for each cycle, so you won’t need to measure it before starting. With 16 wash programs, including Super Cleaning System™, Intensive, Speed, Night and Green modes, you can choose a cycle for the load in front of you.\n\nTouch controls and an LED display make settings easy to select, while floor projection uses three colours to show cycle progress and status. Delay Start lets you schedule washing around dinner, work or bedtime. Turbo Combi Drying helps dry the load, and Door Pop-Out opens the door automatically to remove steam after washing. A child lock, water safety system and extra-deep knife holder add useful protection during everyday use.\n\nThe cutlery basket gives loose utensils a dedicated place, while the XXL format helps accommodate larger cookware. This dishwasher uses 10.6L per wash and has a 6-star WELS water rating. It measures 596mm wide, 859mm high and 554mm deep, with a 2-year warranty. After dinner, you can load plates, pans and cutlery, select a programme and leave the kitchen ready for tomorrow.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 11702,
+        "usage": {
+          "inputTokens": 4922,
+          "outputTokens": 423,
+          "costUsd": 0.00247
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 63,
+          "shortWords": 44,
+          "shortChars": 255,
+          "longWords": 243,
+          "longChars": 1495,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "document",
+            "id": "9rseAgGjP5HRDPUQVtwFBw",
+            "ok": false,
+            "reason": "unsupported_type:jpg",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 0
+          },
+          {
+            "kind": "brochure",
+            "id": "7NlMKoITXRwiwtEgLXarWM",
+            "ok": true,
+            "reason": null,
+            "pages": 3,
+            "bytes": 403138,
+            "chars": 3811,
+            "ms": 3838
+          },
+          {
+            "kind": "document",
+            "id": "uuPQ7tHt3HT39FO12dA6nw",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 6891326,
+            "chars": 846,
+            "ms": 6322
+          },
+          {
+            "kind": "user manual",
+            "id": "3mF8OAMTf2HXKq4Q8gZX1M",
+            "ok": false,
+            "reason": "timeout",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 8003
+          }
+        ]
+      },
+      "knownIssues": []
+    }
+  ]
+}

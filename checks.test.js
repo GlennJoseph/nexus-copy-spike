@@ -299,3 +299,28 @@ test("findRetailerSources flags retailer hostnames only", () => {
   const urls = ["https://www.haier.com.au/x", "https://www.binglee.com.au/p/1", "https://winnings.com.au/y", "not a url"];
   assert.deepStrictEqual(findRetailerSources(urls).sort(), ["winnings.com.au", "www.binglee.com.au"]);
 });
+
+
+// ---- Terms that come only from the documents ----------------------------
+test("a term found only in the documents (an app name) is flagged", () => {
+  const long = LG.copy.npr_long_copy + " Control it from the ConnectLife app.";
+  const r = run(LG, { npr_long_copy: long }, { sourceText: JSON.stringify(LG.product), documentText: "Use the ConnectLife app to control the oven. Wi-Fi setup." });
+  assert.ok(names(r.errors).includes("doc_only_term"));
+  assert.ok(r.errors.find((e) => e.check === "doc_only_term").message.includes("ConnectLife"));
+});
+
+test("the same term is fine when the product data uses it", () => {
+  const long = LG.copy.npr_long_copy + " Control it from the ConnectLife app.";
+  const r = run(LG, { npr_long_copy: long }, { sourceText: JSON.stringify({ ...LG.product, webCopy: "ConnectLife app" }), documentText: "Use the ConnectLife app." });
+  assert.ok(!names(r.errors).includes("doc_only_term"));
+});
+
+test("no documents, no document-term check", () => {
+  const long = LG.copy.npr_long_copy + " Control it from the ConnectLife app.";
+  assert.ok(!names(run(LG, { npr_long_copy: long }, { sourceText: JSON.stringify(LG.product) }).errors).includes("doc_only_term"));
+});
+
+test("ordinary sentence-start capitals and months are not flagged", () => {
+  const r = run(LG, {}, { sourceText: JSON.stringify(LG.product), documentText: "Dust bins. Finished in November. Washable filters. Australian standards." });
+  assert.ok(!names(r.errors).includes("doc_only_term"));
+});

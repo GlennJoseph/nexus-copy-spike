@@ -1,0 +1,95 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:14:54.528Z",
+  "results": [
+    {
+      "ean": "3838782623042",
+      "file": "3838782623042.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-3838782623042",
+        "product_id": "3838782623042",
+        "ean": "3838782623042",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:14:54.526Z",
+        "copy": {
+          "npr_heading": "ASKO Style 86cm XXL 16pl Fully Integrated Dishwasher – Grey",
+          "npr_short_copy": "When a full load of dishes leaves no room for bulky cookware, this dishwasher fits 16 place settings in its XXL tub. Auto dosing, 16 wash programs, Wi-Fi control and automatic door opening help tackle busy kitchen clean-ups, while floor projection shows cycle progress at a glance.",
+          "npr_long_copy": "Bulky pots and a full dinner load can make one dishwasher cycle feel like a juggling act. This fully integrated ASKO dishwasher gives you an XXL tub with room for 16 place settings, so cookware and cutlery can go in together instead of waiting on the bench. Its cabinetry-matched design keeps the kitchen looking streamlined.\n\nWhen dishes carry different levels of mess, 16 wash programs let you choose a cycle for the load in front of you. The Super Cleaning System tackles tougher messes in one step, while the Sensi Clean sensor detects how dirty the dishes are. Auto dosing adds detergent as needed, so you won't need to measure it for every wash.\n\nTouch controls and an LED display make selecting a cycle straightforward, while Wi-Fi connectivity lets you monitor and control this dishwasher from a smartphone or tablet through the ConnectLife app. Floor projection uses three colours to show cycle progress and status without opening the door. Turbo Combi Drying and automatic door opening help move steam out after washing. The water safety system and child lock add protection during everyday use.\n\nThis dishwasher uses 10.6L per wash and has a 6-star WELS water rating. Its 5-star energy rating and 41dBA noise level suit open-plan kitchens where meals, conversation and clean-up happen together. The 596mm-wide unit includes a cutlery basket and carries a two-year warranty. After a family dinner, you can load plates, pans and cutlery together, press start, and check the projected status from across the kitchen.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 18862,
+        "usage": {
+          "inputTokens": 8197,
+          "outputTokens": 422,
+          "costUsd": 0.0041
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 59,
+          "shortWords": 47,
+          "shortChars": 281,
+          "longWords": 250,
+          "longChars": 1524,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "document",
+            "id": "9rseAgGjP5HRDPUQVtwFBw",
+            "ok": false,
+            "reason": "unsupported_type:jpg",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 0
+          },
+          {
+            "kind": "brochure",
+            "id": "7NlMKoITXRwiwtEgLXarWM",
+            "ok": true,
+            "reason": null,
+            "pages": 3,
+            "bytes": 403138,
+            "chars": 3811,
+            "ms": 3158
+          },
+          {
+            "kind": "document",
+            "id": "uuPQ7tHt3HT39FO12dA6nw",
+            "ok": false,
+            "reason": "timeout",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 15008
+          },
+          {
+            "kind": "user manual",
+            "id": "3mF8OAMTf2HXKq4Q8gZX1M",
+            "ok": true,
+            "reason": null,
+            "pages": 50,
+            "bytes": 3258647,
+            "chars": 67766,
+            "ms": 4693
+          }
+        ]
+      },
+      "knownIssues": []
+    }
+  ]
+}

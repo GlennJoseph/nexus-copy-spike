@@ -1,0 +1,54 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:37:07.563Z",
+  "results": [
+    {
+      "ean": "7333394138015",
+      "file": "7333394138015.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-7333394138015",
+        "product_id": "7333394138015",
+        "ean": "7333394138015",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:37:07.561Z",
+        "copy": {
+          "npr_heading": "AEG 10kg Front Load Washing Machine, 9000 Series – White",
+          "npr_short_copy": "Laundry day can mean sorting mixed loads, measuring detergent and guessing the right settings. This 10kg front load washing machine uses AutoDose, PreciseWash and PowerCare to adjust cleaning for each load, while steam, Hygiene options and Woolmark Green certification help care for everyday garments.",
+          "npr_long_copy": "A full laundry basket can leave you deciding which loads need delicate care and how much detergent to use. This 10kg front load washing machine takes care of those choices with AutoDose and PreciseWash, making it suitable for large families, growing households and busy professionals managing regular mixed loads.\n\nPowerCare premixes detergent before it reaches clothes, helping distribute cleaning throughout each wash. PreciseWash detects the load weight and adjusts energy use and settings, so a smaller wash doesn't need the same approach as a full 10kg load. The 1600rpm maximum spin speed helps remove water before clothes reach the dryer or clothesline.\n\nSteam and Hygiene options give everyday washing more ways to care for clothes, while Woolmark Green certification supports washing woollens with the right level of care. Delicate, Wool, Cotton, Cottons Eco, rinse and 20-minute 3kg programs let you select a cycle for the load in front of you. The LCD, electronic rotary control and touchscreen make cycle selection clear, while the 52dBA noise level helps keep washing manageable around the home.\n\nThis washer has a 5-star energy rating and a 4.5-star WELS water rating, helping households consider energy and water use during regular washing. Its stainless steel CareDrum, variable spin speed, Add Clothes function, anti-crease option and child lock support different routines, from adding a forgotten shirt to washing delicate garments. Covered by a 5-year warranty, it brings a 10kg load to a busy household's laundry routine, with school clothes, workwear and towels ready for one organised wash.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 3900,
+        "usage": {
+          "inputTokens": 3429,
+          "outputTokens": 435,
+          "costUsd": 0.00179
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 56,
+          "shortWords": 44,
+          "shortChars": 301,
+          "longWords": 250,
+          "longChars": 1612,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": []
+    }
+  ]
+}

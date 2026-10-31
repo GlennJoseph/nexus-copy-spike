@@ -1,0 +1,54 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:37:48.939Z",
+  "results": [
+    {
+      "ean": "9343415008133",
+      "file": "9343415008133.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9343415008133",
+        "product_id": "9343415008133",
+        "ean": "9343415008133",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:37:48.937Z",
+        "copy": {
+          "npr_heading": "Schweigen Silent Undermount Rangehood – Black Steel",
+          "npr_short_copy": "Cooking smells and steam can linger after dinner, especially in a busy kitchen. This 118cm ducted rangehood uses an external Isodrive® SE motor, five fan speeds and a 15-minute auto shut-off timer to clear air while staying discreetly mounted in cabinetry. Soft-touch controls and dishwasher-safe filters make daily use easier.",
+          "npr_long_copy": "Steam and cooking smells can hang around long after the pans are off the stove. This 118cm ducted undermount rangehood keeps extraction tucked into 300mm-deep cabinetry, making it a useful choice when overhead space is limited or you want a cleaner view across the kitchen. Its matte Black Steel finish adds a bold look without leaving this appliance on display.\n\nHigh-heat stir-fries, multi-burner meals and dinner with friends can all call for different airflow. The external Isodrive® SE motor and five speed levels let you match extraction to what’s happening on the cooktop, while the powerful silent extraction helps keep the kitchen atmosphere calmer during cooking. Ducted extraction carries air away rather than recirculating it.\n\nSoft-touch controls and a digital display make it easy to select a setting, while LED lighting helps illuminate the cooking area. When dinner’s finished, the 15-minute auto shut-off timer lets this rangehood keep running as you clear the bench instead of requiring another trip back to the controls. Black mesh stainless steel filters are dishwasher safe, so regular cleaning fits more easily around busy meals.\n\nSchweigen SteelFlex™ is included to support the installation, and the rangehood has a 10-year motor warranty, five-year canopy warranty, lifetime filter warranty and lifetime GU10 LED globe warranty. At 1180mm wide, this rangehood suits broad cooktops and island kitchens where cabinetry needs to look cohesive. It’s there when a simmering pot fills the room, then stays discreet once cooking is done.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 3659,
+        "usage": {
+          "inputTokens": 3229,
+          "outputTokens": 427,
+          "costUsd": 0.00164
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "vague_benefit"
+        ],
+        "stats": {
+          "headingChars": 51,
+          "shortWords": 50,
+          "shortChars": 327,
+          "longWords": 241,
+          "longChars": 1554,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": []
+    }
+  ]
+}

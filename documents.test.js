@@ -49,12 +49,23 @@ test("collectAttachments gathers all four arrays, skips deleted and duplicates",
 test("URL rules: https only, allowlisted host only", () => {
   const o = { hosts: ["retailpath.com.au"], allowHttp: false };
   assert.ok(checkUrl("https://nartastaging.retailpath.com.au/NARTAStaging/ra/NPRFile/abc/nprFile.pdf", o).ok);
-  assert.strictEqual(checkUrl("http://nartastaging.retailpath.com.au/x.pdf", o).reason, "not_https");
+  assert.strictEqual(checkUrl("http://nartastaging.retailpath.com.au/x.pdf", o).reason, "not_https", "no upgrade unless switched on");
   assert.strictEqual(checkUrl("https://evil.com/x.pdf", o).reason, "host_not_allowed");
   assert.strictEqual(checkUrl("https://retailpath.com.au.evil.com/x.pdf", o).reason, "host_not_allowed");
   assert.strictEqual(checkUrl("https://169.254.169.254/x.pdf", o).reason, "host_not_allowed");
   assert.strictEqual(checkUrl("http://127.0.0.1:10225/x", o).reason, "not_https");
   assert.strictEqual(checkUrl("not a url", o).reason, "bad_url");
+});
+
+test("http links on an allowlisted host are upgraded to https; others are refused", () => {
+  const o = { hosts: ["retailpath.com.au"], allowHttp: false, upgradeHttp: true };
+  const r = checkUrl("http://nartastaging.retailpath.com.au/NARTAStaging/ra/NPRFile/abc/nprFile.pdf", o);
+  assert.ok(r.ok && r.upgraded);
+  assert.strictEqual(r.url.protocol, "https:");
+  assert.strictEqual(r.url.hostname, "nartastaging.retailpath.com.au");
+  assert.strictEqual(checkUrl("http://evil.com/x.pdf", o).reason, "not_https");
+  assert.strictEqual(checkUrl("http://127.0.0.1:10225/x.pdf", o).reason, "not_https");
+  assert.strictEqual(checkUrl("http://retailpath.com.au.evil.com/x.pdf", o).reason, "not_https");
 });
 
 test("extension comes from the end of the path", () => {
@@ -104,6 +115,15 @@ test("bad documents are skipped with a reason, never thrown", async () => {
 test("a non-PDF extension is skipped without downloading", async () => {
   const r = await retrieveDocuments(prod(`${base}/manual.docx`), OPTS);
   assert.strictEqual(r.report[0].reason, "unsupported_type:docx");
+});
+
+test("images and Word files are skipped for free, and do not use up the allowance", async () => {
+  const raw = { productbrochures: [1, 2, 3, 4].map((n) => ({ id: "i" + n, uri: `${base}/photo${n}.png` })), productdocuments: [{ id: "d", uri: `${base}/doc.docx` }, { id: "p", uri: `${base}/a/nprFile.pdf` }] };
+  const r = await retrieveDocuments(raw, OPTS);
+  assert.strictEqual(r.used, 1, "the PDF is still read");
+  assert.strictEqual(r.found, 6);
+  const reasons = r.report.filter((x) => !x.ok).map((x) => x.reason).sort();
+  assert.deepStrictEqual(reasons, ["unsupported_type:docx", "unsupported_type:png", "unsupported_type:png", "unsupported_type:png", "unsupported_type:png"]);
 });
 
 test("a slow document hits the time limit and the others still come back", async () => {

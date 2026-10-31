@@ -1,0 +1,54 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:02:37.202Z",
+  "results": [
+    {
+      "ean": "3838782623042",
+      "file": "3838782623042.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-3838782623042",
+        "product_id": "3838782623042",
+        "ean": "3838782623042",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:02:37.200Z",
+        "copy": {
+          "npr_heading": "ASKO Style 86cm XXL 16 Place Fully Integrated Dishwasher – Grey",
+          "npr_short_copy": "A full load of cookware can mean running multiple cycles. This ASKO dishwasher fits 16 place settings in its XXL tub, with 16 programs, auto dosing and a Super Cleaning System™ for tackling tough messes. Floor projection shows cycle progress, while Door Pop-Out helps release steam.",
+          "npr_long_copy": "Large cookware and a full family load can leave a standard dishwasher feeling cramped. This ASKO fully integrated dishwasher has an XXL tub for 16 place settings, giving you room for different sizes of cookware and cutlery in one load. Its grey finish sits behind your cabinetry for a streamlined kitchen look.\n\nWhen dishes need more than a quick rinse, 16 wash programs give you options for different loads. The Super Cleaning System™ tackles tough messes in one step, so you can start a cycle without adding a separate cleaning stage. Auto dosing adds detergent for you, while the Sensi Clean™ sensor helps the dishwasher adjust the wash to the load.\n\nTouch controls and an LED display keep cycle selection clear at the kitchen bench. Floor projection uses three colours to show cycle progress and status, so you can check what’s happening without opening the door. Turbo Combi Drying helps finish the load, and the 41dBA noise level keeps washing quieter during everyday kitchen use. Delay Start lets you schedule a cycle, while Wi-Fi connectivity adds control through your connected home.\n\nThis dishwasher uses 10.6L per wash and has a 6-star WELS water rating, plus a 5-star energy rating. A cutlery basket helps keep smaller items together, while the extra-deep knife holder keeps blades steady during the wash. Child Lock and the Water Safety System add useful protection around family use. Door Pop-Out opens the door automatically to release steam, and the two-year warranty supports regular use in a busy kitchen.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 3549,
+        "usage": {
+          "inputTokens": 3257,
+          "outputTokens": 417,
+          "costUsd": 0.00365
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 63,
+          "shortWords": 46,
+          "shortChars": 282,
+          "longWords": 251,
+          "longChars": 1523,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": []
+    }
+  ]
+}

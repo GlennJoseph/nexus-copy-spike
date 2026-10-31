@@ -1,0 +1,73 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:10:39.078Z",
+  "results": [
+    {
+      "ean": "3838783091253",
+      "file": "3838783091253.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-3838783091253",
+        "product_id": "3838783091253",
+        "ean": "3838783091253",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:10:39.076Z",
+        "copy": {
+          "npr_heading": "ASKO Essence 60cm Pyrolytic Oven – Black Glass",
+          "npr_short_copy": "When weekday meals and weekend baking call for different cooking methods, changing appliances can slow you down. This 50L combined microwave oven brings together microwave, fan-forced oven and grill functions, with auto programmes, Air Fry, ConnectLife control and pyrolytic cleaning.",
+          "npr_long_copy": "Cooking a roast, grilling dinner and reheating leftovers can mean switching between appliances and settings. This 50L combined microwave oven brings microwave, fan-forced oven and grill functions into one built-in design, giving you more ways to prepare meals in one place. Its black glass finish also creates a consistent look in a contemporary kitchen.\n\nPrecise temperature control and a calibrating system help keep heat consistent while you bake, roast or grill. Air Fry adds another way to prepare food, while auto programmes help you select a suitable cooking option when you’re getting dinner started. The multi-functional tray supports different everyday recipes, from baking to reheating.\n\nA 3-inch TFT display gives you a clear place to choose cooking functions and settings. ConnectLife lets you monitor and control this oven from your phone when it’s connected to the associated app, so you can check on cooking while preparing other parts of a meal. Oven illumination on both sides and at different heights helps you see food across the cavity, while active cooling helps manage the oven and door glass during use.\n\nAfter cooking, pyrolytic cleaning heats residue until it turns to ash, so you can wipe away the remains rather than scrubbing baked-on food. Telescopic runners help you access trays, and included accessories cover grilling and baking tasks: a grill rack, glass tray and middle baking pan. With a 594mm width, 455mm height and 564mm depth, this black glass oven suits built-in kitchen layouts where one appliance needs to handle reheating, baking and grilling.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 9485,
+        "usage": {
+          "inputTokens": 8268,
+          "outputTokens": 413,
+          "costUsd": 0.00409
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 46,
+          "shortWords": 40,
+          "shortChars": 284,
+          "longWords": 252,
+          "longChars": 1588,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "brochure",
+            "id": "qbMCHva8vE0tW4neS1yahw",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 1047540,
+            "chars": 1814,
+            "ms": 5480
+          },
+          {
+            "kind": "user manual",
+            "id": "55W4M9CyIXUYbkrtksm1rw",
+            "ok": true,
+            "reason": null,
+            "pages": 57,
+            "bytes": 1412100,
+            "chars": 68280,
+            "ms": 3945
+          }
+        ]
+      },
+      "knownIssues": []
+    }
+  ]
+}

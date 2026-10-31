@@ -278,6 +278,45 @@ function opensWithProduct(text, heading, brand = "") {
 }
 
 // ---------------------------------------------------------------------
+// Terms that come only from the attached documents
+// ---------------------------------------------------------------------
+// Documents are for disclaimer footnotes only. If the copy uses a capitalised or
+// CamelCase term (an app name, a feature name) that is in the documents but not
+// in the product data, it was taken from a document. Manuals often cover several
+// models, so this matters.
+const DOC_TERM_SKIP = new Set([
+  "australia", "australian", "zealand", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+  "january", "february", "march", "april", "june", "july", "august", "september", "october", "november", "december",
+]);
+
+function docOnlyTerms(text, srcNorm, docNorm) {
+  const srcWords = new Set(srcNorm.split(" "));
+  const docWords = new Set(docNorm.split(" "));
+  const found = new Set();
+  const re = /[A-Za-z][A-Za-z0-9]*/g;
+  let m;
+  while ((m = re.exec(text))) {
+    const w = m[0];
+    if (w.length < 4) continue;
+    const camel = /[a-z][A-Z]/.test(w);
+    const capital = /^[A-Z]/.test(w);
+    if (!camel && !capital) continue;
+    if (!camel) {
+      // a plain capital at the start of a sentence is not a name
+      const before = text.slice(0, m.index).replace(/[ \t"'(\u2018\u201C]+$/, "");
+      if (!before || /[.!?:\n]$/.test(before)) continue;
+    }
+    const t = w.toLowerCase();
+    const base = t.replace(/s$/, "");
+    if (DOC_TERM_SKIP.has(t)) continue;
+    if (srcWords.has(t) || srcWords.has(base)) continue;
+    if (docWords.has(t) || docWords.has(base)) found.add(w);
+  }
+  return [...found];
+}
+
+
+// ---------------------------------------------------------------------
 // The rules
 // ---------------------------------------------------------------------
 // copy      = the parsed JSON object from the model
@@ -472,6 +511,15 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
       "health_claim",
       `The copy uses health-benefit wording (${healthHits.join(", ")}) that the product data does not use. Describe the everyday situation (long hours at a desk, cold evenings, holding a heat pack in place) and comfort, never pain, tension, muscles or relief.`
     );
+  }
+  if (docNorm) {
+    const terms = docOnlyTerms([heading, short, long].join("\n"), normText(sourceText), docNorm);
+    if (terms.length) {
+      err(
+        "doc_only_term",
+        `The copy uses ${terms.join(", ")}, which appears only in an attached document and not in the product data. Documents are for disclaimer footnotes only. Remove it and use only what the product data says.`
+      );
+    }
   }
   if (BIG_ML.test(all)) {
     warn("unit_ml", "A capacity of 1,000 ml or more should be written in litres, for example 2.5L.");

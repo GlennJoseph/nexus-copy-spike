@@ -1,0 +1,54 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:38:05.183Z",
+  "results": [
+    {
+      "ean": "9415112630013",
+      "file": "9415112630013.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9415112630013",
+        "product_id": "9415112630013",
+        "ean": "9415112630013",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:38:05.181Z",
+        "copy": {
+          "npr_heading": "Haier 60cm 500 Series Freestanding Cooker – Stainless Steel",
+          "npr_short_copy": "Cooking separate dishes for a full table can mean juggling limited space. This cooker combines four ceramic cook zones with an 88L oven and 11 functions, including Air Fry and steam-assisted cooking, so you'll have room for weeknight meals and weekend feasts.",
+          "npr_long_copy": "Preparing a family meal can mean moving between benchtop appliances and a crowded cooktop. This freestanding cooker brings four ceramic cook zones and an 88L oven into one compact 60cm appliance, giving you space to cook dinner, bake and entertain without spreading equipment across the kitchen.\n\nEleven oven functions cover everyday meals and bigger cooking jobs. Air Fry helps you prepare dishes using the included air fry tray, while fan bake, grill and steam-assisted cooking give you different ways to handle roasting, baking and finishing food. Steam-assisted cooking can help when you're preparing dishes that benefit from added moisture.\n\nDial controls make it straightforward to select a setting, while the oven clock and timer help you keep track of cooking when you're preparing several dishes. A rear internal light lets you check food through the clear glass door, and the cooling fan helps manage heat after use. The four cook zones provide 1200W and 1800W settings for different saucepan sizes.\n\nAfter dinner, Hydro Clean and the removable oven door help with cleaning around the cavity and glass. This includes an air fry tray, baking tray, grill insert and wire shelf, plus a storage drawer for keeping cookware close at hand. The stainless steel finish can be paired with a matching Haier 60cm rangehood, and the cooker comes with a two-year warranty. It's a practical fit for a compact kitchen where a roast can cook below while sauce simmers on the ceramic cooktop.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 3529,
+        "usage": {
+          "inputTokens": 3236,
+          "outputTokens": 400,
+          "costUsd": 0.00156
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "vague_benefit"
+        ],
+        "stats": {
+          "headingChars": 59,
+          "shortWords": 42,
+          "shortChars": 259,
+          "longWords": 242,
+          "longChars": 1485,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": []
+    }
+  ]
+}

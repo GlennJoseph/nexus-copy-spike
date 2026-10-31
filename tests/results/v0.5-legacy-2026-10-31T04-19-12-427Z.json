@@ -1,0 +1,95 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:19:12.427Z",
+  "results": [
+    {
+      "ean": "3838782623042",
+      "file": "3838782623042.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-3838782623042",
+        "product_id": "3838782623042",
+        "ean": "3838782623042",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:19:12.425Z",
+        "copy": {
+          "npr_heading": "ASKO Style 86cm XXL 16 Place Fully Integrated Dishwasher – Grey",
+          "npr_short_copy": "When dishes pile up after a busy day, running another load takes extra time. This ASKO dishwasher fits 16 place settings, uses auto dosing and offers 16 wash programs, while floor projection shows cycle progress and automatic door opening helps release steam.",
+          "npr_long_copy": "Large cookware and a full family load can be difficult to fit into one wash. This ASKO dishwasher has an XXL tub with space for 16 place settings, so you can load more dishes, pots and cutlery before starting a cycle. Its fully integrated design sits behind your cabinetry for a coordinated kitchen look.\n\nChoosing the right wash is easier with 16 programs, including Super Cleaning System for tackling tougher messes in one step. Sensi Clean sensors detect how dirty the load is, while auto dosing adds detergent for you. Turbo Combi Drying helps handle the drying stage, so dishes are ready to put away after the cycle.\n\nTouch controls and an LED display keep settings clear, while Wi-Fi connectivity lets you monitor and control this dishwasher from a smartphone or tablet using the ConnectLife app. Floor projection uses three colours to show cycle progress and status on the floor, so you can check the load without opening the door. Delay start lets you schedule washing around your routine, and the child lock helps stop unwanted starts.\n\nThis dishwasher uses 10.6L of water per wash and has a 6-star WELS water rating. Its cutlery basket and extra-deep knife holder help keep utensils organised during washing, while the water safety system helps manage overflow. At 596mm wide, 859mm high and 554mm deep, it suits compatible cabinetry and comes with a two-year warranty. Picture loading plates, cookware and cutlery after dinner, then checking the projected status light as you leave the kitchen.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 9521,
+        "usage": {
+          "inputTokens": 8725,
+          "outputTokens": 410,
+          "costUsd": 0.00434
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 63,
+          "shortWords": 42,
+          "shortChars": 259,
+          "longWords": 250,
+          "longChars": 1505,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "document",
+            "id": "9rseAgGjP5HRDPUQVtwFBw",
+            "ok": false,
+            "reason": "unsupported_type:jpg",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 0
+          },
+          {
+            "kind": "brochure",
+            "id": "7NlMKoITXRwiwtEgLXarWM",
+            "ok": true,
+            "reason": null,
+            "pages": 3,
+            "bytes": 403138,
+            "chars": 3811,
+            "ms": 3044
+          },
+          {
+            "kind": "document",
+            "id": "uuPQ7tHt3HT39FO12dA6nw",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 6891326,
+            "chars": 846,
+            "ms": 5914
+          },
+          {
+            "kind": "user manual",
+            "id": "3mF8OAMTf2HXKq4Q8gZX1M",
+            "ok": true,
+            "reason": null,
+            "pages": 50,
+            "bytes": 3258647,
+            "chars": 67766,
+            "ms": 4151
+          }
+        ]
+      },
+      "knownIssues": []
+    }
+  ]
+}

@@ -31,7 +31,10 @@ const DEFAULTS = {
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean),
   allowHttp: String(process.env.DOC_ALLOW_HTTP || "").toLowerCase() === "on",
-  maxDocs: Number(process.env.DOC_MAX_DOCS) || 4,
+  // Nexus sends attachment links as http://. For allowlisted hosts we try https instead.
+  // Set DOC_UPGRADE_HTTP=off to refuse http links outright.
+  upgradeHttp: String(process.env.DOC_UPGRADE_HTTP || "on").toLowerCase() !== "off",
+  maxDocs: Number(process.env.DOC_MAX_DOCS) || 6,
   maxBytes: Number(process.env.DOC_MAX_BYTES) || 10 * 1024 * 1024, // 10 MB, as in the proposal
   maxRedirects: 2,
   docTimeoutMs: Number(process.env.DOC_TIMEOUT_MS) || 8000, // one document
@@ -71,13 +74,22 @@ function checkUrl(uri, opts) {
   } catch (e) {
     return { ok: false, reason: "bad_url" };
   }
-  if (u.protocol !== "https:" && !(opts.allowHttp && u.protocol === "http:")) {
-    return { ok: false, reason: "not_https" };
-  }
   const host = u.hostname.toLowerCase();
   const allowed = opts.hosts.some((h) => host === h || host.endsWith("." + h));
+  let upgraded = false;
+  if (u.protocol === "http:" && !opts.allowHttp) {
+    // Only an allowlisted host is upgraded. Anything else is refused as before.
+    if (opts.upgradeHttp && allowed) {
+      u.protocol = "https:";
+      upgraded = true;
+    } else {
+      return { ok: false, reason: "not_https" };
+    }
+  } else if (u.protocol !== "https:" && !(opts.allowHttp && u.protocol === "http:")) {
+    return { ok: false, reason: "not_https" };
+  }
   if (!allowed) return { ok: false, reason: "host_not_allowed" };
-  return { ok: true, url: u };
+  return { ok: true, url: u, upgraded };
 }
 
 // The file type comes from the extension at the end of the path.
@@ -240,20 +252,48 @@ async function retrieveDocuments(raw, options = {}) {
   const log = options.log || { info() {}, warn() {} };
   const started = Date.now();
   const deadline = started + opts.budgetMs;
-  const items = collectAttachments(raw).slice(0, opts.maxDocs);
+  // Files with a known non-PDF extension (png, jpg, tiff, doc, docx...) are skipped
+  // without being downloaded, and they do not use up the document allowance.
+  const everything = collectAttachments(raw);
+  const skippedByType = [];
+  const usable = [];
+  for (const it of everything) {
+    const chk = checkUrl(it.uri, opts);
+    const ext = chk.ok ? extensionOf(chk.url) : "";
+    if (chk.ok && ext && ext !== "pdf") {
+      skippedByType.push({ kind: it.kind, id: it.id, ok: false, reason: `unsupported_type:${ext}`, pages: 0, bytes: 0, chars: 0, ms: 0 });
+    } else {
+      usable.push(it);
+    }
+  }
+  const items = usable.slice(0, opts.maxDocs);
 
+  // Download plus reading one PDF must finish inside the stage limit, so a heavy
+  // PDF cannot hold up the copy. Downloads have their own (shorter) deadline.
+  const stageMs = opts.budgetMs + (opts.parseExtraMs != null ? opts.parseExtraMs : 8000);
   const results = await Promise.all(
     items.map(async (it) => {
       const t0 = Date.now();
       const base = { kind: it.kind, id: it.id };
+      let timer;
       try {
-        const buf = await download(it.uri, opts, deadline);
-        const { text, pages } = await pdfToText(buf, opts);
+        const work = (async () => {
+          const buf = await download(it.uri, opts, deadline);
+          const { text, pages } = await pdfToText(buf, opts);
+          return { buf, text, pages };
+        })();
+        work.catch(() => {}); // a late failure after the stage limit must not crash the process
+        const limit = new Promise((_, rej) => {
+          timer = setTimeout(() => rej(Object.assign(new Error("timeout"), { reason: "timeout" })), stageMs);
+        });
+        const { buf, text, pages } = await Promise.race([work, limit]);
         return { ...base, ok: true, pages, bytes: buf.length, chars: text.length, ms: Date.now() - t0, text };
       } catch (e) {
         const reason = e.reason || "error";
         log.warn({ kind: it.kind, id: it.id, reason }, "document skipped");
         return { ...base, ok: false, reason, ms: Date.now() - t0 };
+      } finally {
+        clearTimeout(timer);
       }
     })
   );
@@ -268,7 +308,7 @@ async function retrieveDocuments(raw, options = {}) {
     parts.push(`[Document ${parts.length + 1}: ${r.kind}, ${r.pages} page(s)]\n${body}`);
   }
 
-  const report = results.map((r) => ({
+  const report = skippedByType.concat(results.map((r) => ({
     kind: r.kind,
     id: r.id,
     ok: r.ok,
@@ -277,8 +317,8 @@ async function retrieveDocuments(raw, options = {}) {
     bytes: r.bytes || 0,
     chars: r.chars || 0,
     ms: r.ms,
-  }));
-  return { text: parts.join("\n\n"), report, found: items.length, used: parts.length, ms: Date.now() - started };
+  })));
+  return { text: parts.join("\n\n"), report, found: everything.length, used: parts.length, ms: Date.now() - started };
 }
 
 module.exports = { DOCS_ENABLED, collectAttachments, retrieveDocuments, checkUrl, extensionOf };

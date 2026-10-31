@@ -50,7 +50,8 @@ function buildUserPrompt(product, docText = "") {
   if (docText) {
     p +=
       "\n\nDISCLAIMER SOURCES (documents attached to this product in Nexus. " +
-      "Use them only to find footnotes for disclaimers, never as a source of new product claims):\n\n" +
+      "Use them ONLY to find footnotes for the disclaimers field. Do not take any feature, name, app, accessory, number or claim from them into the copy. " +
+      "Every statement about the product must come from the product data above. A document may describe several models, so it can mention things this product does not have):\n\n" +
       docText;
   }
   return p;
@@ -71,7 +72,7 @@ const DISCLAIMER_CHECKS = new Set([
 // Style rules that matter, but not enough to fail the whole request. The model
 // gets one retry. If one of these is still broken, the copy goes back anyway
 // (a person reviews every draft in Nexus) and the check is logged as a warning.
-const SOFT_CHECKS = new Set(["long_words_low", "opening_product_first", "same_opening", "health_claim"]);
+const SOFT_CHECKS = new Set(["long_words_low", "opening_product_first", "same_opening", "health_claim", "doc_only_term"]);
 
 function dropDisclaimers(obj) {
   return {

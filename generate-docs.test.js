@@ -75,7 +75,7 @@ const product = (uri) => ({
   brand: { name: "Haier" },
   finish: "Black",
   defaultdisplaycategory: { name: "Dryers" },
-  categoryAttributes: { "Capacity (kg)": 10 },
+  categoryAttributes: { "Capacity (kg)": 10, "Additional Features": "Allergy Care cycle" },
   productbrochures: uri ? [{ id: "h1", type: "ProductBrochure", uri }] : [],
   productdocuments: [],
   productusermanuals: [],

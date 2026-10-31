@@ -1,0 +1,54 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:37:37.861Z",
+  "results": [
+    {
+      "ean": "9319731153789",
+      "file": "9319731153789.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9319731153789",
+        "product_id": "9319731153789",
+        "ean": "9319731153789",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:37:37.859Z",
+        "copy": {
+          "npr_heading": "Zip HydroTap G5 BCSHA Home Celsius Arc All-in-One – Chrome",
+          "npr_short_copy": "Switching between drinking water and washing-up water can mean juggling separate taps and appliances. This tap delivers filtered boiling, chilled, sparkling, hot and cold water from one kitchen fitting, with a touch-screen command centre, safety mode and energy-saving settings.",
+          "npr_long_copy": "A busy kitchen can need drinking water, washing-up water and sparkling water at the same time, without room for several appliances. This tap brings filtered boiling, chilled and sparkling drinking water together with hot and cold washing-up water, so you can fill a glass, prepare a drink or rinse dishes from one fitting. It requires hot and cold water supplies.\n\nMicroPurity filtration removes particles down to 0.2 microns, giving you filtered water for everyday drinking. The air-cooled system uses water-efficient technology, while the CO2 level indicator shows when the sparkling-water supply needs attention. Two disposable CO2 cylinders are included, so you can make sparkling water at the tap.\n\nThe under-bench command centre has a full-colour interactive touch screen, giving you control over settings without reaching under the sink. Pin-code protection helps prevent unintended boiling-water use, while boiling-water safety mode adds another safeguard when children are nearby. Three energy-saving modes include on and off timers plus a two-hour sleep mode, and Quiet mode adjusts fan speed automatically when you’re using the kitchen.\n\nSteri Touch antimicrobial protection is built into key water paths, supporting cleaner water delivery during daily use. This tap has a WELS 5 rating and uses 6L per minute, with a 50mm cut-out and a 1.8kW, 220-240V, 50Hz power rating. Finished in Chrome, it comes with a five-year warranty, including 36 months for this appliance and an additional 24 months for this tank, ready for morning drinks and evening dishwashing from the same spot.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 3658,
+        "usage": {
+          "inputTokens": 3203,
+          "outputTokens": 419,
+          "costUsd": 0.00162
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 58,
+          "shortWords": 39,
+          "shortChars": 278,
+          "longWords": 245,
+          "longChars": 1590,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": []
+      },
+      "knownIssues": []
+    }
+  ]
+}

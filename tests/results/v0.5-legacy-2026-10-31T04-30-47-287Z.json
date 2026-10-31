@@ -1,0 +1,93 @@
+{
+  "promptVersion": "v0.5",
+  "mode": "legacy",
+  "ranAt": "2026-10-31T04:30:47.287Z",
+  "results": [
+    {
+      "ean": "3838782623042",
+      "file": "3838782623042.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-3838782623042",
+        "product_id": "3838782623042",
+        "ean": "3838782623042",
+        "prompt_version": "v0.5",
+        "generated_at": "2026-10-31T04:30:47.285Z",
+        "copy": {
+          "npr_heading": "ASKO Style 86cm XXL 16 Place Fully Integrated Dishwasher – Grey",
+          "npr_short_copy": "Dirty dishes can pile up after a busy meal. This ASKO dishwasher holds 16 place settings, uses auto dosing and offers 16 wash programs, while floor projection shows cycle progress and automatic door opening helps remove steam.",
+          "npr_long_copy": "Large cookware and a full day’s dishes can quickly take over the kitchen. This ASKO dishwasher handles 16 place settings in its XXL tub, so you can load more plates, cookware and cutlery in one cycle instead of running several. Its fully integrated design sits behind your cabinetry for a coordinated kitchen look.\n\nWith 16 wash programs, you can choose a cycle for different loads, while the Sensi Clean™ Sensor detects the dirtiness level to help select the wash approach. Auto dosing adds detergent for each cycle, so you won’t need to measure it every time you load this dishwasher. Turbo Combi Drying helps dry dishes after washing.\n\nTouch controls and an LED display make selecting a program straightforward. Floor projection uses three colours to show cycle progress and status, so you can check what’s happening without opening the door. Door Pop-Out opens the door automatically to remove steam, while the water safety system and child lock add useful protection for everyday household use. At 41dBA, this dishwasher won’t dominate the kitchen while it’s running.\n\nThis dishwasher uses 10.6L per wash and has a 6-star WELS water rating, plus a 5-star energy rating. The cutlery basket gives loose utensils a dedicated place, while the extra-deep knife holder keeps blades steady during the wash cycle. Measuring 596mm wide, 859mm high and 554mm deep, this grey dishwasher comes with a two-year warranty. It’s ready for a family dinner load, from serving bowls and pans to plates and cutlery.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.5",
+        "attempts": 1,
+        "durationMs": 9554,
+        "usage": {
+          "inputTokens": 8770,
+          "outputTokens": 412,
+          "costUsd": 0.00437
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 63,
+          "shortWords": 37,
+          "shortChars": 226,
+          "longWords": 246,
+          "longChars": 1500,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "document",
+            "id": "9rseAgGjP5HRDPUQVtwFBw",
+            "ok": false,
+            "reason": "unsupported_type:jpg",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 0
+          },
+          {
+            "kind": "brochure",
+            "id": "7NlMKoITXRwiwtEgLXarWM",
+            "ok": true,
+            "reason": null,
+            "pages": 3,
+            "bytes": 403138,
+            "chars": 3811,
+            "ms": 3426
+          },
+          {
+            "kind": "document",
+            "id": "uuPQ7tHt3HT39FO12dA6nw",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 6891326,
+            "chars": 846,
+            "ms": 5556
+          },
+          {
+            "kind": "user manual",
+            "id": "3mF8OAMTf2HXKq4Q8gZX1M",
+            "ok": true,
+            "reason": null,
+            "pages": 50,
+            "bytes": 3258647,
+            "chars": 67766,
+            "ms": 4675
+          }
+        ]
+      },
+      "knownIssues": []
+    }
+  ]
+}
