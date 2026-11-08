@@ -93,7 +93,7 @@ test("<sup> tag in short copy is blocked", () => {
 });
 
 test("<sup> tag in long copy with empty disclaimers is blocked", () => {
-  const long = SUNBEAM.copy.npr_long_copy.replace("in 90 seconds,", "in 90 seconds <sup>1</sup>,");
+  const long = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait <sup>1</sup>.");
   assert.ok(long.includes("<sup>1</sup>"), "test setup: tag should be in the text");
   const r = run(SUNBEAM, { npr_long_copy: long });
   assert.ok(names(r.errors).includes("orphan_sup"));
@@ -165,40 +165,53 @@ test("copy that talks about its source is blocked (v0.3 agent-mode LG run)", () 
 const DOC = "Independently tested to eliminate greater than 99.9% of staphylococcus aureus and E. coli using the Allergy Care cycle.";
 const withDisc = (longText, disclaimers, documentText = DOC) =>
   run(SUNBEAM, { npr_long_copy: longText, disclaimers }, { documentText });
-const LONG_SUP = SUNBEAM.copy.npr_long_copy.replace("in 90 seconds,", "in 90 seconds <sup>1</sup>,");
+const LONG_SUP = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait <sup>1</sup>.");
 
 test("a disclaimer copied from the document passes", () => {
-  assert.deepStrictEqual(names(withDisc(LONG_SUP, `<sup>1</sup> ${DOC}`).errors), []);
+  assert.deepStrictEqual(names(withDisc(LONG_SUP, `(1) ${DOC}`).errors), []);
 });
 
 test("a disclaimer that is not in the document is blocked", () => {
-  const r = withDisc(LONG_SUP, "<sup>1</sup> Kills every germ in the house within five minutes of use.");
+  const r = withDisc(LONG_SUP, "(1) Kills every germ in the house within five minutes of use.");
   assert.ok(names(r.errors).includes("disclaimer_untraceable"));
 });
 
 test("PDF line breaks and hyphenation do not break the match", () => {
   const messy = "Independently tested to eliminate greater\nthan 99.9% of staphylococcus aureus and E. coli\nusing the Allergy Care cycle.";
-  assert.deepStrictEqual(names(withDisc(LONG_SUP, `<sup>1</sup> ${DOC}`, messy).errors), []);
+  assert.deepStrictEqual(names(withDisc(LONG_SUP, `(1) ${DOC}`, messy).errors), []);
 });
 
 test("disclaimers with no document text are blocked", () => {
-  const r = withDisc(LONG_SUP, `<sup>1</sup> ${DOC}`, "");
+  const r = withDisc(LONG_SUP, `(1) ${DOC}`, "");
   assert.ok(names(r.errors).includes("disclaimer_no_source"));
 });
 
 test("sup numbers must match the numbered disclaimers", () => {
-  const r = withDisc(LONG_SUP, `<sup>1</sup> ${DOC}\n<sup>2</sup> ${DOC}`);
+  const r = withDisc(LONG_SUP, `(1) ${DOC}\n(2) ${DOC}`);
   assert.ok(names(r.errors).includes("sup_mismatch"));
 });
 
-test("disclaimers must be numbered in order and in the <sup> form", () => {
-  assert.ok(names(withDisc(LONG_SUP, `<sup>2</sup> ${DOC}`).errors).includes("disclaimer_numbering"));
-  assert.ok(names(withDisc(LONG_SUP, `(1) ${DOC}`).errors).includes("disclaimer_format"));
+test("disclaimers must be numbered in order and in the (1) form", () => {
+  assert.ok(names(withDisc(LONG_SUP, `(2) ${DOC}`).errors).includes("disclaimer_numbering"));
+  assert.ok(names(withDisc(LONG_SUP, `1. ${DOC}`).errors).includes("disclaimer_format"));
+});
+
+test("<sup> tags inside the disclaimers block are blocked", () => {
+  assert.ok(names(withDisc(LONG_SUP, `<sup>1</sup> ${DOC}`).errors).includes("disclaimer_format"));
+  assert.ok(names(withDisc(LONG_SUP, `(1) <sup>1</sup> ${DOC}`).errors).includes("disclaimer_format"));
+});
+
+test("a <sup> tag goes at the end of the sentence, before the full stop", () => {
+  const mid = SUNBEAM.copy.npr_long_copy.replace("in 90 seconds,", "in 90 seconds <sup>1</sup>,");
+  assert.ok(names(withDisc(mid, `(1) ${DOC}`).errors).includes("sup_position"));
+  const after = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait. <sup>1</sup>");
+  assert.ok(names(withDisc(after, `(1) ${DOC}`).errors).includes("sup_position"));
+  assert.ok(!names(withDisc(LONG_SUP, `(1) ${DOC}`).errors).includes("sup_position"));
 });
 
 test("a <sup> tag needs a space before it", () => {
-  const tight = SUNBEAM.copy.npr_long_copy.replace("in 90 seconds,", "in 90 seconds<sup>1</sup>,");
-  assert.ok(names(withDisc(tight, `<sup>1</sup> ${DOC}`).errors).includes("sup_spacing"));
+  const tight = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait<sup>1</sup>.");
+  assert.ok(names(withDisc(tight, `(1) ${DOC}`).errors).includes("sup_spacing"));
 });
 
 // ---- MM feedback, 29 Oct 2026 --------------------------------------------

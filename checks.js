@@ -215,15 +215,19 @@ function isTraceable(disclaimer, docNorm) {
   return total > 0 && hit / total >= 0.85;
 }
 
-// "<sup>1</sup> Footnote text" lines. Returns { entries, problems }.
+// "(1) Footnote text" lines (NPR format). Returns { entries, problems }.
 function parseDisclaimers(text) {
   const entries = [];
   const problems = [];
   const lines = String(text).split(/\n+/).map((l) => l.trim()).filter(Boolean);
   for (const line of lines) {
-    const m = line.match(/^<sup>\s*(\d+)\s*<\/sup>\s+(\S.*)$/);
+    if (/<\/?sup/i.test(line)) {
+      problems.push(`Line "${line.slice(0, 40)}" has a <sup> tag. Disclaimers use plain numbers, for example: (1) Footnote text`);
+      continue;
+    }
+    const m = line.match(/^\(\s*(\d+)\s*\)\s+(\S.*)$/);
     if (!m) {
-      problems.push(`Line "${line.slice(0, 40)}" is not in the form: <sup>1</sup> Footnote text`);
+      problems.push(`Line "${line.slice(0, 40)}" is not in the form: (1) Footnote text`);
       continue;
     }
     entries.push({ n: Number(m[1]), text: m[2] });
@@ -464,6 +468,13 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
   }
   if (/[^\s]<sup>/i.test(long)) {
     err("sup_spacing", "Leave a space before every <sup> tag, for example: fade-free power <sup>1</sup>.");
+  }
+  // The tag sits at the end of the sentence, before the full stop.
+  {
+    const bad = [...long.matchAll(/<sup>\s*\d+\s*<\/sup>(?:\s*<sup>\s*\d+\s*<\/sup>)*(?!\s*[.!?])/gi)];
+    if (bad.length) {
+      err("sup_position", "Put each <sup> tag at the end of its sentence, before the full stop, for example: fade-free power <sup>1</sup>.");
+    }
   }
 
   // With no document text there is no verified source, so disclaimers must be empty.

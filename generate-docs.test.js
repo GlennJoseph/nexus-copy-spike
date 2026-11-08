@@ -28,7 +28,7 @@ const COPY = (sup, disclaimers) => ({
   npr_short_copy: "Wet washing hanging around for days is no fun. This Haier heat pump dryer takes 10kg loads and uses less energy than a vented dryer, so everyday laundry costs you less.",
   npr_long_copy: [
     "Waiting days for a load of towels to dry on the line gets old fast, especially in winter. This Haier heat pump dryer takes loads up to 10kg, so you'll get through the family wash in fewer cycles and have clean clothes ready when you need them. It's built for busy households that want gentle drying without the running costs of a vented model.",
-    `The Allergy Care cycle removes more bacteria with every load${sup ? " <sup>1</sup>" : ""}, which is handy for bedding and school uniforms. Heat pump technology dries at a lower temperature, which is kinder to your clothes and helps keep energy use down. That means woollens and delicates come out soft instead of shrunken, and your power bill won't jump when the dryer runs most days.`,
+    `The Allergy Care cycle removes more bacteria with every load, which is handy for bedding and school uniforms${sup ? " <sup>1</sup>" : ""}. Heat pump technology dries at a lower temperature, which is kinder to your clothes and helps keep energy use down. That means woollens and delicates come out soft instead of shrunken, and your power bill won't jump when the dryer runs most days.`,
     "The control panel is easy to read, so you can pick a program in seconds, even when you're juggling a basket and a toddler. Choose from a range of cycles for towels, cottons and delicates, and use the delay start to dry overnight when it suits you. There's no need to stand and watch the clock or check the load every half hour.",
     "Finished in black, this dryer fits neatly into most laundries and sits well beside a washing machine. It's backed by a two year warranty, and it suits anyone who wants dependable drying without a vent kit or a hole in the wall. If you're tired of racks of washing taking over the living room, this one is worth a look.",
   ].join("\n\n"),
@@ -88,26 +88,26 @@ const run = async (sc, p) => {
 };
 
 test("document footnote flows into the prompt and comes back as a disclaimer", async () => {
-  const r = await run(() => COPY(true, `<sup>1</sup> ${FOOTNOTE}`), product(`${docBase}/a/nprFile.pdf`));
+  const r = await run(() => COPY(true, `(1) ${FOOTNOTE}`), product(`${docBase}/a/nprFile.pdf`));
   assert.strictEqual(r.httpStatus, 200);
   assert.ok(lastPrompt.includes("DISCLAIMER SOURCES"));
   assert.ok(lastPrompt.includes("staphylococcus aureus"));
-  assert.strictEqual(r.body.copy.disclaimers, `<sup>1</sup> ${FOOTNOTE}`);
+  assert.strictEqual(r.body.copy.disclaimers, `(1) ${FOOTNOTE}`);
   assert.ok(r.body.copy.npr_long_copy.includes(" <sup>1</sup>"));
   assert.strictEqual(r.meta.attempts, 1);
   assert.strictEqual(r.meta.documents[0].ok, true);
 });
 
 test("an invented footnote is rejected, then fixed on the retry", async () => {
-  const r = await run((n) => (n === 1 ? COPY(true, "<sup>1</sup> Tested by an independent lab to remove 100% of all germs forever.") : COPY(true, `<sup>1</sup> ${FOOTNOTE}`)), product(`${docBase}/a/nprFile.pdf`));
+  const r = await run((n) => (n === 1 ? COPY(true, "(1) Tested by an independent lab to remove 100% of all germs forever.") : COPY(true, `(1) ${FOOTNOTE}`)), product(`${docBase}/a/nprFile.pdf`));
   assert.strictEqual(r.httpStatus, 200);
   assert.strictEqual(r.meta.attempts, 2);
   assert.deepStrictEqual(r.meta.retriedBecause, ["disclaimer_untraceable"]);
-  assert.strictEqual(r.body.copy.disclaimers, `<sup>1</sup> ${FOOTNOTE}`);
+  assert.strictEqual(r.body.copy.disclaimers, `(1) ${FOOTNOTE}`);
 });
 
 test("invented footnote twice: copy still returns, without disclaimers or tags", async () => {
-  const r = await run(() => COPY(true, "<sup>1</sup> Tested by an independent lab to remove 100% of all germs forever."), product(`${docBase}/a/nprFile.pdf`));
+  const r = await run(() => COPY(true, "(1) Tested by an independent lab to remove 100% of all germs forever."), product(`${docBase}/a/nprFile.pdf`));
   assert.strictEqual(r.httpStatus, 200);
   assert.strictEqual(r.body.copy.disclaimers, "");
   assert.ok(!r.body.copy.npr_long_copy.includes("<sup>"));
@@ -123,7 +123,7 @@ test("no attachments: nothing about disclaimers in the prompt, and disclaimers s
 });
 
 test("no source but the model writes a disclaimer anyway: it is dropped", async () => {
-  const r = await run(() => COPY(true, `<sup>1</sup> ${FOOTNOTE}`), product(null));
+  const r = await run(() => COPY(true, `(1) ${FOOTNOTE}`), product(null));
   assert.strictEqual(r.httpStatus, 200);
   assert.strictEqual(r.body.copy.disclaimers, "");
   assert.ok(!r.body.copy.npr_long_copy.includes("<sup>"));

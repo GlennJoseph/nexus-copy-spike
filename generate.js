@@ -72,7 +72,7 @@ const DISCLAIMER_CHECKS = new Set([
 // Style rules that matter, but not enough to fail the whole request. The model
 // gets one retry. If one of these is still broken, the copy goes back anyway
 // (a person reviews every draft in Nexus) and the check is logged as a warning.
-const SOFT_CHECKS = new Set(["long_words_low", "opening_product_first", "same_opening", "health_claim", "doc_only_term"]);
+const SOFT_CHECKS = new Set(["long_words_low", "opening_product_first", "same_opening", "health_claim", "doc_only_term", "sup_position"]);
 
 function dropDisclaimers(obj) {
   return {
