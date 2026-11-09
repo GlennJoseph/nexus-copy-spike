@@ -4,9 +4,9 @@
   "domains": [
     "tefal.com.au"
   ],
-  "durationMs": 2338,
-  "costUsd": 0.00362,
-  "answer": "{\"product_page\":\"https://www.tefal.com.au/products/tefal-yummeal-multicooker-air-fryer-black-knight-fb3518?variant=46606059044966\",\"spec_sheet\":null,\"manual\":null,\"other\":[],\"notes\":\"Official Australian product page matches model FB3518; no specification-sheet or user-manual PDF appeared in the search results.\"}",
+  "durationMs": 2548,
+  "costUsd": 0.00293,
+  "answer": "{\"product_page\":\"https://www.tefal.com.au/products/tefal-yummeal-multicooker-air-fryer-black-knight-fb3518?variant=46606059044966\",\"spec_sheet\":null,\"manual\":null,\"other\":[\"https://www.tefal.com.au/products/tefal-yummeal-multicooker-air-fryer-black-knight-fb3518.oembed\"],\"notes\":\"The official Australian product page matches model FB3518 and lists specifications, but no specification-sheet or user-manual PDF appeared in the search results.\"}",
   "seen": [
     {
       "url": "https://www.tefal.com.au/products/tefal-yummeal-multicooker-air-fryer-black-knight-fb3518?variant=46606059044966",
@@ -52,9 +52,20 @@
   "read": [
     {
       "url": "https://www.tefal.com.au/products/tefal-yummeal-multicooker-air-fryer-black-knight-fb3518?variant=46606059044966",
+      "kind": "shopify_json",
+      "ok": true,
+      "reason": null,
+      "headers": "server=cloudflare retry-after= cf-ray=a57cb0a5ba70ce2f-SIN x-shopify-stage= content-type=text/javascript; charset=utf-8",
+      "chars": 724,
+      "modelNoFound": true,
+      "footnoteLikeLines": []
+    },
+    {
+      "url": "https://www.tefal.com.au/products/tefal-yummeal-multicooker-air-fryer-black-knight-fb3518.oembed",
       "kind": "html",
       "ok": false,
       "reason": "http_429",
+      "headers": "server=cloudflare retry-after=60 cf-ray=a57cb0cd2bbffe21-SIN x-shopify-stage= content-type=text/html",
       "chars": 0,
       "modelNoFound": false,
       "footnoteLikeLines": []

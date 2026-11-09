@@ -69,16 +69,50 @@ async function readUrl(url, domains) {
     const d = r.report[0] || {};
     return { kind: "pdf", ok: !!d.ok, reason: d.reason || null, pages: d.pages || 0, text: r.text || "" };
   }
+  const HEAD = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+    Accept: "text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-AU,en;q=0.9",
+  };
+  async function get(u) {
+    let res = await fetch(u, { headers: HEAD, signal: AbortSignal.timeout(15000), redirect: "follow" });
+    if (res.status === 429 || res.status === 503) {
+      const wait = Math.min(Number(res.headers.get("retry-after")) || 3, 6) * 1000;
+      await new Promise((r) => setTimeout(r, wait));
+      res = await fetch(u, { headers: HEAD, signal: AbortSignal.timeout(15000), redirect: "follow" });
+    }
+    return res;
+  }
+  const hdrs = (res) =>
+    ["server", "retry-after", "cf-ray", "x-shopify-stage", "content-type"].map((h) => `${h}=${res.headers.get(h) || ""}`).join(" ");
   try {
-    const res = await fetch(url, { signal: AbortSignal.timeout(15000), redirect: "follow" });
-    if (!res.ok) return { kind: "html", ok: false, reason: `http_${res.status}`, text: "" };
+    const res = await get(url);
+    if (!res.ok) {
+      const info = { kind: "html", ok: false, reason: `http_${res.status}`, text: "", headers: hdrs(res) };
+      // Shopify stores publish the product as JSON at <product url>.js. Try it.
+      if (/\/products\//.test(url)) {
+        try {
+          const jsUrl = url.split("?")[0] + ".js";
+          const j = await get(jsUrl);
+          if (j.ok) {
+            const data = await j.json();
+            const text = [data.title, htmlToText(data.description || ""), ...(data.variants || []).map((v) => v.title + " " + (v.sku || ""))].join("\n");
+            return { kind: "shopify_json", ok: true, reason: null, text, headers: hdrs(j) };
+          }
+          info.jsStatus = j.status;
+        } catch (e) {
+          info.jsStatus = "error";
+        }
+      }
+      return info;
+    }
     const type = res.headers.get("content-type") || "";
     if (/pdf/i.test(type)) {
       const r = await retrieveDocuments({ productdocuments: [{ id: "spike", uri: url }] }, { hosts: domains, maxDocs: 1 });
       const d = r.report[0] || {};
       return { kind: "pdf", ok: !!d.ok, reason: d.reason || null, pages: d.pages || 0, text: r.text || "" };
     }
-    return { kind: "html", ok: true, reason: null, text: htmlToText(await res.text()) };
+    return { kind: "html", ok: true, reason: null, text: htmlToText(await res.text()), headers: hdrs(res) };
   } catch (e) {
     return { kind: "html", ok: false, reason: e.name === "TimeoutError" ? "timeout" : "network", text: "" };
   }
@@ -152,8 +186,10 @@ async function main() {
     const r = await readUrl(url, domains);
     const lines = r.text.split("\n").filter((l) => FOOT.test(l) && l.trim().length > 25).slice(0, 8).map((l) => l.trim().slice(0, 200));
     const modelHit = r.text.toLowerCase().includes(String(model).toLowerCase());
-    out.read.push({ url, kind: r.kind, ok: r.ok, reason: r.reason, chars: r.text.length, modelNoFound: modelHit, footnoteLikeLines: lines });
+    out.read.push({ url, kind: r.kind, ok: r.ok, reason: r.reason, headers: r.headers || null, chars: r.text.length, modelNoFound: modelHit, footnoteLikeLines: lines });
     console.log(`\nREAD ${url}\n  ${r.kind} ${r.ok ? "ok" : "FAILED " + r.reason}, ${r.text.length} chars, model number ${modelHit ? "found" : "NOT found"} in text`);
+    if (r.headers) console.log("  headers:", r.headers);
+    if (r.jsStatus) console.log("  .js fallback status:", r.jsStatus);
     for (const l of lines) console.log("   -", l);
   }
   const rejected = [...picked].filter((u) => typeof u === "string" && !onDomains(u, domains));
