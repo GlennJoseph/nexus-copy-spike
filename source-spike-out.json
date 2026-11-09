@@ -1,0 +1,63 @@
+{
+  "brand": "Tefal",
+  "model": "FB3518",
+  "domains": [
+    "tefal.com.au"
+  ],
+  "durationMs": 2338,
+  "costUsd": 0.00362,
+  "answer": "{\"product_page\":\"https://www.tefal.com.au/products/tefal-yummeal-multicooker-air-fryer-black-knight-fb3518?variant=46606059044966\",\"spec_sheet\":null,\"manual\":null,\"other\":[],\"notes\":\"Official Australian product page matches model FB3518; no specification-sheet or user-manual PDF appeared in the search results.\"}",
+  "seen": [
+    {
+      "url": "https://www.tefal.com.au/products/tefal-yummeal-multicooker-air-fryer-black-knight-fb3518?variant=46606059044966",
+      "official": true
+    },
+    {
+      "url": "https://www.tefal.com.au/products/tefal-yummeal-multicooker-air-fryer-black-knight-fb3518.oembed",
+      "official": true
+    },
+    {
+      "url": "https://www.tefal.com.au/collections/rice-cookers-multicookers",
+      "official": true
+    },
+    {
+      "url": "https://www.tefal.com.au/collections/air-fryers",
+      "official": true
+    },
+    {
+      "url": "https://www.tefal.com.au/collections/cooking-appliances",
+      "official": true
+    },
+    {
+      "url": "https://www.tefal.com.au/collections",
+      "official": true
+    },
+    {
+      "url": "https://www.tefal.com.au/blogs/recipes/vegetable-gratin",
+      "official": true
+    },
+    {
+      "url": "https://www.tefal.com.au/collections/kitchen-appliances?page=1",
+      "official": true
+    },
+    {
+      "url": "https://www.tefal.com.au/blogs/recipes/quick-seafood-rice",
+      "official": true
+    },
+    {
+      "url": "https://www.tefal.com.au/collections/benchtop-cooking",
+      "official": true
+    }
+  ],
+  "read": [
+    {
+      "url": "https://www.tefal.com.au/products/tefal-yummeal-multicooker-air-fryer-black-knight-fb3518?variant=46606059044966",
+      "kind": "html",
+      "ok": false,
+      "reason": "http_429",
+      "chars": 0,
+      "modelNoFound": false,
+      "footnoteLikeLines": []
+    }
+  ]
+}

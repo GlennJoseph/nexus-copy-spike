@@ -141,3 +141,33 @@ test("long documents keep the start and the end", async () => {
   const r = await retrieveDocuments(prod(`${base}/a/nprFile.pdf`), { ...OPTS, maxCharsPerDoc: 100 });
   assert.ok(r.text.includes("[...]"));
 });
+
+test("a long multilingual manual is read from its English pages", async () => {
+  const ML = fs.readFileSync(path.join(__dirname, "tests", "fixtures", "multilang.pdf"));
+  const s2 = http.createServer((req, res) => res.writeHead(200).end(ML));
+  await new Promise((r) => s2.listen(0, "127.0.0.1", r));
+  try {
+    const u = `http://127.0.0.1:${s2.address().port}/m.pdf`;
+    // 90 pages, English on 41 to 50 only. First and last 10 pages would be German and French.
+    const r = await retrieveDocuments(prod(u), { ...OPTS, hosts: ["127.0.0.1"], maxPages: 20 });
+    assert.strictEqual(r.used, 1);
+    assert.ok(/independent laboratory/.test(r.text), "the English footnote page should be read");
+    assert.ok(!/Bitte lesen/.test(r.text) && !/Veuillez lire/.test(r.text), "other languages should be skipped");
+  } finally {
+    s2.close();
+  }
+});
+
+test("long PDFs with no English pages fall back to the first and last pages", async () => {
+  const ML = fs.readFileSync(path.join(__dirname, "tests", "fixtures", "multilang.pdf"));
+  const s2 = http.createServer((req, res) => res.writeHead(200).end(ML));
+  await new Promise((r) => s2.listen(0, "127.0.0.1", r));
+  try {
+    const u = `http://127.0.0.1:${s2.address().port}/m.pdf`;
+    const r = await retrieveDocuments(prod(u), { ...OPTS, hosts: ["127.0.0.1"], maxPages: 20, scanMs: 1 });
+    assert.strictEqual(r.used, 1);
+    assert.ok(/Bitte lesen/.test(r.text) && /Veuillez lire/.test(r.text));
+  } finally {
+    s2.close();
+  }
+});

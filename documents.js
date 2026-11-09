@@ -190,6 +190,66 @@ function clip(text, max) {
   return text.slice(0, half) + "\n[...]\n" + text.slice(-half);
 }
 
+function firstAndLast(n, maxPages) {
+  const half = Math.floor(maxPages / 2);
+  const out = [];
+  for (let i = 1; i <= half; i++) out.push(i);
+  for (let i = n - half + 1; i <= n; i++) out.push(i);
+  return out;
+}
+
+// Common English words that are rare in other European languages.
+const EN_WORDS = new Set(
+  "the and of with for this that is are not be your from before use may can will should which when you it to in on or if any only".split(" ")
+);
+const EN_RATIO = 0.2; // English prose scores about 0.25 to 0.4, other languages under 0.1
+const EN_MIN_TOKENS = 40;
+const EN_BRIDGE = 5; // diagram pages inside an English section are kept if the gap is this small
+const EN_SCAN_MS = Number(process.env.DOC_SCAN_MS) || 8000;
+
+function pageIsEnglish(text) {
+  const toks = text.toLowerCase().match(/[a-z]+/g) || [];
+  if (toks.length < EN_MIN_TOKENS) return false;
+  let hits = 0;
+  for (const w of toks) if (EN_WORDS.has(w)) hits++;
+  return hits / toks.length >= EN_RATIO;
+}
+
+async function readPageText(doc, i) {
+  const page = await doc.getPage(i);
+  const content = await page.getTextContent();
+  let s = "";
+  for (const it of content.items) {
+    if (typeof it.str !== "string") continue;
+    s += it.str;
+    if (it.hasEOL) s += "\n";
+  }
+  return s;
+}
+
+// Returns the page numbers to read for a long PDF, or null to use first and last.
+// Null when no English pages are found or the scan runs out of time.
+async function englishPages(doc, n, opts) {
+  const cap = Math.min(n, opts.scanMaxPages || 1000);
+  const deadline = Date.now() + (opts.scanMs || EN_SCAN_MS);
+  const eng = [];
+  for (let i = 1; i <= cap; i++) {
+    if (Date.now() > deadline) return null;
+    if (pageIsEnglish(await readPageText(doc, i))) eng.push(i);
+  }
+  if (!eng.length) return null;
+  const keep = [];
+  for (let k = 0; k < eng.length; k++) {
+    keep.push(eng[k]);
+    if (k + 1 < eng.length && eng[k + 1] - eng[k] > 1 && eng[k + 1] - eng[k] - 1 <= EN_BRIDGE) {
+      for (let j = eng[k] + 1; j < eng[k + 1]; j++) keep.push(j);
+    }
+  }
+  if (keep.length <= opts.maxPages) return keep;
+  const half = Math.floor(opts.maxPages / 2);
+  return keep.slice(0, half).concat(keep.slice(-half));
+}
+
 async function pdfToText(buf, opts) {
   if (buf.slice(0, 5).toString("latin1") !== "%PDF-") {
     throw Object.assign(new Error("not_pdf"), { reason: "not_pdf" });
@@ -207,28 +267,17 @@ async function pdfToText(buf, opts) {
     throw Object.assign(new Error("unreadable_pdf"), { reason: "unreadable_pdf" });
   }
   try {
-    // Very long PDFs: read the first half of the page allowance and the last half.
+    // Long PDFs (often multilingual manuals): read the English pages when they can
+    // be found, otherwise the first half of the page allowance and the last half.
     const n = doc.numPages;
-    const wanted = [];
+    let wanted = [];
     if (n <= opts.maxPages) {
       for (let i = 1; i <= n; i++) wanted.push(i);
     } else {
-      const half = Math.floor(opts.maxPages / 2);
-      for (let i = 1; i <= half; i++) wanted.push(i);
-      for (let i = n - half + 1; i <= n; i++) wanted.push(i);
+      wanted = (await englishPages(doc, n, opts)) || firstAndLast(n, opts.maxPages);
     }
     const pages = [];
-    for (const i of wanted) {
-      const page = await doc.getPage(i);
-      const content = await page.getTextContent();
-      let s = "";
-      for (const it of content.items) {
-        if (typeof it.str !== "string") continue;
-        s += it.str;
-        if (it.hasEOL) s += "\n";
-      }
-      pages.push(s);
-    }
+    for (const i of wanted) pages.push(await readPageText(doc, i));
     const text = tidy(pages.join("\n"));
     if (text.length < 40) throw Object.assign(new Error("no_text"), { reason: "no_text" }); // scanned images
     return { text, pages: n };
