@@ -15,21 +15,27 @@ const fs = require("fs");
 const path = require("path");
 const { callPerplexity } = require("./perplexity-client");
 const { DOCS_ENABLED, retrieveDocuments } = require("./documents");
+const { SOURCE_SEARCH, findOfficialSources } = require("./sources");
 const {
   validateInput,
   preparePayload,
   extractJson,
   checkCopy,
   findRetailerSources,
+  cleanReviewNotes,
 } = require("./checks");
 
 const PROMPT_VERSION = process.env.PROMPT_VERSION || "v0.3";
 
 const MAX_ATTEMPTS = 2; // first try + one retry
 const CALL_TIMEOUT_MS = Number(process.env.CALL_TIMEOUT_MS) || 30000; // per Perplexity call
-const TOTAL_BUDGET_MS = Number(process.env.TOTAL_BUDGET_MS) || 55000; // whole request
+const TOTAL_BUDGET_MS = Number(process.env.TOTAL_BUDGET_MS) || 90000; // whole request. Simple's timeout is 2 minutes.
 const MIN_RETRY_MS = 8000; // do not start a retry with less time than this left
-const MAX_OUTPUT_TOKENS = 2000; // cost cap per call
+const MAX_OUTPUT_TOKENS = 2500; // cost cap per call (room for disclaimer_evidence)
+// review_notes go back to Simple only when this is on, after Simple agrees to show them.
+// DEBUG_RAW=on: keep the model's reply for every attempt that failed a check, in meta.raw (test runs only).
+const DEBUG_RAW = String(process.env.DEBUG_RAW || "").toLowerCase() === "on";
+const REVIEW_NOTES = String(process.env.REVIEW_NOTES || "").toLowerCase() === "on";
 
 const noopLog = { info() {}, warn() {}, error() {} };
 
@@ -49,8 +55,8 @@ function buildUserPrompt(product, docText = "") {
   let p = `Generate NPR copy for this product:\n\n${JSON.stringify(product, null, 2)}`;
   if (docText) {
     p +=
-      "\n\nDISCLAIMER SOURCES (documents attached to this product in Nexus. " +
-      "Use them ONLY to find footnotes for the disclaimers field. Do not take any feature, name, app, accessory, number or claim from them into the copy. " +
+      "\n\nDISCLAIMER SOURCES (supplier documents for this product: Nexus attachments or the official manufacturer website. " +
+      "Use them ONLY for the disclaimers field. Do not take any feature, name, app, accessory, number or claim from them into the copy. " +
       "Every statement about the product must come from the product data above. A document may describe several models, so it can mention things this product does not have):\n\n" +
       docText;
   }
@@ -66,19 +72,24 @@ const DISCLAIMER_CHECKS = new Set([
   "disclaimer_format",
   "disclaimer_numbering",
   "sup_mismatch",
-  "disclaimer_untraceable",
+  "evidence_missing",
+  "evidence_untraceable",
+  "disclaimer_figure",
+  "disclaimer_claim_word",
+  "claim_unrelated",
 ]);
 
 // Style rules that matter, but not enough to fail the whole request. The model
 // gets one retry. If one of these is still broken, the copy goes back anyway
 // (a person reviews every draft in Nexus) and the check is logged as a warning.
-const SOFT_CHECKS = new Set(["long_words_low", "opening_product_first", "same_opening", "health_claim", "doc_only_term", "sup_position"]);
+const SOFT_CHECKS = new Set(["long_words_low", "opening_product_first", "same_opening", "health_claim", "doc_only_term", "sup_position", "short_claim", "stat_no_disclaimer"]);
 
 function dropDisclaimers(obj) {
   return {
     ...obj,
     npr_long_copy: String(obj.npr_long_copy).replace(/\s*<sup>\s*\d+\s*<\/sup>/gi, ""),
     disclaimers: "",
+    disclaimer_evidence: [],
   };
 }
 
@@ -105,6 +116,108 @@ function failed(httpStatus, ids, code, message, meta) {
     },
     meta,
   };
+}
+
+// The model names the sentence each disclaimer qualifies (disclaimer_evidence[].claim). The service
+// puts the <sup> tags in, at the end of that sentence before the full stop, and numbers the
+// disclaimers in order of first use. The model never has to get the tag format right, and any
+// tags it wrote itself are replaced.
+// Returns the object unchanged when there is nothing to tag, or when a disclaimer names no claim
+// sentence (the checks then judge the model's own tags).
+const SENTENCE_END = /[.!?](?=\s|$)/;
+const sentenceEndFrom = (text, from) => {
+  const m = text.slice(from).match(SENTENCE_END);
+  return m ? from + m.index : text.length;
+};
+const keyWords = (t) =>
+  new Set((String(t).toLowerCase().match(/[a-z]{4,}/g) || []).map((w) => w.slice(0, 5)));
+
+// Index of the end of the sentence a claim belongs to, or -1.
+function claimEnd(long, claim) {
+  const c = String(claim).replace(/[\s.!?]+$/, "").trim();
+  if (!c) return -1;
+  let i = long.indexOf(c);
+  if (i < 0) i = long.toLowerCase().indexOf(c.toLowerCase());
+  if (i >= 0) return sentenceEndFrom(long, i + c.length);
+  // The model paraphrased the claim a little: use the sentence that shares the most words with it.
+  const want = keyWords(c);
+  if (want.size < 3) return -1;
+  let best = -1;
+  let bestScore = 0;
+  for (const m of long.matchAll(/[^.!?]+(?:[.!?]+(?=\s|$)|$)/g)) {
+    const have = keyWords(m[0]);
+    let shared = 0;
+    for (const w of want) if (have.has(w)) shared++;
+    const score = shared / (want.size + have.size - shared);
+    if (score > bestScore) {
+      bestScore = score;
+      best = m.index + m[0].replace(/[.!?]+$/, "").length;
+    }
+  }
+  return bestScore >= 0.5 ? best : -1;
+}
+
+function tagDisclaimers(obj) {
+  const disc = String(obj.disclaimers || "").trim();
+  const ev = Array.isArray(obj.disclaimer_evidence) ? obj.disclaimer_evidence : [];
+  if (!disc || !ev.length) return obj;
+  const entries = [];
+  for (const line of disc.split(/\n+/).map((l) => l.trim()).filter(Boolean)) {
+    const m = line.match(/^\(\s*(\d+)\s*\)\s+(\S.*)$/);
+    if (!m) return obj;
+    entries.push({ n: Number(m[1]), text: m[2] });
+  }
+  const claims = entries.map((e) => {
+    const item = ev.find((x) => x && Number(x.n) === e.n && typeof x.claim === "string" && x.claim.trim());
+    return item ? item.claim : null;
+  });
+  if (claims.some((c) => !c)) return obj;
+  const long = String(obj.npr_long_copy || "").replace(/[ \t]*<sup>\s*\d+\s*<\/sup>/gi, "");
+  const placed = [];
+  for (let k = 0; k < entries.length; k++) {
+    const end = claimEnd(long, claims[k]);
+    if (end < 0) return obj;
+    placed.push({ old: entries[k].n, text: entries[k].text, end });
+  }
+  // New numbers follow the order the tags appear in the copy.
+  const order = [...placed].sort((a, b) => a.end - b.end || a.old - b.old);
+  order.forEach((p, idx) => (p.n = idx + 1));
+  let out = long;
+  const ends = [...new Set(order.map((p) => p.end))].sort((a, b) => b - a);
+  for (const end of ends) {
+    const tags = order.filter((p) => p.end === end).map((p) => ` <sup>${p.n}</sup>`).join("");
+    out = out.slice(0, end) + tags + out.slice(end);
+  }
+  return {
+    ...obj,
+    npr_long_copy: out,
+    disclaimers: order.map((p) => `(${p.n}) ${p.text}`).join("\n"),
+    disclaimer_evidence: ev.map((x) => {
+      const p = order.find((q) => x && q.old === Number(x.n));
+      return p ? { ...x, n: p.n } : x;
+    }),
+  };
+}
+
+// The success response. Evidence quotes never go to Simple. review_notes go only when REVIEW_NOTES=on.
+function success(ids, promptVersion, obj, extraNotes = []) {
+  const body = {
+    status: "success",
+    request_id: ids.request_id,
+    product_id: ids.product_id,
+    ean: ids.ean,
+    prompt_version: promptVersion,
+    generated_at: new Date().toISOString(),
+    copy: {
+      npr_heading: obj.npr_heading.trim(),
+      npr_short_copy: obj.npr_short_copy.trim(),
+      npr_long_copy: obj.npr_long_copy.trim(),
+      disclaimers: obj.disclaimers.trim(),
+    },
+  };
+  const notes = cleanReviewNotes(obj.review_notes).concat(extraNotes).slice(0, 5);
+  if (REVIEW_NOTES) body.review_notes = notes;
+  return { body, notes };
 }
 
 // What to do about an error from callPerplexity.
@@ -165,6 +278,20 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
     }
   }
 
+  // 2b. No attachments to read: look for the official manufacturer sources (SOURCE_SEARCH=on).
+  // Steps 3 and 4 of the source hierarchy. Never blocks the copy.
+  if (SOURCE_SEARCH && !docText) {
+    try {
+      const found = await findOfficialSources(rawProduct, { apiKey, log });
+      docText = found.text;
+      meta.sources = { used: found.used, skipped: found.skipped, report: found.report, ms: found.ms };
+      meta.usage.costUsd += found.costUsd || 0;
+      log.info({ request_id: ids.request_id, used: found.used, skipped: found.skipped, ms: found.ms }, "official sources searched");
+    } catch (e) {
+      log.warn({ request_id: ids.request_id, err: e.message }, "source search failed, continuing without");
+    }
+  }
+
   // 3. Generate, check, retry once with feedback
   const systemPrompt = loadPrompt(promptVersion);
   const userPrompt = buildUserPrompt(product, docText);
@@ -219,6 +346,7 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
     }
 
     if (obj) {
+      obj = tagDisclaimers(obj);
       lastObj = obj;
       const checked = checkCopy(obj, { product, sourceText, documentText: docText });
       errors = checked.errors;
@@ -229,26 +357,15 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
     if (errors.length === 0) {
       meta.failedChecks = [];
       meta.retailerSources = findRetailerSources(urls);
-      return finish({
-        httpStatus: 200,
-        body: {
-          status: "success",
-          request_id: ids.request_id,
-          product_id: ids.product_id,
-          ean: ids.ean,
-          prompt_version: promptVersion,
-          generated_at: new Date().toISOString(),
-          copy: {
-            npr_heading: obj.npr_heading.trim(),
-            npr_short_copy: obj.npr_short_copy.trim(),
-            npr_long_copy: obj.npr_long_copy.trim(),
-            disclaimers: obj.disclaimers.trim(),
-          },
-        },
-        meta,
-      });
+      const ok = success(ids, promptVersion, obj);
+      meta.reviewNotes = ok.notes;
+      return finish({ httpStatus: 200, body: ok.body, meta });
     }
 
+    if (DEBUG_RAW) {
+      meta.raw = meta.raw || [];
+      meta.raw.push({ attempt, errors: errors.map((e) => e.message), reply: String(result.content).slice(0, 6000) });
+    }
     meta.failedChecks = errors.map((e) => e.check);
     if (attempt === 1) meta.retriedBecause = meta.failedChecks.slice();
     log.warn({ request_id: ids.request_id, attempt, checks: meta.failedChecks }, "copy failed checks");
@@ -279,24 +396,19 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
       meta.stats = again.stats;
       meta.failedChecks = lastProblem.errors.map((e) => e.check);
       log.warn({ request_id: ids.request_id, checks: meta.failedChecks }, "returned with soft check failures");
-      return finish({
-        httpStatus: 200,
-        body: {
-          status: "success",
-          request_id: ids.request_id,
-          product_id: ids.product_id,
-          ean: ids.ean,
-          prompt_version: promptVersion,
-          generated_at: new Date().toISOString(),
-          copy: {
-            npr_heading: final.npr_heading.trim(),
-            npr_short_copy: final.npr_short_copy.trim(),
-            npr_long_copy: final.npr_long_copy.trim(),
-            disclaimers: final.disclaimers.trim(),
-          },
-        },
-        meta,
-      });
+      const extra = [];
+      if (meta.failedChecks.includes("stat_no_disclaimer")) {
+        extra.push("npr_long_copy: states a statistic with no disclaimer. Check it against the product sources before approving.");
+      }
+      if (meta.failedChecks.includes("short_claim")) {
+        extra.push("npr_short_copy: contains a percentage, test or certification claim. Check it against the product sources.");
+      }
+      if (hasDisclaimerProblem) {
+        extra.push("disclaimers: the drafted disclaimers could not be matched to a source, so none were returned. Check the long copy for claims that need one.");
+      }
+      const ok = success(ids, promptVersion, final, extra);
+      meta.reviewNotes = ok.notes;
+      return finish({ httpStatus: 200, body: ok.body, meta });
     }
   }
 
@@ -307,4 +419,4 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
   return finish(failed(502, ids, "generation_failed", `Copy failed quality checks after ${meta.attempts} attempt(s): ${names}`, meta));
 }
 
-module.exports = { generateCopy, PROMPT_VERSION, buildUserPrompt };
+module.exports = { generateCopy, PROMPT_VERSION, buildUserPrompt, tagDisclaimers };

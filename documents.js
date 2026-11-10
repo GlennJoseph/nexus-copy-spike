@@ -190,6 +190,16 @@ function clip(text, max) {
   return text.slice(0, half) + "\n[...]\n" + text.slice(-half);
 }
 
+// True when the exact model number appears in the text as its own token.
+// "HVF40B" matches "HVF40B" and "HVF40B-1" but not "HVF40BRG" or "HVF40SG".
+// Used for sources found by search, which nobody at MM picked for this product.
+function mentionsModel(text, modelNo) {
+  const norm = (t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const m = norm(modelNo || "");
+  if (m.replace(/ /g, "").length < 3) return false;
+  return ` ${norm(text)} `.includes(` ${m} `);
+}
+
 function firstAndLast(n, maxPages) {
   const half = Math.floor(maxPages / 2);
   const out = [];
@@ -329,6 +339,9 @@ async function retrieveDocuments(raw, options = {}) {
         const work = (async () => {
           const buf = await download(it.uri, opts, deadline);
           const { text, pages } = await pdfToText(buf, opts);
+          if (opts.requireModel && !mentionsModel(text, opts.requireModel)) {
+            throw Object.assign(new Error("model_not_found"), { reason: "model_not_found" });
+          }
           return { buf, text, pages };
         })();
         work.catch(() => {}); // a late failure after the stage limit must not crash the process
@@ -370,4 +383,4 @@ async function retrieveDocuments(raw, options = {}) {
   return { text: parts.join("\n\n"), report, found: everything.length, used: parts.length, ms: Date.now() - started };
 }
 
-module.exports = { DOCS_ENABLED, collectAttachments, retrieveDocuments, checkUrl, extensionOf };
+module.exports = { DOCS_ENABLED, collectAttachments, retrieveDocuments, checkUrl, extensionOf, mentionsModel };

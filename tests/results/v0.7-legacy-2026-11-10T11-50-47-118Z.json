@@ -1,0 +1,305 @@
+{
+  "promptVersion": "v0.7",
+  "mode": "legacy",
+  "ranAt": "2026-11-10T11:50:47.118Z",
+  "results": [
+    {
+      "ean": "7333394138015",
+      "file": "7333394138015.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-7333394138015",
+        "product_id": "7333394138015",
+        "ean": "7333394138015",
+        "prompt_version": "v0.7",
+        "generated_at": "2026-11-10T11:50:11.731Z",
+        "copy": {
+          "npr_heading": "AEG 10kg Front Load Washing Machine - 9000 Series – White",
+          "npr_short_copy": "Laundry can quickly pile up in a busy household. This 10kg front load washing machine uses AutoDose, PowerCare premix technology and PreciseWash to adjust cleaning for each load, while steam and Hygiene options help care for everyday clothing. Its 5-star energy and 4.5-star WELS ratings suit regular family washing.",
+          "npr_long_copy": "A full laundry basket can be difficult to manage when several people need clean clothes each week. This 10kg front load washing machine gives large families and busy households room for regular mixed loads, with AutoDose helping dispense detergent without measuring each wash. Its 5-star energy and 4.5-star WELS ratings support more considered everyday washing.\n\nPowerCare premix technology mixes detergent before it reaches the load, helping detergent work through each wash. PreciseWash adjusts energy use and settings according to the load weight, so smaller loads don't need the same settings as a full drum. ProSteam technology and Hygiene options give you more ways to care for clothing during regular laundry routines.\n\nDelicate, Wool, Cotton, Cottons Eco, rinse and 20-minute 3kg programmes cover different washing needs. A stainless-steel drum and delicate settings support everyday care for varied fabrics, while the variable spin speed lets you adjust the cycle to the load. The LCD shows cycle progress, remaining time, load capacity and spin speed, with Add Clothes, Anti-crease and Child Lock indicators for clearer control.\n\nThis washer has a maximum 1600rpm spin speed, a 52dBA noise level and cold-water connection. The electronic rotary and touchscreen controls keep cycle selection within reach, while the fabric conditioner, pre-wash and powder or liquid detergent dispensers help organise products. With a 5-year warranty and white finish, this washer fits a family laundry handling clothing from weekday uniforms to weekend towels.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.7",
+        "attempts": 1,
+        "durationMs": 12409,
+        "usage": {
+          "inputTokens": 3936,
+          "outputTokens": 429,
+          "costUsd": 0.0018
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 57,
+          "shortWords": 49,
+          "shortChars": 316,
+          "longWords": 234,
+          "longChars": 1554,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "brochure",
+            "id": "c8MZ3vSNi81evJbuBZmHc0",
+            "ok": false,
+            "reason": "too_large",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 1342
+          },
+          {
+            "kind": "user manual",
+            "id": "YR5oXV4ChmDG48I4uH9vFM",
+            "ok": false,
+            "reason": "timeout",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 8006
+          }
+        ],
+        "sources": {
+          "used": 0,
+          "skipped": "no_domains_for_brand",
+          "report": [],
+          "ms": 1
+        },
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "9313139336898",
+      "file": "9313139336898.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9313139336898",
+        "product_id": "9313139336898",
+        "ean": "9313139336898",
+        "prompt_version": "v0.7",
+        "generated_at": "2026-11-10T11:50:28.326Z",
+        "copy": {
+          "npr_heading": "Sunbeam Lower Back Heating Pad – Grey",
+          "npr_short_copy": "Cold evenings or long hours at a desk can leave you reaching for extra warmth. This heating pad flexes around your waist for focused heat, with five settings, a digital controller and an adjustable strap. Soft machine-washable polyester makes it easy to freshen after use.",
+          "npr_long_copy": "Long hours at a desk or a chilly evening on the couch can make it hard to keep your lower back warm. This Sunbeam heating pad wraps around your waist with an adjustable strap, helping hold focused heat close while you work, read or relax. Its flexible shape improves body contact as you move.\n\nFive heat settings let you choose the warmth that feels right for the moment, while the digital controller keeps adjustments within easy reach. Fast heat-up means you won't be waiting long before warmth starts. The 110W heating pad provides targeted warmth for everyday use around the home.\n\nTemperature-sensing technology helps maintain a consistent pad temperature, while the automatic shut-off cuts power after three hours of continuous use. The detachable controller makes machine washing simpler, and the soft polyester fabric can be freshened between uses. A 220cm cord gives you room to settle near a power point.\n\nThis grey heating pad measures 370mm wide by 370mm high and weighs 0.95kg. Its flexible wraparound design suits anyone who wants focused warmth while sitting or resting, without needing to hold a heat pack in place. After a long day, you can strap it on, set the warmth and settle into your favourite chair. It comes with a two-year warranty.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.7",
+        "attempts": 2,
+        "durationMs": 16594,
+        "usage": {
+          "inputTokens": 7630,
+          "outputTokens": 715,
+          "costUsd": 0.00904
+        },
+        "failedChecks": [],
+        "retriedBecause": [
+          "short_words"
+        ],
+        "warnings": [
+          "few_contractions",
+          "vague_benefit"
+        ],
+        "stats": {
+          "headingChars": 37,
+          "shortWords": 45,
+          "shortChars": 272,
+          "longWords": 210,
+          "longChars": 1258,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "user manual",
+            "id": "DoO26D4q5rbUOFSHpubk20",
+            "ok": false,
+            "reason": "timeout",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 8012
+          }
+        ],
+        "sources": {
+          "used": 0,
+          "skipped": "no_domains_for_brand",
+          "report": [],
+          "ms": 1
+        },
+        "raw": [
+          {
+            "attempt": 1,
+            "errors": [
+              "npr_short_copy is 53 words. Maximum is 50."
+            ],
+            "reply": "{\"npr_heading\":\"Sunbeam Lower Back Heating Pad – Grey\",\"npr_short_copy\":\"Holding a heat pack in place can be awkward when you’re working or relaxing. This lower back heating pad wraps around your waist with an adjustable strap, flexes for closer contact and offers five heat settings through a digital controller. It heats up in 90 seconds and switches off automatically after three hours.\",\"npr_long_copy\":\"Staying warm around your lower back while working at a desk or relaxing on the sofa can be difficult when a heat pack keeps slipping. This lower back heating pad wraps around your waist with an adjustable strap, so targeted warmth stays where you need it while you sit or unwind.\\n\\nChoose from five heat settings using the digital controller, so you can adjust the warmth to suit the moment. Fast heat-up reaches temperature in 90 seconds, while Intellisense Technology helps maintain a consistent temperature and prevent overheating. The pad flexes to improve body contact, helping warmth reach your lower back more evenly.\\n\\nThe adjustable strap fits waists up to 54 inches, and the 2.2m cord gives you room to position yourself near a power point. When you’re finished, the three-hour auto-off feature cuts power automatically. The detachable controller makes it easier to prepare the polyester pad for washing.\\n\\nSoft, velvety fabric adds a comfortable feel while you’re reading, watching TV or using a laptop. This grey heating pad measures 370mm wide by 370mm high, weighs 0.95kg and has a 2-year warranty. Once the controller is detached, you can place it in the washing machine, ready for the next cool evening at home.\",\"disclaimers\":\"\",\"disclaimer_evidence\":[],\"review_notes\":[]}"
+          }
+        ],
+        "reviewNotes": []
+      },
+      "knownIssues": [
+        "UNRESOLVED, waiting on MM: Nexus says 110 W, the old Perplexity Project output said 75 W. Neither is confirmed."
+      ]
+    },
+    {
+      "ean": "9343415008133",
+      "file": "9343415008133.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9343415008133",
+        "product_id": "9343415008133",
+        "ean": "9343415008133",
+        "prompt_version": "v0.7",
+        "generated_at": "2026-11-10T11:50:37.658Z",
+        "copy": {
+          "npr_heading": "Schweigen Silent Undermount Rangehood 120cm – Black Steel",
+          "npr_short_copy": "Cooking can leave steam, smoke and odours hanging around your kitchen. This 120cm ducted rangehood uses five speed levels, soft-touch controls and an external Isodrive motor to manage everyday cooking, while LED lighting keeps your cooktop visible.",
+          "npr_long_copy": "Steam, smoke and cooking odours can quickly spread through an open kitchen, especially when you're preparing several dishes at once. This 120cm ducted undermount rangehood sits discreetly within 300mm-deep cabinetry, helping keep the cooking area clearer while its matte Black Steel finish suits modern joinery <sup>1</sup>.\n\nThe external Isodrive SE motor provides up to 3200m3/hr airflow for busy cooking sessions, while five speed levels let you match extraction to what's happening on the cooktop <sup>2</sup>. Choose a lower setting for simmering or increase the airflow for heavier cooking. The 15-minute auto shut-off timer can keep the rangehood running after you've finished, helping clear remaining vapours while you serve dinner.\n\nSoft-touch controls and a digital display make it simple to select a fan speed or switch on the LED lighting. Two 3W LED lights brighten the cooktop when you're checking food in the evening. Stainless steel black mesh filters capture grease during cooking and are dishwasher safe, so routine cleaning doesn't require hand washing each filter.\n\nSchweigen SteelFlex ducting is included, and the ducted design is intended for roof or wall installation. This rangehood comes with a 10-year motor warranty, five-year canopy warranty, lifetime filter warranty and lifetime GU10 LED globe warranty. It's a strong fit for a wide cooktop, from weeknight meals to a full bench of dishes when friends come over.",
+          "disclaimers": "(1) Although our information and marketing states the term ‘Silent’ for certain models, the following applies to various models that are sold with certain Isodrive® Systems and baffle filters. When a model with the larger motored Isodrive® System is operated at the higher speed/s air movement may be heard. For example, while operating on speed 4 & 5 (For 5 speed models) the rangehood may be audible due to the large amount of air movement moving through the filter.\n(2) Please make sure that the rangehood and motor have been installed as per the corresponding instruction guides in order for optimal performance (the Isodrive® Motor Manual can be found with the Isodrive® Motor, or online at schweigen.com.au)."
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.7",
+        "attempts": 1,
+        "durationMs": 9330,
+        "usage": {
+          "inputTokens": 11310,
+          "outputTokens": 807,
+          "costUsd": 0.00243
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 57,
+          "shortWords": 37,
+          "shortChars": 248,
+          "longWords": 222,
+          "longChars": 1442,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "brochure",
+            "id": "UIjuCCu3CMI1yAPktSQsyw",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 218452,
+            "chars": 1862,
+            "ms": 2721
+          },
+          {
+            "kind": "brochure",
+            "id": "K7enyTPrbHYPD6BElRzxUM",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 2404333,
+            "chars": 4797,
+            "ms": 3405
+          },
+          {
+            "kind": "user manual",
+            "id": "59TIpSdaXJZpA19l7Cgwg0",
+            "ok": true,
+            "reason": null,
+            "pages": 28,
+            "bytes": 4164856,
+            "chars": 26182,
+            "ms": 3862
+          }
+        ],
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "9343415010228",
+      "file": "9343415010228.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9343415010228",
+        "product_id": "9343415010228",
+        "ean": "9343415010228",
+        "prompt_version": "v0.7",
+        "generated_at": "2026-11-10T11:50:47.117Z",
+        "copy": {
+          "npr_heading": "Schweigen Silent Inline Motor Undermount Rangehood 120cm – Black Steel",
+          "npr_short_copy": "Cooking across a large cooktop can leave steam and odours hanging around. This 120cm ducted rangehood uses five speed levels, LED lighting and a 15-minute auto shut-off timer to clear cooking air, while dishwasher-safe mesh filters make clean-up simpler.",
+          "npr_long_copy": "Large meals can quickly fill a kitchen with cooking air, especially when several burners are in use. This 120cm ducted undermount rangehood gives broad coverage for large cooktops and island benches, while its discreet design fits into 300mm-deep cabinetry. Its Black Steel finish keeps the look dark and understated when you want extraction without a bulky overhead feature.\n\nFive speed levels let you match airflow to what’s happening on the cooktop, from lighter cooking to a busy dinner. The Isodrive® SPINL motor system supports powerful extraction when this rangehood is correctly ducted and installed <sup>1</sup> <sup>2</sup>. When cooking is finished, the 15-minute auto shut-off timer lets this keep running while you finish serving and tidying the kitchen.\n\nSoft-touch controls and a digital display make it easy to select a fan speed or switch on the LED lighting while you’re cooking. Stainless steel black mesh filters capture grease before it reaches the ducting, and they’re dishwasher-safe when it’s time for a deeper clean. Ducted extraction sends cooking air outside, and this model doesn’t include a recirculation option.\n\nSchweigen SteelFlex™ is included, helping provide the ducting connection needed for installation. The warranty covers this motor for 10 years, this canopy for five years, and this filter and GU10 LED globe for life. Measuring 1180mm wide, 285mm high and 295mm deep, this rangehood suits a concealed installation above a broad cooktop, ready for everything from weeknight stir-fries to weekend hosting.",
+          "disclaimers": "(1) Although our information and marketing states the term ‘Silent’ for certain models, the following applies to various models that are sold with certain Isodrive® Systems and baffle filters. When a model with the larger motored Isodrive® System is operated at the higher speed/s air movement may be heard. For example, while operating on speed 4 & 5 (For 5 speed models) the rangehood may be audible due to the large amount of air movement moving through the filter.\n(2) Please make sure that the rangehood and motor have been installed as per the corresponding instruction guides in order for optimal performance (the Isodrive® Motor Manual can be found with the Isodrive® Motor, or online at schweigen.com.au)."
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.7",
+        "attempts": 1,
+        "durationMs": 9454,
+        "usage": {
+          "inputTokens": 9308,
+          "outputTokens": 809,
+          "costUsd": 0.00237
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 70,
+          "shortWords": 39,
+          "shortChars": 254,
+          "longWords": 237,
+          "longChars": 1544,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "brochure",
+            "id": "17Mumdhh9b1lxrR8SlsBv0",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 218452,
+            "chars": 1862,
+            "ms": 2863
+          },
+          {
+            "kind": "user manual",
+            "id": "OAvCEK8EbpbzEipUcfcLdg",
+            "ok": true,
+            "reason": null,
+            "pages": 28,
+            "bytes": 4164856,
+            "chars": 26182,
+            "ms": 3698
+          }
+        ],
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    }
+  ]
+}

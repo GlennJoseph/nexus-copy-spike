@@ -1,0 +1,5 @@
+{
+  "_note": "Official manufacturer domains per brand, lowercase brand name. Search and page reading are limited to these. Tefal and Gaf Control were tested. The rest are to be confirmed with MM before SOURCE_SEARCH is used for them.",
+  "tefal": ["tefal.com.au"],
+  "gaf control": ["gafcontrol.com.au"]
+}

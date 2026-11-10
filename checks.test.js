@@ -13,6 +13,7 @@ const {
   preparePayload,
   extractJson,
   checkCopy,
+  cleanReviewNotes,
   findRetailerSources,
 } = require("./checks");
 
@@ -163,22 +164,72 @@ test("copy that talks about its source is blocked (v0.3 agent-mode LG run)", () 
 
 // ---- Disclaimers (Phase 4) -------------------------------------------------
 const DOC = "Independently tested to eliminate greater than 99.9% of staphylococcus aureus and E. coli using the Allergy Care cycle.";
-const withDisc = (longText, disclaimers, documentText = DOC) =>
-  run(SUNBEAM, { npr_long_copy: longText, disclaimers }, { documentText });
+const EV = [{ n: 1, quote: DOC }];
+const withDisc = (longText, disclaimers, documentText = DOC, evidence = EV) =>
+  run(SUNBEAM, { npr_long_copy: longText, disclaimers, disclaimer_evidence: evidence }, { documentText });
 const LONG_SUP = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait <sup>1</sup>.");
 
 test("a disclaimer copied from the document passes", () => {
   assert.deepStrictEqual(names(withDisc(LONG_SUP, `(1) ${DOC}`).errors), []);
 });
 
-test("a disclaimer that is not in the document is blocked", () => {
-  const r = withDisc(LONG_SUP, "(1) Kills every germ in the house within five minutes of use.");
-  assert.ok(names(r.errors).includes("disclaimer_untraceable"));
+test("a disclaimer with a source passage that is not in the document is blocked", () => {
+  const fake = "Kills every germ in the house within five minutes of use.";
+  const r = withDisc(LONG_SUP, `(1) ${fake}`, DOC, [{ n: 1, quote: fake }]);
+  assert.ok(names(r.errors).includes("evidence_untraceable"));
 });
 
 test("PDF line breaks and hyphenation do not break the match", () => {
   const messy = "Independently tested to eliminate greater\nthan 99.9% of staphylococcus aureus and E. coli\nusing the Allergy Care cycle.";
   assert.deepStrictEqual(names(withDisc(LONG_SUP, `(1) ${DOC}`, messy).errors), []);
+});
+
+// ---- Drafted disclaimers (Option B) ---------------------------------------
+const SAFETY = "Accessible surface temperatures can be high when the appliance is operating. Never touch these surfaces, always use the handles.";
+test("a disclaimer drafted in new words passes when its passage is in the source and adds nothing", () => {
+  const r = withDisc(LONG_SUP, "(1) Surfaces can be hot during use. Always use the handles.", SAFETY, [{ n: 1, quote: SAFETY }]);
+  assert.deepStrictEqual(names(r.errors), []);
+});
+
+test("a drafted disclaimer with no source passage is blocked", () => {
+  const r = withDisc(LONG_SUP, "(1) Surfaces can be hot during use.", SAFETY, []);
+  assert.ok(names(r.errors).includes("evidence_missing"));
+});
+
+test("a drafted disclaimer cannot add a figure that the passage does not state", () => {
+  const r = withDisc(LONG_SUP, "(1) Surfaces can reach 80 degrees during use.", SAFETY, [{ n: 1, quote: SAFETY }]);
+  assert.ok(names(r.errors).includes("disclaimer_figure"));
+});
+
+test("a figure that the passage states is allowed", () => {
+  const src = "Tested at 25C ambient. Results vary.";
+  const r = withDisc(LONG_SUP, "(1) Tested at 25C ambient.", src, [{ n: 1, quote: src }]);
+  assert.ok(!names(r.errors).includes("disclaimer_figure"));
+});
+
+test("a drafted disclaimer cannot claim a test or certification that the passage does not state", () => {
+  const r = withDisc(LONG_SUP, "(1) Independently tested. Surfaces can be hot.", SAFETY, [{ n: 1, quote: SAFETY }]);
+  assert.ok(names(r.errors).includes("disclaimer_claim_word"));
+});
+
+// ---- Short copy and bare statistics ----------------------------------------
+test("short copy with a percentage or test claim is flagged (soft)", () => {
+  const r = run(SUNBEAM, { npr_short_copy: "Removes 99.9% of dust from hard floors every time you clean." });
+  assert.ok(names(r.errors).includes("short_claim"));
+  const r2 = run(SUNBEAM, { npr_short_copy: "Independently tested for everyday use on hard floors and rugs." });
+  assert.ok(names(r2.errors).includes("short_claim"));
+});
+
+test("a statistic in long copy with no tag is flagged, a material percentage is not", () => {
+  const stat = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait, saving 15% energy.");
+  assert.ok(names(run(SUNBEAM, { npr_long_copy: stat }).errors).includes("stat_no_disclaimer"));
+  const material = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait, and the cover is 100% polyester.");
+  assert.ok(!names(run(SUNBEAM, { npr_long_copy: material }).errors).includes("stat_no_disclaimer"));
+});
+
+test("a tagged statistic is not flagged", () => {
+  const tagged = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait, saving 15% energy <sup>1</sup>.");
+  assert.ok(!names(withDisc(tagged, `(1) ${DOC}`).errors).includes("stat_no_disclaimer"));
 });
 
 test("disclaimers with no document text are blocked", () => {
@@ -336,4 +387,88 @@ test("no documents, no document-term check", () => {
 test("ordinary sentence-start capitals and months are not flagged", () => {
   const r = run(LG, {}, { sourceText: JSON.stringify(LG.product), documentText: "Dust bins. Finished in November. Washable filters. Australian standards." });
   assert.ok(!names(r.errors).includes("doc_only_term"));
+});
+
+test("review_notes are cleaned: strings only, no em dashes, five at most", () => {
+  const out = cleanReviewNotes(["npr_long_copy: removed a claim \u2014 no source.", 7, "", "b", "c", "d", "e", "f"]);
+  assert.strictEqual(out.length, 5);
+  assert.ok(!out[0].includes("\u2014"));
+  assert.deepStrictEqual(cleanReviewNotes("nope"), []);
+});
+
+test("a certification claim in long copy with no tag is flagged, an energy rating is not", () => {
+  const cert = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait, and Woolmark Green certification supports gentle care.");
+  assert.ok(names(run(SUNBEAM, { npr_long_copy: cert }).errors).includes("stat_no_disclaimer"));
+  const rating = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait, and the energy certification is 5 stars.");
+  assert.ok(!names(run(SUNBEAM, { npr_long_copy: rating }).errors).includes("stat_no_disclaimer"));
+});
+
+test("the disclaimers field allows up to 65,535 characters", () => {
+  const { LIMITS } = require("./checks");
+  assert.strictEqual(LIMITS.disclaimersChars, 65535);
+});
+
+test('"according to the load weight" is normal copy, "according to the product information" is not', () => {
+  const ok = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait, and it adjusts according to the load weight.");
+  assert.ok(!names(run(SUNBEAM, { npr_long_copy: ok }).errors).includes("source_talk"));
+  const bad = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait, according to the product information.");
+  assert.ok(names(run(SUNBEAM, { npr_long_copy: bad }).errors).includes("source_talk"));
+});
+
+test("a disclaimer may quote its source with words like 'described in' or 'in accordance with'", () => {
+  const src = "The program is described in the label and is in accordance with AS/NZS 2040 and AS/NZS 6400.";
+  const r = withDisc(LONG_SUP, "(1) The program is in accordance with AS/NZS2040 and AS/NZS6400.", src, [{ n: 1, quote: src }]);
+  assert.deepStrictEqual(names(r.errors), []);
+});
+
+test("figures inside names like MS2 are matched as whole tokens", () => {
+  const src = "Tested for MS2 Bacteriophage in an external test performed in 2021 (Test Report No. 202120117).";
+  const r = withDisc(LONG_SUP, "(1) Tested for MS2 Bacteriophage in an external test in 2021 (Test Report No. 202120117).", src, [{ n: 1, quote: src }]);
+  assert.ok(!names(r.errors).includes("disclaimer_figure"), JSON.stringify(r.errors));
+});
+
+test("a passage with different spacing in the PDF still matches, and the error names the missing words", () => {
+  const src = "Recommended in accordance with AS/NZS 2040 and AS/NZS 6400 for a normally soiled load.";
+  const ok = withDisc(LONG_SUP, "(1) Recommended in accordance with AS/NZS2040.", src, [{ n: 1, quote: "Recommended in accordance with AS/NZS2040 and AS/NZS6400 for a normally soiled load." }]);
+  assert.ok(!names(ok.errors).includes("evidence_untraceable"));
+  const bad = withDisc(LONG_SUP, "(1) Something else entirely written here for a test.", src, [{ n: 1, quote: "Something else entirely written here for a test." }]);
+  const e = bad.errors.find((x) => x.check === "evidence_untraceable");
+  assert.ok(e && /were not found/.test(e.message));
+});
+
+// ---- From the 10 Nov DEBUG_RAW run ------------------------------------------
+test("figure ranges and lists are matched one by one: 1-4, speed 4 & 5", () => {
+  const src = "Setting 1-4 are for prolonged use; Setting 5 is for rapid heat up only. While operating on speed 4 & 5 the rangehood may be audible.";
+  const r = withDisc(LONG_SUP, "(1) Use settings 1-4 for prolonged use. Setting 5 is for rapid heat up only. On speed 4 & 5 the rangehood may be audible.", src, [{ n: 1, quote: src }]);
+  assert.ok(!names(r.errors).includes("disclaimer_figure"), JSON.stringify(r.errors));
+  const bad = withDisc(LONG_SUP, "(1) Use settings 1-3 for prolonged use.", src, [{ n: 1, quote: src }]);
+  assert.ok(names(bad.errors).includes("disclaimer_figure"));
+});
+
+test("a banned word that sits in the disclaimer's own source passage is allowed, one that does not is blocked", () => {
+  const src = "If used over an extended period of time at a higher temperature, the user may suffer skin burns.";
+  const ok = withDisc(LONG_SUP, "(1) If used over an extended period of time at a higher temperature, the user may suffer skin burns.", src, [{ n: 1, quote: src }]);
+  assert.ok(!names(ok.errors).includes("banned_word"));
+  const src2 = "Using it for a long time at a higher temperature may cause skin burns.";
+  const bad = withDisc(LONG_SUP, "(1) Using it for an extended time at a higher temperature may cause skin burns.", src2, [{ n: 1, quote: src2 }]);
+  assert.ok(names(bad.errors).includes("banned_word"));
+  const inCopy = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without an extended wait.");
+  assert.ok(names(run(SUNBEAM, { npr_long_copy: inCopy }).errors).includes("banned_word"));
+});
+
+test("two tags on one sentence are fine: <sup>1</sup> <sup>2</sup>.", () => {
+  const two = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait <sup>1</sup> <sup>2</sup>.");
+  const r = withDisc(two, `(1) ${DOC}\n(2) ${DOC}`, DOC, [{ n: 1, quote: DOC }, { n: 2, quote: DOC }]);
+  assert.ok(!names(r.errors).includes("sup_position"));
+  const bad = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait <sup>1</sup> <sup>2</sup>, and more.");
+  assert.ok(names(withDisc(bad, `(1) ${DOC}\n(2) ${DOC}`, DOC, [{ n: 1, quote: DOC }, { n: 2, quote: DOC }]).errors).includes("sup_position"));
+});
+
+test("a disclaimer attached to a sentence about something else is blocked", () => {
+  const src = "Although our marketing states the term Silent for certain models, air movement may be heard at higher speeds.";
+  const other = "This rangehood fits discreetly into cabinetry and its matte finish suits modern kitchens.";
+  const bad = withDisc(LONG_SUP, "(1) Air movement may be heard at higher speeds.", src, [{ n: 1, claim: other, quote: src }]);
+  assert.ok(names(bad.errors).includes("claim_unrelated"));
+  const good = withDisc(LONG_SUP, "(1) Air movement may be heard at higher speeds.", src, [{ n: 1, claim: "Silent refers to the rangehood system, although air movement may be heard at higher speeds.", quote: src }]);
+  assert.ok(!names(good.errors).includes("claim_unrelated"));
 });

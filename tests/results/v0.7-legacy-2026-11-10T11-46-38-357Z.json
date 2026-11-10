@@ -1,0 +1,367 @@
+{
+  "promptVersion": "v0.7",
+  "mode": "legacy",
+  "ranAt": "2026-11-10T11:46:38.357Z",
+  "results": [
+    {
+      "ean": "7333394138015",
+      "file": "7333394138015.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-7333394138015",
+        "product_id": "7333394138015",
+        "ean": "7333394138015",
+        "prompt_version": "v0.7",
+        "generated_at": "2026-11-10T11:45:55.326Z",
+        "copy": {
+          "npr_heading": "AEG 10kg Front Load Washing Machine 9000 Series – White",
+          "npr_short_copy": "Full laundry baskets can build up quickly in busy homes. This 10kg front load washing machine handles larger loads, while AutoDose, PowerCare and PreciseWash help manage detergent, cleaning settings and energy use. Steam, Hygiene and Woolmark Green features give everyday loads more care.",
+          "npr_long_copy": "Busy households can quickly fill a washing machine with clothes, towels and bedding. This 10kg front load washing machine gives larger families and frequent washers room for bigger loads, while its 5-star energy and 4.5-star WELS ratings support considered everyday washing.\n\nAutoDose dispenses detergent for each load, so you won't need to measure it before every wash. PowerCare premixes detergent, helping it work through the wash, while PreciseWash adjusts settings and energy use according to load weight. The 1600rpm variable-speed spin can help remove more water before clothes reach the line or dryer.\n\nSteam and Hygiene options give you more ways to choose a wash for different household loads. Delicate and Wool programmes help you select gentler care for suitable fabrics, while the stainless-steel CareDrum supports regular washing. An LCD with electronic rotary and touchscreen controls shows cycle progress, load information and indicators such as Add Clothes, Anti-crease and Finish In.\n\nAEGConnected lets you interact with and monitor this washer from a mobile device when connected. The cold-water connection uses 86L per wash, and the 52dBA noise level supports washing while other household activities continue. Finished in White, this 79kg washer measures 597mm wide, 847mm high and 660mm deep, with a 5-year warranty for busy laundry rooms handling full baskets.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.7",
+        "attempts": 2,
+        "durationMs": 13756,
+        "usage": {
+          "inputTokens": 17052,
+          "outputTokens": 1083,
+          "costUsd": 0.01005
+        },
+        "failedChecks": [],
+        "retriedBecause": [
+          "sup_mismatch",
+          "stat_no_disclaimer"
+        ],
+        "warnings": [
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 55,
+          "shortWords": 43,
+          "shortChars": 288,
+          "longWords": 210,
+          "longChars": 1383,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "brochure",
+            "id": "c8MZ3vSNi81evJbuBZmHc0",
+            "ok": false,
+            "reason": "too_large",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 1355
+          },
+          {
+            "kind": "user manual",
+            "id": "YR5oXV4ChmDG48I4uH9vFM",
+            "ok": true,
+            "reason": null,
+            "pages": 60,
+            "bytes": 2251629,
+            "chars": 99999,
+            "ms": 4281
+          }
+        ],
+        "raw": [
+          {
+            "attempt": 1,
+            "errors": [
+              "The <sup> numbers in npr_long_copy (none) must match the numbered disclaimers (1).",
+              "This sentence states a statistic, test or certification with no disclaimer: \"The Hygiene option gives households a dedicated setting for suitable cotton loads, while t\". Add a disclaimer only if DISCLAIMER SOURCES support it. Otherwise narrow the claim to what the product data supports, or remove it."
+            ],
+            "reply": "{\"npr_heading\":\"AEG 10kg Front Load Washing Machine - 9000 Series – White\",\"npr_short_copy\":\"Mixed laundry can quickly pile up in a busy household. This 10kg washing machine handles larger loads with AutoDose detergent dispensing, steam options and Hygiene settings, while PreciseWash adjusts settings and energy use to suit each load. It also has 5-star energy and 4.5-star WELS ratings.\",\"npr_long_copy\":\"Laundry day can mean sorting different fabrics, measuring detergent and running several loads. This 10kg front load washing machine gives large families, growing households and busy professionals more room for mixed laundry, with settings that help care for everyday clothing. Its 5-star energy and 4.5-star WELS ratings support lower energy and water use while you work through regular washing.\\n\\nAutoDose dispenses detergent automatically, so you won't need to measure it for every load. PowerCare premix technology helps detergent mix through the wash, while PreciseWash adapts settings and energy use to the weight of each load. Steam options help refresh suitable items and reduce creasing, making it easier to deal with clothes that need attention before they're put away.\\n\\nChoose from programmes including Delicate, Wool, Cotton, Cottons Eco, Rinse and a 20-minute cycle for up to 3kg. A maximum 1600rpm spin speed helps remove water before clothes go on the line or into a dryer. The stainless steel CareDrum, variable spin speed and delicate settings give you more control when washing different fabrics. An LCD with electronic rotary and touchscreen controls shows cycle progress, load capacity, spin speed and Add Clothes status.\\n\\nThe Hygiene option gives households a dedicated setting for suitable cotton loads, while the Woolmark Green certification supports care for wool garments. A cold water connection, door lock, child lock and anti-crease indicator add useful information during each cycle. Covered by a 5-year warranty, this white washer suits a busy laundry where school clothes, workwear and weekend washing can fill the drum together.\",\"disclaimers\":\"(1) The Hygiene programme removes more than 99.99% of bacteria and viruses and provides a reduction of allergens. Tested for Staphylococcus aureus, Enterococcus faecium, Candida albicans, Pseudomonas aeruginosa and MS2 Bacteriophage in an external test performed by Swissatest Testmaterialien AG in 2021 (Test Report No. 202120117).\",\"disclaimer_evidence\":[{\"n\":1,\"claim\":\"The Hygiene option gives households a dedicated setting for suitable cotton loads.\",\"quote\":\"Hygiene 10.0 kg White cotton items. This programme removes more than 99,99% of bacteria and viruses 3). It also ensure a proper reduction of allergens.\\n3) Tested for Staphylococcus aureus, Enterococcus faecium, Candida albicans, Pseudomonas aeruginosa and MS2 Bacteriophage in external test performed by Swissatest Testmaterialien AG in 2021 (Test Report No. 202120117).\"}],\"review_notes\":[]}\n"
+          }
+        ],
+        "reviewNotes": [
+          "npr_long_copy: removed the Hygiene bacteria-removal statistic because no supported disclaimer was added."
+        ]
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "9313139336898",
+      "file": "9313139336898.json",
+      "ok": false,
+      "httpStatus": 502,
+      "body": {
+        "status": "failed",
+        "request_id": "test-9313139336898",
+        "product_id": "9313139336898",
+        "ean": "9313139336898",
+        "error": {
+          "code": "generation_failed",
+          "message": "Copy failed quality checks after 2 attempt(s): banned_word"
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.7",
+        "attempts": 2,
+        "durationMs": 12953,
+        "usage": {
+          "inputTokens": 13974,
+          "outputTokens": 1019,
+          "costUsd": 0.0143
+        },
+        "failedChecks": [
+          "banned_word"
+        ],
+        "retriedBecause": [
+          "disclaimer_figure"
+        ],
+        "warnings": [
+          "vague_benefit"
+        ],
+        "stats": {
+          "headingChars": 37,
+          "shortWords": 44,
+          "shortChars": 252,
+          "longWords": 244,
+          "longChars": 1458,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "user manual",
+            "id": "DoO26D4q5rbUOFSHpubk20",
+            "ok": true,
+            "reason": null,
+            "pages": 12,
+            "bytes": 2701485,
+            "chars": 12530,
+            "ms": 3492
+          }
+        ],
+        "raw": [
+          {
+            "attempt": 1,
+            "errors": [
+              "Disclaimer 1 uses 1, 4, which is not in its source passage. Use only figures the passage states."
+            ],
+            "reply": "{\"npr_heading\":\"Sunbeam Lower Back Heating Pad – Grey\",\"npr_short_copy\":\"Long hours at a desk can leave you reaching for a heat pack. This lower back heating pad wraps around your waist with an adjustable strap, flexible contact and five digital heat settings, so you can enjoy focused warmth while working or relaxing.\",\"npr_long_copy\":\"Sitting at a desk or relaxing on the couch can make it difficult to keep a heat pack in place. This lower back heating pad wraps around your waist with an adjustable strap, helping focused warmth stay where you need it while you work on a laptop or unwind.\\n\\nThe flexible design improves body contact, while five heat settings let you choose the warmth that feels right for the moment. Focused heat suits lower back use, and the multipurpose design gives you another option when you want warmth while sitting or lying down. It heats up in 90 seconds, so you won't be waiting long to get started.\\n\\nA digital controller makes changing settings simple, with detachable controls for washing. Intellisense Technology helps prevent overheating and maintains a consistent temperature during use. The auto-off function cuts power after three hours of continuous use, while the 2.2m cord gives you room to settle into your preferred seat. This pad uses 110W and is made from polyester.\\n\\nWhen it needs freshening up, the machine-washable fabric makes care simpler once you detach the controller. This grey heating pad measures 370mm wide by 370mm high, weighs 0.95kg and comes with a two-year warranty. It's a useful fit for a home office chair, a lounge seat or a quiet evening on the couch.\",\"disclaimers\":\"(1) For continuous or prolonged use, select heat settings 1-4 only. Setting 5 is for rapid heat-up only.\",\"disclaimer_evidence\":[{\"n\":1,\"claim\":\"Five heat settings let you choose the warmth that feels right for the moment.\",\"quote\":\"Setting 1-4 are for prolonged use; Setting 5 is for rapid heat up only\"}],\"review_notes\":[]}"
+          },
+          {
+            "attempt": 2,
+            "errors": [
+              "The reply uses the banned word \"extended\". Use the approved replacement."
+            ],
+            "reply": "{\"npr_heading\":\"Sunbeam Lower Back Heating Pad – Grey\",\"npr_short_copy\":\"Long hours at a desk or relaxing on the sofa can leave your lower back wanting warmth. This heating pad delivers focused heat with five settings, a flexible shape and an adjustable strap, while its soft polyester fabric can be machine washed after use.\",\"npr_long_copy\":\"Cold evenings or long stretches at a desk can make it difficult to keep warmth where you want it. This Sunbeam Lower Back Heating Pad wraps around your waist with an adjustable strap, helping hold focused heat against your lower back while you work on a laptop or relax on the sofa.\\n\\nFive heat settings let you choose the warmth that fits the moment, while the digital controller keeps changes straightforward. Its 110W heating system warms up in 90 seconds, so you won't be waiting long before settling in. The pad flexes to improve body contact, helping warmth follow your shape rather than sitting flat away from your waist.\\n\\nTemperature sensing technology helps maintain a consistent temperature while you're using this pad, and the auto-off function cuts power after three hours of continuous use. The detachable controller can be removed before cleaning, and the 2.2m cord gives you room to position yourself near a power outlet. The soft polyester fabric adds a comfortable layer between this pad and your clothing.\\n\\nWhen it's time to freshen this pad, you can machine wash it, making it easier to keep ready for regular use. The grey finish suits a home office, bedroom or living room, while the 370mm width and 370mm height create a compact shape for targeted coverage. A two-year warranty is included, making this a useful choice for anyone who wants focused warmth while reading, working or watching TV on a cool evening.\",\"disclaimers\":\"(1) Setting 5 is for rapid heat up only and isn't for continuous or prolonged use.\\n(2) If the appliance is set and used at a temperature higher than those indicated for continuous usage over an extended period of time, the user may suffer from skin burns or heat-related injuries.\",\"disclaimer_evidence\":[{\"n\":1,\"claim\":\"Five heat settings let you choose the warmth that fits the moment, while the digital controller keeps changes straightforward.\",\"quote\":\"Setting 1-4 are for prolonged use; Setting 5 is for rapid heat up only\"},{\"n\":2,\"claim\":\"Temperature sensing technology helps maintain a consistent temperature while you're using this pad, and the auto-off function cuts power after three hours of continuous use.\",\"quote\":\"When operating the appliance over a prolonged period of time DO NOT exceed the temperature levels stated for continuous usage. If the appliance is set and used at a temperature higher than those indicated for continuous usage over an extended period of time, the user may suffer from skin burns or heat-related injuries.\"}],\"review_notes\":[]}"
+          }
+        ]
+      },
+      "knownIssues": [
+        "UNRESOLVED, waiting on MM: Nexus says 110 W, the old Perplexity Project output said 75 W. Neither is confirmed."
+      ]
+    },
+    {
+      "ean": "9343415008133",
+      "file": "9343415008133.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9343415008133",
+        "product_id": "9343415008133",
+        "ean": "9343415008133",
+        "prompt_version": "v0.7",
+        "generated_at": "2026-11-10T11:46:23.617Z",
+        "copy": {
+          "npr_heading": "Schweigen Silent Undermount Rangehood 1200mm – Black Steel",
+          "npr_short_copy": "Cooking smells and steam can linger after dinner. This ducted rangehood gives you five speed levels, soft-touch controls and LED lighting, while dishwasher-safe mesh filters make regular cleaning easier in a concealed, matte black design.",
+          "npr_long_copy": "Steam, smoke and cooking smells can quickly fill a busy kitchen, especially when several burners are in use. This 1200mm ducted undermount rangehood fits discreetly into cabinetry, helping keep the cooking area clearer while its matte black finish suits modern kitchens. It’s made for home cooks who want extraction without a prominent canopy.\n\nThe Isodrive SE motor provides up to 3200m³/hr airflow when correctly installed, giving you strong extraction for everyday cooking and larger meals. Five speed levels let you choose a lower setting for simmering or more airflow for heavier cooking. The 15-minute auto shut-off timer keeps this running after you’ve finished, helping clear remaining vapours while you move on to serving and cleaning.\n\nSoft-touch controls and a digital display make it easy to select a fan speed or switch on the LED lighting while you’re cooking. The stainless steel black mesh filters capture grease during use and can go in the dishwasher, so filter maintenance doesn’t have to mean hand-washing after every meal. This ducted model doesn’t include a recirculation option.\n\nSchweigen SteelFlex™ is included, supporting installation with the external motor system. This rangehood measures 1180mm wide, 295mm deep and 285mm high, and weighs 12kg. It includes a 10-year motor warranty, five-year canopy warranty, lifetime filter warranty and lifetime GU10 LED globe warranty. Picture a wide cooktop handling dinner while this stays tucked into the cabinetry above.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.7",
+        "attempts": 2,
+        "durationMs": 15335,
+        "usage": {
+          "inputTokens": 22667,
+          "outputTokens": 1504,
+          "costUsd": 0.01239
+        },
+        "failedChecks": [
+          "sup_position",
+          "disclaimer_figure"
+        ],
+        "retriedBecause": [
+          "disclaimer_figure"
+        ],
+        "warnings": [
+          "disclaimers_dropped"
+        ],
+        "stats": {
+          "headingChars": 58,
+          "shortWords": 35,
+          "shortChars": 238,
+          "longWords": 229,
+          "longChars": 1490,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "brochure",
+            "id": "UIjuCCu3CMI1yAPktSQsyw",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 218452,
+            "chars": 1862,
+            "ms": 1929
+          },
+          {
+            "kind": "brochure",
+            "id": "K7enyTPrbHYPD6BElRzxUM",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 2404333,
+            "chars": 4797,
+            "ms": 3027
+          },
+          {
+            "kind": "user manual",
+            "id": "59TIpSdaXJZpA19l7Cgwg0",
+            "ok": true,
+            "reason": null,
+            "pages": 28,
+            "bytes": 4164856,
+            "chars": 26182,
+            "ms": 3845
+          }
+        ],
+        "raw": [
+          {
+            "attempt": 1,
+            "errors": [
+              "Disclaimer 1 uses 4, which is not in its source passage. Use only figures the passage states."
+            ],
+            "reply": "{\"npr_heading\":\"Schweigen Silent Undermount Rangehood 120cm – Black Steel\",\"npr_short_copy\":\"Cooking smells and steam can linger after dinner, especially across a wide cooktop. This ducted rangehood clears the air with five speed levels, soft-touch controls, LED lighting and a 15-minute auto shut-off timer, while dishwasher-safe mesh filters make regular cleaning easier.\",\"npr_long_copy\":\"Steam, smoke and cooking smells can quickly spread through an open kitchen. This 120cm ducted undermount rangehood sits discreetly within cabinetry, giving wide cooktops the extraction support they need while keeping a matte Black Steel finish in view only when you want it. Its external Isodrive® SE motor provides up to 3200m3/hr airflow when correctly installed and ducted.\\n\\nFive speed levels let you match extraction to the meal, from simmering to heavier cooking. Soft-touch controls and a digital display make it easy to select the setting and operate the LED lighting while you’re cooking. When dinner’s finished, the 15-minute auto shut-off timer keeps the rangehood running as you clear the kitchen, then switches it off without another trip back to the controls.\\n\\nThe ducted design sends extracted air outside rather than recirculating it. Stainless steel black mesh filters capture grease during cooking and can go in the dishwasher, so routine filter cleaning doesn’t require hand washing. The included Schweigen SteelFlex™ ducting helps complete the installation, while two 3W LED lights brighten the cooking area.\\n\\nThis rangehood measures 1180mm wide, 295mm deep and 285mm high, making it suitable for discreet mounting into cabinetry with limited space. It includes a 10-year motor warranty, five-year canopy warranty, lifetime filter warranty and lifetime GU10 LED globe warranty. It’s a strong fit for a modern kitchen where a broad cooktop, concealed installation and a dark finish belong together.\",\"disclaimers\":\"(1) Although our information and marketing states the term ‘Silent’ for certain models, when a model with the larger motored Isodrive® System is operated at the higher speed/s air movement may be heard. For example, while operating on speed 4 & 5 (For 5 speed models) the rangehood may be audible due to the large amount of air movement moving through the filter.\\n(2) Please make sure that the rangehood and motor have been installed as per the corresponding instruction guides in order for optimal performance.\",\"disclaimer_evidence\":[{\"n\":1,\"claim\":\"This 120cm ducted undermount rangehood sits discreetly within cabinetry, giving wide cooktops the extraction support they need while keeping a matte Black Steel finish in view only when you want it.\",\"quote\":\"Although our information and marketing states the term ‘Silent’ for certain models, the following applies to various models that are sold with certain Isodrive® Systems and baffle filters. When a model with the larger motored Isodrive® System is operated at the higher speed/s air movement may be heard. For example, while operating on speed 4 & 5 (For 5 speed models) the rangehood may be audible due to the large amount of air movement moving through the filter.\"},{\"n\":2,\"claim\":\"Its external Isodrive® SE motor provides up to 3200m3/hr airflow when correctly installed and ducted.\",\"quote\":\"* Please make sure that the rangehood and motor have been installed as per the corresponding instruction guides in order for optimal performance (the Isodrive® Motor Manual can be found with the Isodrive® Motor, or online at schweigen.com.au).\"}],\"review_notes\":[]}"
+          },
+          {
+            "attempt": 2,
+            "errors": [
+              "Put each <sup> tag at the end of its sentence, before the full stop, for example: fade-free power <sup>1</sup>.",
+              "Disclaimer 1 uses 4, which is not in its source passage. Use only figures the passage states."
+            ],
+            "reply": "{\"npr_heading\":\"Schweigen Silent Undermount Rangehood 1200mm – Black Steel\",\"npr_short_copy\":\"Cooking smells and steam can linger after dinner. This ducted rangehood gives you five speed levels, soft-touch controls and LED lighting, while dishwasher-safe mesh filters make regular cleaning easier in a concealed, matte black design.\",\"npr_long_copy\":\"Steam, smoke and cooking smells can quickly fill a busy kitchen, especially when several burners are in use. This 1200mm ducted undermount rangehood fits discreetly into cabinetry, helping keep the cooking area clearer while its matte black finish suits modern kitchens. It’s made for home cooks who want extraction without a prominent canopy.\\n\\nThe Isodrive SE motor provides up to 3200m³/hr airflow when correctly installed, giving you strong extraction for everyday cooking and larger meals. Five speed levels let you choose a lower setting for simmering or more airflow for heavier cooking. The 15-minute auto shut-off timer keeps this running after you’ve finished, helping clear remaining vapours while you move on to serving and cleaning.\\n\\nSoft-touch controls and a digital display make it easy to select a fan speed or switch on the LED lighting while you’re cooking. The stainless steel black mesh filters capture grease during use and can go in the dishwasher, so filter maintenance doesn’t have to mean hand-washing after every meal. This ducted model doesn’t include a recirculation option.\\n\\nSchweigen SteelFlex™ is included, supporting installation with the external motor system. This rangehood measures 1180mm wide, 295mm deep and 285mm high, and weighs 12kg. It includes a 10-year motor warranty, five-year canopy warranty, lifetime filter warranty and lifetime GU10 LED globe warranty. Picture a wide cooktop handling dinner while this stays tucked into the cabinetry above.\",\"disclaimers\":\"(1) While operating on speed 4 & 5 (For 5 speed models) the rangehood may be audible due to the large amount of air movement moving through the filter.\\n(2) Please make sure that the rangehood and motor have been installed as per the corresponding instruction guides in order for optimal performance (the Isodrive® Motor Manual can be found with the Isodrive® Motor, or online at schweigen.com.au).\",\"disclaimer_evidence\":[{\"n\":1,\"claim\":\"The Isodrive SE motor provides up to 3200m³/hr airflow when correctly installed, giving you strong extraction for everyday cooking and larger meals.\",\"quote\":\"Although our information and marketing states the term ‘Silent’ for certain models, the following applies to various models that are sold with certain Isodrive® Systems and baffle filters. When a model with the larger motored Isodrive® System is operated at the higher speed/s air movement may be heard. For example, while operating on speed 4 & 5 (For 5 speed models) the rangehood may be audible due to the large amount of air movement moving through the filter.\"},{\"n\":2,\"claim\":\"The Isodrive SE motor provides up to 3200m³/hr airflow when correctly installed, giving you strong extraction for everyday cooking and larger meals.\",\"quote\":\"* Please make sure that the rangehood and motor have been installed as per the corresponding instruction guides in order for optimal performance (the Isodrive® Motor Manual can be found with the Isodrive® Motor, or online at schweigen.com.au).\"}],\"review_notes\":[] }"
+          }
+        ],
+        "reviewNotes": [
+          "disclaimers: the drafted disclaimers could not be matched to a source, so none were returned. Check the long copy for claims that need one."
+        ]
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "9343415010228",
+      "file": "9343415010228.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9343415010228",
+        "product_id": "9343415010228",
+        "ean": "9343415010228",
+        "prompt_version": "v0.7",
+        "generated_at": "2026-11-10T11:46:38.356Z",
+        "copy": {
+          "npr_heading": "Schweigen Silent Inline Motor Undermount Rangehood 120cm – Black Steel",
+          "npr_short_copy": "Cooking several dishes at once can leave a large cooktop feeling smoky and cluttered. This 120cm ducted rangehood keeps extraction discreet in 300mm-deep cabinetry, with five speeds, LED lighting, soft-touch controls and dishwasher-safe mesh filters for easier cooking and clean-up.",
+          "npr_long_copy": "Large meals can quickly fill a kitchen with cooking vapours, especially when several burners are working at once. This 120cm ducted undermount rangehood keeps extraction out of sight in 300mm-deep cabinetry, making it a neat fit for modern kitchens with a large cooktop or island bench.\n\nThe Isodrive® SPINL motor system provides powerful, quiet extraction when properly ducted and installed, while five speed levels let you match airflow to simmering, everyday cooking or heavier frying. When dinner's finished, the 15-minute auto shut-off timer keeps this running while remaining vapours clear, then switches it off without another trip to the controls.\n\nSoft-touch controls and a digital display make it easy to select a setting while you're cooking. LED lighting helps illuminate the cooktop, and the black mesh filters are dishwasher-safe, so regular cleaning doesn't need to become a separate kitchen job. This rangehood is ducted only and doesn't include a recirculation option.\n\nThe Black Steel finish adds a dark, understated look beneath overhead joinery, while the included Schweigen SteelFlex™ supports the ducted installation. Warranty coverage includes 10 years for the motor, five years for the canopy, and lifetime coverage for the filters and GU10 LED globe. It's made for busy home cooks who want a broad extraction zone that stays discreet during a weekend dinner with several pans on the go. Silent refers to the rangehood system, although air movement may be heard at higher speeds.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.7",
+        "attempts": 2,
+        "durationMs": 14738,
+        "usage": {
+          "inputTokens": 18695,
+          "outputTokens": 1434,
+          "costUsd": 0.01022
+        },
+        "failedChecks": [
+          "sup_spacing",
+          "sup_position",
+          "disclaimer_figure"
+        ],
+        "retriedBecause": [
+          "sup_position",
+          "disclaimer_figure"
+        ],
+        "warnings": [
+          "disclaimers_dropped"
+        ],
+        "stats": {
+          "headingChars": 70,
+          "shortWords": 40,
+          "shortChars": 282,
+          "longWords": 235,
+          "longChars": 1503,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "brochure",
+            "id": "17Mumdhh9b1lxrR8SlsBv0",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 218452,
+            "chars": 1862,
+            "ms": 2578
+          },
+          {
+            "kind": "user manual",
+            "id": "OAvCEK8EbpbzEipUcfcLdg",
+            "ok": true,
+            "reason": null,
+            "pages": 28,
+            "bytes": 4164856,
+            "chars": 26182,
+            "ms": 4156
+          }
+        ],
+        "raw": [
+          {
+            "attempt": 1,
+            "errors": [
+              "Put each <sup> tag at the end of its sentence, before the full stop, for example: fade-free power <sup>1</sup>.",
+              "Disclaimer 1 uses 4, which is not in its source passage. Use only figures the passage states."
+            ],
+            "reply": "{\"npr_heading\":\"Schweigen Silent Inline Motor Undermount Rangehood 120cm – Black Steel\",\"npr_short_copy\":\"Cooking several dishes at once can quickly fill a kitchen with steam and odours. This 120cm ducted rangehood uses five fan speeds, soft-touch controls and LED lighting to match extraction to each meal, while dishwasher-safe mesh filters make regular cleaning simpler.\",\"npr_long_copy\":\"Steam and cooking odours can build up quickly when you're using a large cooktop or preparing several dishes at once. This 120cm ducted undermount rangehood keeps extraction discreet by fitting into 300mm-deep cabinetry, making it a strong match for kitchens where overhead appliances need to stay out of sight.\\n\\nFive speed levels let you choose a lower setting for lighter cooking or increase airflow for heavier frying and cooking. The Isodrive® SPINL motor supports the ducted system, while the included Schweigen SteelFlex™ helps connect the rangehood as part of the installation. Its black steel finish blends into contemporary cabinetry and dark kitchen interiors.\\n\\nSoft-touch controls and a digital display make it simple to select a fan speed or switch on the LED lighting while you're cooking. The 15-minute auto shut-off timer keeps the rangehood running after you finish, helping clear remaining cooking vapours without needing to return to the controls. Black mesh filters capture grease, and they're dishwasher-safe for easier maintenance.\\n\\nThis rangehood includes a 10-year motor warranty, five-year canopy warranty, lifetime filter warranty and lifetime GU10 LED globe warranty. At 1180mm wide, 285mm high and 295mm deep, it suits large cooktops and island benches where a concealed installation is preferred. After dinner, the controls and lighting stay within easy reach while the filters can go into the dishwasher for cleaning.\",\"disclaimers\":\"(1) Although our information and marketing states the term ‘Silent’ for certain models, the following applies to various models that are sold with certain Isodrive® Systems and baffle filters. When a model with the larger motored Isodrive® System is operated at the higher speed/s air movement may be heard. For example, while operating on speed 4 & 5 (For 5 speed models) the rangehood may be audible due to the large amount of air movement moving through the filter.\\n(2) Please make sure that the rangehood and motor have been installed as per the corresponding instruction guides in order for optimal performance (the Isodrive® Motor Manual can be found with the Isodrive® Motor, or online at schweigen.com.au).\",\"disclaimer_evidence\":[{\"n\":1,\"claim\":\"Five speed levels let you choose a lower setting for lighter cooking or increase airflow for heavier frying and cooking.\",\"quote\":\"Although our information and marketing states the term ‘Silent’ for certain models, the following applies to various models that are sold with certain Isodrive® Systems and baffle filters. When a model with the larger motored Isodrive® System is operated at the higher speed/s air movement may be heard. For example, while operating on speed 4 & 5 (For 5 speed models) the rangehood may be audible due to the large amount of air movement moving through the filter.\"},{\"n\":2,\"claim\":\"Five speed levels let you choose a lower setting for lighter cooking or increase airflow for heavier frying and cooking.\",\"quote\":\"Please make sure that the rangehood and motor have been installed as per the corresponding instruction guides in order for optimal performance (the Isodrive® Motor Manual can be found with the Isodrive® Motor, or online at schweigen.com.au).\"}],\"review_notes\":[]}\n"
+          },
+          {
+            "attempt": 2,
+            "errors": [
+              "Leave a space before every <sup> tag, for example: fade-free power <sup>1</sup>.",
+              "Put each <sup> tag at the end of its sentence, before the full stop, for example: fade-free power <sup>1</sup>.",
+              "Disclaimer 1 uses 4, which is not in its source passage. Use only figures the passage states."
+            ],
+            "reply": "{\"npr_heading\":\"Schweigen Silent Inline Motor Undermount Rangehood 120cm – Black Steel\",\"npr_short_copy\":\"Cooking several dishes at once can leave a large cooktop feeling smoky and cluttered. This 120cm ducted rangehood keeps extraction discreet in 300mm-deep cabinetry, with five speeds, LED lighting, soft-touch controls and dishwasher-safe mesh filters for easier cooking and clean-up.\",\"npr_long_copy\":\"Large meals can quickly fill a kitchen with cooking vapours, especially when several burners are working at once. This 120cm ducted undermount rangehood keeps extraction out of sight in 300mm-deep cabinetry, making it a neat fit for modern kitchens with a large cooktop or island bench.\\n\\nThe Isodrive® SPINL motor system provides powerful, quiet extraction when properly ducted and installed, while five speed levels let you match airflow to simmering, everyday cooking or heavier frying. When dinner's finished, the 15-minute auto shut-off timer keeps this running while remaining vapours clear, then switches it off without another trip to the controls.\\n\\nSoft-touch controls and a digital display make it easy to select a setting while you're cooking. LED lighting helps illuminate the cooktop, and the black mesh filters are dishwasher-safe, so regular cleaning doesn't need to become a separate kitchen job. This rangehood is ducted only and doesn't include a recirculation option.\\n\\nThe Black Steel finish adds a dark, understated look beneath overhead joinery, while the included Schweigen SteelFlex™ supports the ducted installation. Warranty coverage includes 10 years for the motor, five years for the canopy, and lifetime coverage for the filters and GU10 LED globe. It's made for busy home cooks who want a broad extraction zone that stays discreet during a weekend dinner with several pans on the go. Silent refers to the rangehood system, although air movement may be heard at higher speeds.<sup>1</sup>\",\"disclaimers\":\"(1) Although our information and marketing states the term ‘Silent’ for certain models, the following applies to various models that are sold with certain Isodrive® Systems and baffle filters. When a model with the larger motored Isodrive® System is operated at the higher speed/s air movement may be heard. For example, while operating on speed 4 & 5 (For 5 speed models) the rangehood may be audible due to the large amount of air movement moving through the filter.\",\"disclaimer_evidence\":[{\"n\":1,\"claim\":\"Silent refers to the rangehood system, although air movement may be heard at higher speeds.\",\"quote\":\"Although our information and marketing states the term ‘Silent’ for certain models, the following applies to various models that are sold with certain Isodrive® Systems and baffle filters. When a model with the larger motored Isodrive® System is operated at the higher speed/s air movement may be heard. For example, while operating on speed 4 & 5 (For 5 speed models) the rangehood may be audible due to the large amount of air movement moving through the filter.\"}],\"review_notes\":[]}"
+          }
+        ],
+        "reviewNotes": [
+          "disclaimers: the drafted disclaimers could not be matched to a source, so none were returned. Check the long copy for claims that need one."
+        ]
+      },
+      "knownIssues": []
+    }
+  ]
+}

@@ -86,6 +86,11 @@ async function main() {
       const d = m.documents.map((x) => (x.ok ? `${x.kind} ok (${x.pages}p, ${x.chars}c)` : `${x.kind} SKIPPED (${x.reason})`));
       console.log(`   documents: ${d.join("; ")}`);
     }
+    if (m.sources) {
+      const d = (m.sources.report || []).map((x) => `${x.kind} ${x.ok ? "ok" : "SKIPPED (" + x.reason + ")"}`);
+      console.log(`   official sources: used ${m.sources.used}${m.sources.skipped ? ", " + m.sources.skipped : ""}${d.length ? " | " + d.join("; ") : ""}`);
+    }
+    if (m.reviewNotes && m.reviewNotes.length) console.log(`   review notes: ${m.reviewNotes.join(" | ")}`);
     if (ok && out.body.copy.disclaimers) console.log(`   disclaimers: ${out.body.copy.disclaimers.replace(/\n/g, " | ")}`);
     if (m.retailerSources.length) console.log(`   RETAILER SOURCES SEEN: ${m.retailerSources.join(", ")}`);
     for (const note of known[ean] || []) console.log(`   KNOWN DATA ISSUE: ${note}`);
@@ -118,7 +123,7 @@ async function main() {
   );
   console.log(`Saved ${path.relative(__dirname, outFile)}`);
 
-  process.exitCode = passed === results.length ? 0 : 1;
+  process.exit(passed === results.length ? 0 : 1);
 }
 
 main();

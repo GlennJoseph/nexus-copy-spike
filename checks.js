@@ -24,7 +24,7 @@ const LIMITS = {
   longWordsMin: 200, // warning only
   paragraphsMin: 4,
   paragraphsMax: 5,
-  disclaimersChars: 10000, // proposed safety ceiling, NOT yet agreed with MM
+  disclaimersChars: 65535, // confirmed Nexus limit for the disclaimers field (10 Nov 2026)
 };
 
 const FIELDS = ["npr_heading", "npr_short_copy", "npr_long_copy", "disclaimers"];
@@ -61,7 +61,7 @@ const US_SPELLINGS =
 // Copy must state facts directly, never talk about where they came from
 // ("mentioned in the product information", "the listing says", "according to").
 const SOURCE_TALK =
-  /\b(?:product (?:information|data|details|listing|description)|(?:mentioned|listed|stated|noted|described) (?:in|on|by)|according to|as (?:listed|stated|mentioned|noted)|the (?:listing|manufacturer'?s? (?:information|data)|source) (?:says|states|lists|shows))\b/i;
+  /\b(?:product (?:information|data|details|listing|description)|(?:mentioned|listed|stated|noted|described) (?:in|on|by)|according to (?:the )?(?:product|listing|data|information|manufacturer|specs?|specifications?|source|brochure|manual)|as (?:listed|stated|mentioned|noted)|the (?:listing|manufacturer'?s? (?:information|data)|source) (?:says|states|lists|shows))\b/i;
 
 // Vague benefit words. NPR wants benefits tied to a real everyday situation,
 // so these are flagged (warning only, they are sometimes fine).
@@ -197,23 +197,54 @@ function extractJson(text) {
 // ---------------------------------------------------------------------
 const normText = (t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
+const compact = (t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, "");
+
 // True when the disclaimer wording is found in the document text. PDF text
-// extraction can break lines and hyphenate words, so a near-exact match is fine:
-// 85% of the disclaimer's three-word runs must appear in the document.
+// extraction can break lines, hyphenate words and drop or add spaces ("AS/NZS 2040"
+// or "AS/NZS2040"), so spacing is ignored and a near-exact match is fine:
+// 85% of the passage's three-word runs must appear in the document.
 function isTraceable(disclaimer, docNorm) {
   const d = normText(disclaimer);
   if (!d) return false;
   if (docNorm.includes(d)) return true;
+  const docCompact = docNorm.replace(/ /g, "");
+  if (docCompact.includes(d.replace(/ /g, ""))) return true;
   const words = d.split(" ");
   if (words.length < 4) return false;
   let hit = 0;
   let total = 0;
   for (let i = 0; i + 3 <= words.length; i++) {
     total++;
-    if (docNorm.includes(words.slice(i, i + 3).join(" "))) hit++;
+    if (docCompact.includes(words.slice(i, i + 3).join(""))) hit++;
   }
   return total > 0 && hit / total >= 0.85;
 }
+
+// The first three-word run of the passage that is not in the document, for error messages.
+function firstMissingRun(passage, docNorm) {
+  const docCompact = docNorm.replace(/ /g, "");
+  const words = normText(passage).split(" ");
+  for (let i = 0; i + 3 <= words.length; i++) {
+    if (!docCompact.includes(words.slice(i, i + 3).join(""))) return words.slice(i, i + 3).join(" ");
+  }
+  return "";
+}
+
+// Short copy must not carry claims that need a disclaimer.
+const SHORT_CLAIM = /\d(?:[.,]\d+)?\s?%|\b(?:tested|certified|accredited|independently|clinically|proven|laboratory)\b/i;
+// Statistics that need a disclaimer in long copy: percentages and "N times more/less/faster".
+const STAT_CLAIM = /\d(?:[.,]\d+)?\s?%|\b\d+(?:\.\d+)?\s?(?:x|times)\s+(?:more|less|faster|longer|quieter|stronger)\b/i;
+// Certification and test claims in long copy also need a disclaimer. Energy and WELS ratings do not.
+const CERT_CLAIM = /\b(?:certified|certification|accredited|independently tested|laboratory[- ]tested|clinically (?:tested|proven)|approved by)\b/i;
+const RATING_WORDS = /\b(?:energy|wels|star rating|\d[- ]star)\b/i;
+// "100% cotton" is a material, not a performance claim.
+const MATERIAL_PERCENT = /\d\s?%\s+(?:\w+\s+){0,2}(?:cotton|polyester|wool|nylon|bamboo|linen|silk|leather|recycled|stainless|cashmere|acrylic|viscose|rayon|microfib\w*|fib(?:re|er)s?|merino|down|feather)\b/i;
+
+// Common words that do not link a claim to its disclaimer.
+const CLAIM_STOP = new Set("this that with from your when while have will more than them their they what into over each every also even make makes help helps keep gives give lets easy need needs after before where there these those about only just such most some very much".split(" "));
+
+// Words that assert a test or approval. A drafted disclaimer may use one only if its source passage does.
+const CLAIM_WORDS = /\b(?:tested|testing|certified|certification|accredited|independent(?:ly)?|laborator(?:y|ies)|approved|compliant|complies|proven|clinically)\b/gi;
 
 // "(1) Footnote text" lines (NPR format). Returns { entries, problems }.
 function parseDisclaimers(text) {
@@ -418,20 +449,26 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
   if (/\*\*|^#{1,6}\s/m.test(all)) {
     err("markdown", "The text contains markdown (** or #). Use plain text only.");
   }
+  // A disclaimer may carry a word from its own source passage (the manufacturer's wording).
+  const quotesText = (Array.isArray(copy.disclaimer_evidence) ? copy.disclaimer_evidence : [])
+    .map((x) => (x && typeof x.quote === "string" ? x.quote : ""))
+    .join("\n");
+  const copyOnly = [heading, short, long].join("\n");
+  const scan = (re) => re.test(copyOnly) || (re.test(disclaimers) && !re.test(quotesText));
   for (const [label, re] of BANNED_WORDS) {
-    if (re.test(all)) {
+    if (scan(re)) {
       err("banned_word", `The reply uses the banned word "${label}". Use the approved replacement.`);
     }
   }
   const source = String(sourceText).toLowerCase();
   for (const [label, re] of BANNED_CLAIMS) {
-    const m = all.match(re);
+    const m = copyOnly.match(re) || (disclaimers.match(re) && !re.test(quotesText) ? disclaimers.match(re) : null);
     if (m && !source.includes(m[0].toLowerCase())) {
       err("banned_claim", `The reply makes an unsupported claim (${label}). Remove it.`);
     }
   }
 
-  const talk = all.match(SOURCE_TALK);
+  const talk = [heading, short, long].join("\n").match(SOURCE_TALK); // disclaimers may quote their source
   if (talk) {
     err(
       "source_talk",
@@ -471,7 +508,7 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
   }
   // The tag sits at the end of the sentence, before the full stop.
   {
-    const bad = [...long.matchAll(/<sup>\s*\d+\s*<\/sup>(?:\s*<sup>\s*\d+\s*<\/sup>)*(?!\s*[.!?])/gi)];
+    const bad = [...long.matchAll(/(?:<sup>\s*\d+\s*<\/sup>[ \t]*)+/gi)].filter((m) => !/^[.!?]/.test(long.slice(m.index + m[0].length)));
     if (bad.length) {
       err("sup_position", "Put each <sup> tag at the end of its sentence, before the full stop, for example: fade-free power <sup>1</sup>.");
     }
@@ -493,14 +530,80 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
       if (used.join(",") !== listed.join(",")) {
         err("sup_mismatch", `The <sup> numbers in npr_long_copy (${used.join(", ") || "none"}) must match the numbered disclaimers (${listed.join(", ")}).`);
       }
+      // Drafted wording is allowed, but each disclaimer must carry the exact source passage
+      // it rests on, and nothing in the wording may go beyond that passage.
+      const evidence = Array.isArray(copy.disclaimer_evidence) ? copy.disclaimer_evidence : [];
       for (const e of entries) {
-        if (!isTraceable(e.text, docNorm)) {
+        const item = evidence.find((x) => x && Number(x.n) === e.n && typeof x.quote === "string" && x.quote.trim());
+        if (!item) {
           err(
-            "disclaimer_untraceable",
-            `Disclaimer ${e.n} is not worded like any footnote in the documents. Copy a footnote exactly as written, or remove this disclaimer and its <sup> tag.`
+            "evidence_missing",
+            `Disclaimer ${e.n} has no source passage. Add {"n": ${e.n}, "quote": "..."} to disclaimer_evidence with the exact passage from DISCLAIMER SOURCES, or remove this disclaimer and its <sup> tag.`
+          );
+          continue;
+        }
+        if (!isTraceable(item.quote, docNorm)) {
+          err(
+            "evidence_untraceable",
+            `The source passage for disclaimer ${e.n} is not in the documents (the words "${firstMissingRun(item.quote, docNorm)}" were not found). Copy the passage exactly as written, or remove this disclaimer and its <sup> tag.`
+          );
+          continue;
+        }
+        const q = ` ${normText(item.quote)} `;
+        const cores = (t) => (String(t).match(/\d+(?:[.,]\d+)*/g) || []).map((f) => f.replace(/[.,]/g, ""));
+        const inQuote = new Set(cores(item.quote));
+        const stray = [...new Set(cores(e.text))].filter((f) => !inQuote.has(f));
+        if (stray.length) {
+          err(
+            "disclaimer_figure",
+            `Disclaimer ${e.n} uses ${stray.join(", ")}, which is not in its source passage. Use only figures the passage states.`
+          );
+        }
+        // The sentence a disclaimer is attached to must be about what the disclaimer says.
+        if (typeof item.claim === "string" && item.claim.trim()) {
+          const key = (t) => new Set((String(t).toLowerCase().match(/[a-z]{4,}/g) || []).filter((w) => !CLAIM_STOP.has(w)).map((w) => w.slice(0, 5)));
+          const have = key(`${e.text} ${item.quote}`);
+          const related = [...key(item.claim)].some((w) => have.has(w));
+          if (!related) {
+            err(
+              "claim_unrelated",
+              `Disclaimer ${e.n} is attached to a sentence that is not about what it says. Attach it to the sentence that makes the claim it qualifies. If the copy does not make that claim, remove the disclaimer.`
+            );
+          }
+        }
+        const claimWords = [...new Set((e.text.toLowerCase().match(CLAIM_WORDS) || []).map((w) => normText(w)))];
+        const strayWords = claimWords.filter((w) => !q.includes(` ${w} `));
+        if (strayWords.length) {
+          err(
+            "disclaimer_claim_word",
+            `Disclaimer ${e.n} says "${strayWords.join('", "')}", which its source passage does not say. Remove it.`
           );
         }
       }
+    }
+  }
+
+  // Short copy stays general. Claims that need a disclaimer belong in the long copy, or nowhere.
+  if (SHORT_CLAIM.test(short)) {
+    err(
+      "short_claim",
+      "npr_short_copy contains a claim that needs a disclaimer (a percentage, test result or certification). Say it as a general feature or leave it out."
+    );
+  }
+  // A statistic in the long copy with no tag: add a disclaimer if a source supports one, otherwise narrow or remove it.
+  {
+    const bare = long
+      .split(/(?<=[.!?])\s+/)
+      .filter(
+        (sent) =>
+          !/<sup>/i.test(sent) &&
+          ((STAT_CLAIM.test(sent) && !MATERIAL_PERCENT.test(sent)) || (CERT_CLAIM.test(sent) && !RATING_WORDS.test(sent)))
+      );
+    if (bare.length) {
+      err(
+        "stat_no_disclaimer",
+        `This sentence states a statistic, test or certification with no disclaimer: "${bare[0].slice(0, 90)}". Add a disclaimer only if DISCLAIMER SOURCES support it. Otherwise narrow the claim to what the product data supports, or remove it.`
+      );
     }
   }
 
@@ -554,6 +657,16 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
 // Sources
 // ---------------------------------------------------------------------
 // urls = list of URLs Perplexity says it used. Returns retailer hostnames found.
+// review_notes from the model: a short list of plain sentences. Anything else is dropped.
+function cleanReviewNotes(value) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((n) => typeof n === "string")
+    .map((n) => n.replace(/\s+/g, " ").replace(/—/g, ",").replace(/\*\*|^#+\s*/g, "").trim().slice(0, 250))
+    .filter(Boolean)
+    .slice(0, 5);
+}
+
 function findRetailerSources(urls = []) {
   const found = new Set();
   for (const u of urls) {
@@ -575,5 +688,6 @@ module.exports = {
   preparePayload,
   extractJson,
   checkCopy,
+  cleanReviewNotes,
   findRetailerSources,
 };

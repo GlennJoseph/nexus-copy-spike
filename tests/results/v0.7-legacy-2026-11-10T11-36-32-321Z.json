@@ -1,0 +1,227 @@
+{
+  "promptVersion": "v0.7",
+  "mode": "legacy",
+  "ranAt": "2026-11-10T11:36:32.321Z",
+  "results": [
+    {
+      "ean": "7333394138015",
+      "file": "7333394138015.json",
+      "ok": false,
+      "httpStatus": 502,
+      "body": {
+        "status": "failed",
+        "request_id": "test-7333394138015",
+        "product_id": "7333394138015",
+        "ean": "7333394138015",
+        "error": {
+          "code": "generation_failed",
+          "message": "Copy failed quality checks after 2 attempt(s): source_talk, stat_no_disclaimer"
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.7",
+        "attempts": 2,
+        "durationMs": 12834,
+        "usage": {
+          "inputTokens": 16942,
+          "outputTokens": 1134,
+          "costUsd": 0.010169999999999998
+        },
+        "failedChecks": [
+          "source_talk",
+          "stat_no_disclaimer"
+        ],
+        "retriedBecause": [
+          "source_talk",
+          "sup_mismatch",
+          "evidence_untraceable",
+          "disclaimer_figure",
+          "stat_no_disclaimer"
+        ],
+        "warnings": [],
+        "stats": {
+          "headingChars": 57,
+          "shortWords": 47,
+          "shortChars": 314,
+          "longWords": 208,
+          "longChars": 1396,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "brochure",
+            "id": "c8MZ3vSNi81evJbuBZmHc0",
+            "ok": false,
+            "reason": "too_large",
+            "pages": 0,
+            "bytes": 0,
+            "chars": 0,
+            "ms": 988
+          },
+          {
+            "kind": "user manual",
+            "id": "YR5oXV4ChmDG48I4uH9vFM",
+            "ok": true,
+            "reason": null,
+            "pages": 60,
+            "bytes": 2251629,
+            "chars": 99999,
+            "ms": 3557
+          }
+        ],
+        "raw": [
+          {
+            "attempt": 1,
+            "errors": [
+              "The copy refers to its source (\"according to\"). State facts directly. Never mention product information, listings or where a fact came from.",
+              "The <sup> numbers in npr_long_copy (none) must match the numbered disclaimers (1, 2).",
+              "The source passage for disclaimer 1 is not in the documents. Copy the passage exactly as written, or remove this disclaimer and its <sup> tag.",
+              "Disclaimer 2 uses 2, which is not in its source passage. Use only figures the passage states.",
+              "This sentence states a statistic, test or certification with no disclaimer: \"Its 52dBA noise level suits laundry areas near living spaces, while the Woolmark Green cer\". Add a disclaimer only if DISCLAIMER SOURCES support it. Otherwise narrow the claim to what the product data supports, or remove it."
+            ],
+            "reply": "{\"npr_heading\":\"AEG 10kg Front Load Washing Machine – White\",\"npr_short_copy\":\"Laundry can quickly pile up in a busy household. This AEG washing machine handles up to 10kg, automatically doses detergent and adjusts settings to suit each load, while steam and Hygiene options help care for everyday clothing. Its 5-star energy and 4.5-star WELS ratings support more considered washing.\",\"npr_long_copy\":\"A full laundry basket can be difficult to keep up with when several people are changing clothes each day. This AEG 10kg front load washing machine gives large households room for bigger loads, while PreciseWash adjusts energy use and settings according to the load weight. That means you won't need to run a partly filled cycle when there's enough washing for a full load.\\n\\nAutoDose measures detergent for each wash, so you won't need to guess how much to add before starting the machine. PowerCare premixes detergent to help it spread through the wash, while ProSteam Technology helps freshen suitable garments between washes. Hygiene options give you another choice when everyday clothing needs a more thorough cycle.\\n\\nChoose from programs including Cotton, Cottons Eco, Delicate, Wool, Rinse and a 20-minute cycle for lightly soiled items. The electronic rotary and touchscreen controls show cycle information on the LCD, while the progress, door lock, load capacity and Add Clothes indicators help you check the wash at a glance. A stainless steel CareDrum supports everyday fabric care, and the variable spin speed lets you adjust the cycle to the load.\\n\\nThis washer has a 10kg capacity, a maximum 1600rpm spin speed, a 5-star energy rating and a 4.5-star WELS water rating. Its 52dBA noise level suits laundry areas near living spaces, while the Woolmark Green certification supports careful wool washing. With a 5-year warranty and White finish, it's a strong fit for a family laundry handling school uniforms, work clothes and towels across the week.\",\"disclaimers\":\"(1) The Cottons Eco program at 40 ºC is recommended for a normally soiled full load of cotton and is the water and energy rating label program in accordance with AS/NZS2040 and AS/NZS6400.\\n(2) Tested for Staphylococcus aureus, Enterococcus faecium, Candida albicans, Pseudomonas aeruginosa and MS2 Bacteriophage in external test performed by Swissatest Testmaterialien AG in 2021 (Test Report No. 202120117).\",\"disclaimer_evidence\":[{\"n\":1,\"quote\":\"The Cottons Eco program at 40 ºC is recommended for a normally soiled full load of cotton and is the water and energy rating label program in accordance with AS/NZS2040 and AS/NZS6400.\"},{\"n\":2,\"quote\":\"Tested for Staphylococcus aureus, Enterococcus faecium, Candida albicans, Pseudomonas aeruginosa and MS2 Bacteriophage in external test performed by Swissatest Testmaterialien AG in 2021 (Test Report No. 202120117).\"}],\"review_notes\":[]}"
+          },
+          {
+            "attempt": 2,
+            "errors": [
+              "The copy refers to its source (\"according to\"). State facts directly. Never mention product information, listings or where a fact came from.",
+              "This sentence states a statistic, test or certification with no disclaimer: \"Steam options can help reduce creasing when clothes come out of the machine, and Hygiene a\". Add a disclaimer only if DISCLAIMER SOURCES support it. Otherwise narrow the claim to what the product data supports, or remove it."
+            ],
+            "reply": "{\"npr_heading\":\"AEG 10kg Front Load Washing Machine - 9000 Series – White\",\"npr_short_copy\":\"Laundry can quickly pile up in a busy household. This 10kg washing machine handles larger loads, while AutoDose adds detergent automatically and PreciseWash adjusts settings to suit each load. Steam, Hygiene and delicate programmes help you care for everyday clothing, with 5-star energy and 4.5-star WELS ratings.\",\"npr_long_copy\":\"Busy households can soon face a full hamper and several loads waiting their turn. This 10kg front load washing machine gives families and growing households room for larger loads, while its 5-star energy and 4.5-star WELS ratings support more considered everyday washing.\\n\\nAutoDose adds detergent automatically, so you won't need to measure it for every wash. PowerCare premix technology combines detergent and water before washing, while PreciseWash adjusts energy use and settings according to the load weight. Together, these features help match each cycle to what you're washing.\\n\\nSteam options can help reduce creasing when clothes come out of the machine, and Hygiene and Woolmark Green certification support different laundry needs. Delicate, Wool, Cotton, Cottons Eco, rinse and 20-minute 3kg programmes give you clear choices for everyday fabrics and smaller loads. A stainless steel CareDrum supports regular washing, while the LCD, rotary control and touchscreen make cycle selection easy.\\n\\nAEGConnected lets you interact with this washer from a compatible mobile device, while the 1600rpm maximum spin speed helps prepare laundry for drying. The 597mm-wide, 847mm-high and 660mm-deep design suits a dedicated laundry area, and the 5-year warranty adds longer-term support. Load family clothing after a busy week, select the right cycle and let AutoDose handle the detergent measuring.\",\"disclaimers\":\"\",\"disclaimer_evidence\":[],\"review_notes\":[\"npr_long_copy: removed the Hygiene programme statistic and Woolmark certification claim because no supporting disclaimer passage was available.\",\"npr_long_copy: removed the 52dBA noise-level claim because no supporting disclaimer passage was available.\"]}"
+          }
+        ]
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "9313139336898",
+      "file": "9313139336898.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9313139336898",
+        "product_id": "9313139336898",
+        "ean": "9313139336898",
+        "prompt_version": "v0.7",
+        "generated_at": "2026-11-10T11:36:25.080Z",
+        "copy": {
+          "npr_heading": "Sunbeam Lower Back Heating Pad – Grey",
+          "npr_short_copy": "Long hours at a desk or relaxing on the couch can leave your lower back craving warmth. This Sunbeam heating pad delivers focused heat with five settings, a flexible polyester design and an adjustable strap for waists up to 54 inches. The soft, machine-washable cover makes regular use easy.",
+          "npr_long_copy": "When you’re sitting at a desk or settling in for an evening on the couch, keeping a heating pad in place can be difficult. This Sunbeam Lower Back Heating Pad wraps around your waist with an adjustable strap, helping keep focused warmth where you want it while you work or relax. Its flexible design improves body contact for a closer fit.\n\nFive heat settings let you choose the warmth that suits the moment, while the digital controller makes adjustments simple from your seat. The pad heats up in 90 seconds, so you won’t be waiting long before warmth starts. Its 110W heating system and temperature-sensing technology help maintain consistent heat during use.\n\nA 3-hour auto-off function switches this heating pad off after continuous use, while the detachable controller makes cleaning easier. The 220cm cord gives you room to position yourself near a power outlet, and the soft polyester fabric feels comfortable against clothing or skin. When the evening is over, you can remove the controller and machine wash the pad.\n\nFinished in Grey, this heating pad measures 370mm wide by 370mm high and weighs 0.95kg. It comes with a 2-year warranty and suits anyone who wants focused warmth while reading, working on a laptop or watching TV. After use, detach the controller, wash the pad when needed and fold it away ready for the next cool evening.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.7",
+        "attempts": 1,
+        "durationMs": 7431,
+        "usage": {
+          "inputTokens": 6862,
+          "outputTokens": 379,
+          "costUsd": 0.00318
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "vague_benefit"
+        ],
+        "stats": {
+          "headingChars": 37,
+          "shortWords": 49,
+          "shortChars": 291,
+          "longWords": 227,
+          "longChars": 1348,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "user manual",
+            "id": "DoO26D4q5rbUOFSHpubk20",
+            "ok": true,
+            "reason": null,
+            "pages": 12,
+            "bytes": 2701485,
+            "chars": 12530,
+            "ms": 3778
+          }
+        ],
+        "reviewNotes": []
+      },
+      "knownIssues": [
+        "UNRESOLVED, waiting on MM: Nexus says 110 W, the old Perplexity Project output said 75 W. Neither is confirmed."
+      ]
+    },
+    {
+      "ean": "9343415010228",
+      "file": "9343415010228.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9343415010228",
+        "product_id": "9343415010228",
+        "ean": "9343415010228",
+        "prompt_version": "v0.7",
+        "generated_at": "2026-11-10T11:36:32.319Z",
+        "copy": {
+          "npr_heading": "Schweigen Silent Inline Motor Undermount Rangehood 120cm – Black Steel",
+          "npr_short_copy": "Cooking several dishes can quickly fill a kitchen with vapour and odours. This 120cm ducted rangehood uses five fan speeds, LED lighting and a 15-minute auto shut-off timer to manage cooking air, while dishwasher-safe black mesh filters make cleaning easier.",
+          "npr_long_copy": "Large cooktops can leave overhead cabinetry crowded and cooking vapours difficult to manage. This 120cm ducted undermount rangehood fits into 300mm-deep cabinetry, keeping the appliance discreet while giving broad coverage across a large cooking area. Its Black Steel finish suits contemporary kitchens where you want extraction equipment to sit neatly out of sight.\n\nWhen you’re simmering, frying or cooking several burners at once, five speed levels let you match airflow to the meal. The Isodrive® SPINL motor supports powerful extraction, while the inline design keeps the motor separate from the canopy. A 15-minute auto shut-off timer lets this rangehood continue clearing the air after cooking, so you don’t need to return to the controls straight away.\n\nSoft-touch controls and a digital display keep speed selection clear while you’re moving between pans. Built-in LED lighting brightens the cooktop, helping you see food as it cooks without relying only on the kitchen’s main lights. Black mesh stainless steel filters capture grease, and they’re dishwasher-safe for easier cleaning after regular cooking.\n\nThis ducted rangehood includes Schweigen SteelFlex™ and has a 10-year motor warranty, five-year canopy warranty, lifetime filter warranty and lifetime GU10 LED globe warranty. Its 1180mm width suits large cooktops or island benches, while the 285mm height and 295mm depth support discreet undermount installation. Picture it tucked into overhead joinery as dinner simmers below, with the lights on and the timer handling the final clearing cycle.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.7",
+        "attempts": 1,
+        "durationMs": 7237,
+        "usage": {
+          "inputTokens": 9208,
+          "outputTokens": 424,
+          "costUsd": 0.00441
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 70,
+          "shortWords": 40,
+          "shortChars": 258,
+          "longWords": 234,
+          "longChars": 1563,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [
+          {
+            "kind": "brochure",
+            "id": "17Mumdhh9b1lxrR8SlsBv0",
+            "ok": true,
+            "reason": null,
+            "pages": 2,
+            "bytes": 218452,
+            "chars": 1862,
+            "ms": 1964
+          },
+          {
+            "kind": "user manual",
+            "id": "OAvCEK8EbpbzEipUcfcLdg",
+            "ok": true,
+            "reason": null,
+            "pages": 28,
+            "bytes": 4164856,
+            "chars": 26182,
+            "ms": 3499
+          }
+        ],
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    }
+  ]
+}

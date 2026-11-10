@@ -64,7 +64,7 @@ class PerplexityError extends Error {
   }
 }
 
-function buildLegacyRequest({ systemPrompt, userPrompt, maxOutputTokens }) {
+function buildLegacyRequest({ systemPrompt, userPrompt, maxOutputTokens, searchDomains }) {
   const body = {
     model: LEGACY_MODEL,
     messages: [
@@ -73,7 +73,9 @@ function buildLegacyRequest({ systemPrompt, userPrompt, maxOutputTokens }) {
     ],
     max_tokens: maxOutputTokens,
   };
-  if (DENY_RETAILERS) body.search_domain_filter = RETAILER_DOMAINS;
+  // searchDomains (a list of domains) limits search to those sites. It replaces the retailer deny list.
+  if (Array.isArray(searchDomains) && searchDomains.length) body.search_domain_filter = searchDomains;
+  else if (DENY_RETAILERS) body.search_domain_filter = RETAILER_DOMAINS;
   return { url: LEGACY_URL, body };
 }
 
@@ -144,12 +146,13 @@ async function callPerplexity({
   timeoutMs = 30000,
   maxOutputTokens = 2000,
   mode = MODE,
+  searchDomains = null,
 }) {
   const started = Date.now();
   const req =
     mode === "agent"
       ? buildAgentRequest({ systemPrompt, userPrompt, maxOutputTokens })
-      : buildLegacyRequest({ systemPrompt, userPrompt, maxOutputTokens });
+      : buildLegacyRequest({ systemPrompt, userPrompt, maxOutputTokens, searchDomains });
 
   let response;
   let rawText;
