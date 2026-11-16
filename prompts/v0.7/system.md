@@ -84,8 +84,8 @@ Look for a section called DISCLAIMER SOURCES in the user message.
 (1) Disclaimer text.
 (2) Disclaimer text.
 - Use at most 5 disclaimers.
-- If a claim needs a qualification but the sources do not support one, do not keep the claim. Narrow it to what the product data supports, or remove it, and add a note to review_notes. A disclaimer must never be used to keep an unsupported claim.
-- review_notes is a list of short plain sentences, each starting with the field name, for example "npr_long_copy: removed the claim about battery life, no source supports it." Add a note ONLY when you removed or narrowed a statistic, test result or certification claim from the product data because no source supports a disclaimer for it. Do not add notes about wording choices, details you left out, rounding, or anything else. Otherwise return [].
+- If a claim needs a qualification but the sources do not support one, do not keep the claim. Remove the claim completely. Do not replace it with a vaguer or broader version of the same idea (for example, if no source supports a speed claim, drop the speed claim altogether, do not turn the number into "quickly"). If the product data itself states a narrower fact, you may state that fact. Add a note to review_notes. A disclaimer must never be used to keep an unsupported claim.
+- review_notes is a list of short plain sentences, each starting with the field name, for example "npr_long_copy: removed the claim about battery life, no source supports it." Add a note ONLY when you removed a statistic, test result or certification claim from the product data because no source supports a disclaimer for it. Do not add notes about wording choices, details you left out, rounding, or anything else. Otherwise return [].
 - Never put a disclaimer claim in npr_short_copy, and keep any claim that needs a disclaimer out of npr_short_copy. Say it generally or leave it out.
 
 ***
@@ -168,7 +168,7 @@ Example shape (content is illustrative only):
 - Every feature explains its benefit
 - Energy and WELS ratings included only where the JSON provides them
 - No banned words or unsubstantiated claims
-- No <sup> tags written by me. Each disclaimer is a "(1) text" line with its claim sentence and exact source passage in disclaimer_evidence, and only where DISCLAIMER SOURCES support the qualification. No claim that needs a disclaimer in the short copy. Unsupported claims are narrowed or removed and listed in review_notes
+- No <sup> tags written by me. Each disclaimer is a "(1) text" line with its claim sentence and exact source passage in disclaimer_evidence, and only where DISCLAIMER SOURCES support the qualification. No claim that needs a disclaimer in the short copy. Unsupported claims are removed, not softened, and listed in review_notes
 - Australian English, no 'z' spellings
 - Nothing invented, nothing from retailer sites
 - Output is a single valid JSON object

@@ -472,3 +472,23 @@ test("a disclaimer attached to a sentence about something else is blocked", () =
   const good = withDisc(LONG_SUP, "(1) Air movement may be heard at higher speeds.", src, [{ n: 1, claim: "Silent refers to the rangehood system, although air movement may be heard at higher speeds.", quote: src }]);
   assert.ok(!names(good.errors).includes("claim_unrelated"));
 });
+
+test("promise and guarantee in any form are blocked", () => {
+  for (const w of ["We promise warmth.", "A guarantee of comfort.", "It guarantees heat.", "Promised comfort."]) {
+    assert.ok(names(run(SUNBEAM, { npr_short_copy: w }).errors).includes("banned_word"), w);
+  }
+});
+
+test("a banned word that the product data itself uses is kept with a warning", () => {
+  const patch = { npr_short_copy: "A quiet range hood for your kitchen." };
+  assert.ok(names(run(SUNBEAM, patch).errors).includes("banned_word"));
+  const r = run(SUNBEAM, patch, { sourceText: "Brand X 90cm range hood" });
+  assert.ok(!names(r.errors).includes("banned_word"));
+  assert.ok(names(r.warnings).includes("banned_word_in_data"));
+});
+
+test("heats and heat-up count as the same word when relating a claim to its disclaimer", () => {
+  const src = "Setting 5 is for heat up only. Do not use this setting for continuous or prolonged use.";
+  const r = withDisc(LONG_SUP, "(1) Setting 5 is for heat up only.", src, [{ n: 1, claim: "The pad heats quickly, in 90 seconds.", quote: src }]);
+  assert.ok(!names(r.errors).includes("claim_unrelated"));
+});

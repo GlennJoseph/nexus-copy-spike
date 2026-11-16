@@ -279,3 +279,14 @@ test("tagDisclaimers: two disclaimers on one sentence give consecutive tags befo
   const out = tagDisclaimers(obj);
   assert.ok(out.npr_long_copy.includes("school uniforms <sup>1</sup> <sup>2</sup>."));
 });
+
+test("a plain (1) the model wrote in the copy is removed and the tag lands on the right sentence", () => {
+  const { stripStrayMarkers } = require("./generate");
+  const quote = "When operated at the higher speeds air movement may be heard.";
+  const long = "Intro sentence here.\n\nThe system may be audible at higher speeds as air moves through the filters.(1)\n\nStainless mesh filters are dishwasher-safe, so clean-up is simple.";
+  const obj = stripStrayMarkers({ npr_heading: "H", npr_short_copy: "S.", npr_long_copy: long, disclaimers: `(1) ${quote}`, disclaimer_evidence: [{ n: 1, claim: "The system may be audible at higher speeds as air moves through the filters.", quote }] });
+  assert.ok(!obj.npr_long_copy.includes("(1)"));
+  const out = tagDisclaimers(obj);
+  assert.ok(out.npr_long_copy.includes("through the filters <sup>1</sup>."));
+  assert.ok(!out.npr_long_copy.includes("clean-up is simple <sup>"));
+});

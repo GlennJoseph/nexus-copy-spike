@@ -31,7 +31,8 @@ const FIELDS = ["npr_heading", "npr_short_copy", "npr_long_copy", "disclaimers"]
 
 // MM's banned word list. Whole words only, so "rangehood" does not trip "hood".
 const BANNED_WORDS = [
-  ["guaranteed", /\bguaranteed\b/i],
+  ["guarantee", /\bguarantee[sd]?\b/i],
+  ["promise", /\bpromis(?:e|es|ed|ing)\b/i],
   ["engineered", /\bengineered\b/i],
   ["synchronises", /\bsynchronis(?:e|es|ed|ing)\b/i],
   ["usability", /\busability\b/i],
@@ -455,12 +456,18 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
     .join("\n");
   const copyOnly = [heading, short, long].join("\n");
   const scan = (re) => re.test(copyOnly) || (re.test(disclaimers) && !re.test(quotesText));
-  for (const [label, re] of BANNED_WORDS) {
-    if (scan(re)) {
-      err("banned_word", `The reply uses the banned word "${label}". Use the approved replacement.`);
-    }
-  }
   const source = String(sourceText).toLowerCase();
+  for (const [label, re] of BANNED_WORDS) {
+    if (!scan(re)) continue;
+    // A word the product data itself uses (range hood, engineered timber) is factual
+    // terminology, not a style slip: keep it and flag it for the reviewer.
+    const hit = (copyOnly.match(re) || disclaimers.match(re) || [])[0];
+    if (hit && source.includes(hit.toLowerCase())) {
+      warn("banned_word_in_data", `"${hit}" is on the banned list but appears in the product data, so it was kept. Please review.`);
+      continue;
+    }
+    err("banned_word", `The reply uses the banned word "${label}". Use the approved replacement.`);
+  }
   for (const [label, re] of BANNED_CLAIMS) {
     const m = copyOnly.match(re) || (disclaimers.match(re) && !re.test(quotesText) ? disclaimers.match(re) : null);
     if (m && !source.includes(m[0].toLowerCase())) {
@@ -561,9 +568,11 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
         }
         // The sentence a disclaimer is attached to must be about what the disclaimer says.
         if (typeof item.claim === "string" && item.claim.trim()) {
-          const key = (t) => new Set((String(t).toLowerCase().match(/[a-z]{4,}/g) || []).filter((w) => !CLAIM_STOP.has(w)).map((w) => w.slice(0, 5)));
-          const have = key(`${e.text} ${item.quote}`);
-          const related = [...key(item.claim)].some((w) => have.has(w));
+          const words = (t) => [...new Set((String(t).toLowerCase().match(/[a-z]{4,}/g) || []).filter((w) => !CLAIM_STOP.has(w)))];
+          const haveW = words(`${e.text} ${item.quote}`);
+          // Same word family: same first five letters, or one word is the start of the other (heat, heats).
+          const same = (x, y) => x.slice(0, 5) === y.slice(0, 5) || x.startsWith(y) || y.startsWith(x);
+          const related = words(item.claim).some((c) => haveW.some((h) => same(c, h)));
           if (!related) {
             err(
               "claim_unrelated",

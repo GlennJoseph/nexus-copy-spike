@@ -129,6 +129,17 @@ const sentenceEndFrom = (text, from) => {
   const m = text.slice(from).match(SENTENCE_END);
   return m ? from + m.index : text.length;
 };
+// The model sometimes writes a plain "(1)" in the copy. Markers are inserted by the service,
+// so remove these (after a full stop, or before punctuation or the end of a paragraph).
+function stripStrayMarkers(obj) {
+  const clean = (t) =>
+    typeof t === "string"
+      ? t
+          .replace(/([.!?])[ \t]*\(\s*\d{1,2}\s*\)/g, "$1")
+          .replace(/[ \t]*\(\s*\d{1,2}\s*\)(?=[ \t]*(?:[.!?,;]|\n|$))/g, "")
+      : t;
+  return { ...obj, npr_heading: clean(obj.npr_heading), npr_short_copy: clean(obj.npr_short_copy), npr_long_copy: clean(obj.npr_long_copy) };
+}
 const keyWords = (t) =>
   new Set((String(t).toLowerCase().match(/[a-z]{4,}/g) || []).map((w) => w.slice(0, 5)));
 
@@ -346,7 +357,7 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
     }
 
     if (obj) {
-      obj = tagDisclaimers(obj);
+      obj = tagDisclaimers(stripStrayMarkers(obj));
       lastObj = obj;
       const checked = checkCopy(obj, { product, sourceText, documentText: docText });
       errors = checked.errors;
@@ -419,4 +430,5 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
   return finish(failed(502, ids, "generation_failed", `Copy failed quality checks after ${meta.attempts} attempt(s): ${names}`, meta));
 }
 
-module.exports = { generateCopy, PROMPT_VERSION, buildUserPrompt, tagDisclaimers };
+module.exports = {
+  stripStrayMarkers, generateCopy, PROMPT_VERSION, buildUserPrompt, tagDisclaimers };
