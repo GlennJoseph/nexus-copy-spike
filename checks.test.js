@@ -492,3 +492,43 @@ test("heats and heat-up count as the same word when relating a claim to its disc
   const r = withDisc(LONG_SUP, "(1) Setting 5 is for heat up only.", src, [{ n: 1, claim: "The pad heats quickly, in 90 seconds.", quote: src }]);
   assert.ok(!names(r.errors).includes("claim_unrelated"));
 });
+
+test("attachment lists under the new names are removed before the product goes to the model", () => {
+  const out = preparePayload({ modelNo: "X", pdfProductBrochures: [{ id: "a", uri: "https://x/a.pdf" }], pdfProductUserManuals: [], productbrochures: [{ id: "b", uri: "http://x/b.pdf" }] });
+  assert.deepStrictEqual(Object.keys(out), ["modelNo"]);
+});
+
+test("a certification claim tagged with an unrelated disclaimer is blocked", () => {
+  const quote = "This programme removes more than 99,99% of bacteria and viruses. Tested for Staphylococcus aureus in an external test performed by Swissatest in 2021.";
+  const tagged = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait. The Woolmark Green certification supports washing woollens at home <sup>1</sup>.");
+  const bad = withDisc(tagged, "(1) Tested for Staphylococcus aureus in an external test performed by Swissatest in 2021.", quote, [{ n: 1, claim: "The Woolmark Green certification supports washing woollens at home.", quote }]);
+  assert.ok(names(bad.errors).includes("claim_not_qualified"));
+});
+
+test("a certification claim tagged with its own disclaimer passes", () => {
+  const quote = "Woolmark Green certification applies to the wool cycle only. The certification was issued in 2022.";
+  const tagged = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait. The Woolmark Green certification supports washing woollens at home <sup>1</sup>.");
+  const ok = withDisc(tagged, "(1) Woolmark Green certification applies to the wool cycle only.", quote, [{ n: 1, claim: "The Woolmark Green certification supports washing woollens at home.", quote }]);
+  assert.ok(!names(ok.errors).includes("claim_not_qualified"));
+});
+
+test("removeBareClaims drops untagged statistic and certification sentences only", () => {
+  const { removeBareClaims } = require("./checks");
+  const text = "Plain sentence one. It cuts dust by 99%. Tagged claim removes 99% of germs <sup>1</sup>.\n\nThe tub is 100% cotton lined. This model is independently tested.";
+  const r = removeBareClaims(text);
+  assert.strictEqual(r.removed, 2);
+  assert.ok(r.text.includes("Plain sentence one."));
+  assert.ok(r.text.includes("<sup>1</sup>"));
+  assert.ok(r.text.includes("100% cotton"));
+  assert.ok(!r.text.includes("independently tested"));
+});
+
+test("a certification in the short copy is blocked even next to an energy rating", () => {
+  const r = run(SUNBEAM, { npr_short_copy: "Cosy warmth with Woolmark Green certification and a 5-star energy rating for everyday use at your desk or on the couch tonight." });
+  assert.ok(names(r.errors).includes("short_claim"));
+});
+
+test("a certification sentence is not excused by a rating elsewhere in it", () => {
+  const long = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait. It has Woolmark Green certification for wool care in the delicate programme, and also a 5-star energy rating.");
+  assert.ok(names(run(SUNBEAM, { npr_long_copy: long }).errors).includes("stat_no_disclaimer"));
+});

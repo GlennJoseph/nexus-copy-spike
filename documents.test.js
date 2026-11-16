@@ -171,3 +171,63 @@ test("long PDFs with no English pages fall back to the first and last pages", as
     s2.close();
   }
 });
+
+test("the new Nexus field names (pdfProductBrochures and so on) are read", () => {
+  const list = collectAttachments({
+    pdfProductDocuments: [],
+    pdfProductBrochures: [{ id: "K7e", type: "ProductBrochure", uri: "https://nartastaging.retailpath.com.au:443/NARTAStaging/ra/NPRFile/K7e/nprFile.pdf" }],
+    pdfProductUserManuals: [{ id: "59T", type: "ProductUserManual", uri: "https://nartastaging.retailpath.com.au:443/NARTAStaging/ra/NPRFile/59T/nprFile.pdf" }],
+    pdfProductWarranties: [],
+  });
+  assert.deepStrictEqual(list.map((a) => [a.kind, a.id]), [["brochure", "K7e"], ["user manual", "59T"]]);
+  assert.ok(checkUrl(list[0].uri, { hosts: ["retailpath.com.au"], allowHttp: false }).ok, "port 443 is fine");
+});
+
+test("old and new field names together read each document once", () => {
+  const list = collectAttachments({
+    productbrochures: [{ id: "K7e", uri: "http://nartastaging.retailpath.com.au/NARTAStaging/ra/NPRFile/K7e/nprFile.pdf" }],
+    pdfProductBrochures: [{ id: "K7e", uri: "https://nartastaging.retailpath.com.au:443/NARTAStaging/ra/NPRFile/K7e/nprFile.pdf" }],
+  });
+  assert.strictEqual(list.length, 1);
+});
+
+test("a download that stalls once is retried and then read", async () => {
+  let hits = 0;
+  const s2 = http.createServer((req, res) => {
+    hits++;
+    if (hits === 1) return; // never answers: the first try times out
+    res.writeHead(200, { "Content-Type": "application/pdf" }).end(PDF);
+  });
+  await new Promise((r) => s2.listen(0, "127.0.0.1", r));
+  try {
+    const uri = `http://localhost:${s2.address().port}/a.pdf`;
+    const r = await retrieveDocuments(
+      { productbrochures: [{ id: "x", uri }] },
+      { hosts: ["localhost"], allowHttp: true, docTimeoutMs: 1500, budgetMs: 9000 }
+    );
+    assert.strictEqual(r.report[0].ok, true);
+    assert.strictEqual(r.report[0].retried, true);
+    assert.strictEqual(hits, 2);
+  } finally {
+    s2.closeAllConnections && s2.closeAllConnections();
+    s2.close();
+  }
+});
+
+test("a download that always stalls is skipped after one retry", async () => {
+  const s2 = http.createServer(() => {});
+  await new Promise((r) => s2.listen(0, "127.0.0.1", r));
+  try {
+    const uri = `http://localhost:${s2.address().port}/a.pdf`;
+    const r = await retrieveDocuments(
+      { productbrochures: [{ id: "x", uri }] },
+      { hosts: ["localhost"], allowHttp: true, docTimeoutMs: 1200, budgetMs: 6000 }
+    );
+    assert.strictEqual(r.report[0].ok, false);
+    assert.strictEqual(r.report[0].reason, "timeout");
+    assert.strictEqual(r.report[0].retried, true);
+  } finally {
+    s2.closeAllConnections && s2.closeAllConnections();
+    s2.close();
+  }
+});

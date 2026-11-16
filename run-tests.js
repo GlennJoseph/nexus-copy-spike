@@ -18,7 +18,7 @@ const path = require("path");
 const { generateCopy, PROMPT_VERSION } = require("./generate");
 const { MODE } = require("./perplexity-client");
 
-const PAYLOAD_DIR = path.join(__dirname, "tests", "payloads");
+const PAYLOAD_DIR = process.env.PAYLOAD_DIR ? path.resolve(process.env.PAYLOAD_DIR) : path.join(__dirname, "tests", "payloads");
 const RESULT_DIR = path.join(__dirname, "tests", "results");
 const KNOWN_ISSUES_FILE = path.join(__dirname, "tests", "known-issues.json");
 

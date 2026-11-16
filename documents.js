@@ -47,16 +47,30 @@ const DEFAULTS = {
 // ---------------------------------------------------------------------
 // Which attachments does the payload hold?
 // ---------------------------------------------------------------------
+// Nexus changed the field names on 16 Nov 2026 (productbrochures became pdfProductBrochures,
+// and so on). Accept both: compare names without case and without a leading "pdf".
+const attachmentKind = (key) => {
+  const k = String(key).toLowerCase().replace(/^pdf/, "");
+  const hit = ATTACHMENT_KEYS.find(([name]) => name === k);
+  return hit ? hit[1] : null;
+};
+
 function collectAttachments(raw) {
   const out = [];
   const seen = new Set();
   if (!raw || typeof raw !== "object") return out;
-  for (const [key, kind] of ATTACHMENT_KEYS) {
+  for (const key of Object.keys(raw)) {
+    const kind = attachmentKind(key);
+    if (!kind) continue;
     const list = Array.isArray(raw[key]) ? raw[key] : [];
     for (const a of list) {
       if (!a || typeof a !== "object" || a.deleted) continue;
       const uri = typeof a.uri === "string" ? a.uri.trim() : "";
-      if (!uri || seen.has(uri)) continue;
+      if (!uri) continue;
+      // Old and new field names can both be present: one document, one read.
+      const id = a.id != null && String(a.id) ? `${kind}:${a.id}` : uri;
+      if (seen.has(id) || seen.has(uri)) continue;
+      seen.add(id);
       seen.add(uri);
       out.push({ kind, id: a.id != null ? String(a.id) : "", uri });
     }
@@ -335,9 +349,21 @@ async function retrieveDocuments(raw, options = {}) {
       const t0 = Date.now();
       const base = { kind: it.kind, id: it.id };
       let timer;
+      let retried = false;
       try {
         const work = (async () => {
-          const buf = await download(it.uri, opts, deadline);
+          // A server that stalls usually answers on a second try. When the time limit is long enough,
+          // the first try gets about 60% of it and one retry gets the rest of the budget.
+          const firstMs = opts.docTimeoutMs >= 12000 ? Math.round(opts.docTimeoutMs * 0.6) : opts.docTimeoutMs;
+          let buf;
+          try {
+            buf = await download(it.uri, { ...opts, docTimeoutMs: firstMs }, deadline);
+          } catch (e) {
+            const again = (e.reason === "timeout" || e.reason === "network") && deadline - Date.now() >= 3000;
+            if (!again) throw e;
+            retried = true;
+            buf = await download(it.uri, opts, deadline);
+          }
           const { text, pages } = await pdfToText(buf, opts);
           if (opts.requireModel && !mentionsModel(text, opts.requireModel)) {
             throw Object.assign(new Error("model_not_found"), { reason: "model_not_found" });
@@ -349,11 +375,11 @@ async function retrieveDocuments(raw, options = {}) {
           timer = setTimeout(() => rej(Object.assign(new Error("timeout"), { reason: "timeout" })), stageMs);
         });
         const { buf, text, pages } = await Promise.race([work, limit]);
-        return { ...base, ok: true, pages, bytes: buf.length, chars: text.length, ms: Date.now() - t0, text };
+        return { ...base, ok: true, pages, bytes: buf.length, chars: text.length, ms: Date.now() - t0, text, retried };
       } catch (e) {
         const reason = e.reason || "error";
         log.warn({ kind: it.kind, id: it.id, reason }, "document skipped");
-        return { ...base, ok: false, reason, ms: Date.now() - t0 };
+        return { ...base, ok: false, reason, ms: Date.now() - t0, retried };
       } finally {
         clearTimeout(timer);
       }
@@ -379,6 +405,7 @@ async function retrieveDocuments(raw, options = {}) {
     bytes: r.bytes || 0,
     chars: r.chars || 0,
     ms: r.ms,
+    retried: !!r.retried,
   })));
   return { text: parts.join("\n\n"), report, found: everything.length, used: parts.length, ms: Date.now() - started };
 }

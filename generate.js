@@ -19,6 +19,7 @@ const { SOURCE_SEARCH, findOfficialSources } = require("./sources");
 const {
   validateInput,
   preparePayload,
+  removeBareClaims,
   extractJson,
   checkCopy,
   findRetailerSources,
@@ -72,6 +73,7 @@ const DISCLAIMER_CHECKS = new Set([
   "disclaimer_format",
   "disclaimer_numbering",
   "sup_mismatch",
+  "claim_not_qualified",
   "evidence_missing",
   "evidence_untraceable",
   "disclaimer_figure",
@@ -182,12 +184,12 @@ function tagDisclaimers(obj) {
     const item = ev.find((x) => x && Number(x.n) === e.n && typeof x.claim === "string" && x.claim.trim());
     return item ? item.claim : null;
   });
-  if (claims.some((c) => !c)) return obj;
+  if (claims.some((c) => !c)) return { ...obj, _claim_missing: true };
   const long = String(obj.npr_long_copy || "").replace(/[ \t]*<sup>\s*\d+\s*<\/sup>/gi, "");
   const placed = [];
   for (let k = 0; k < entries.length; k++) {
     const end = claimEnd(long, claims[k]);
-    if (end < 0) return obj;
+    if (end < 0) return { ...obj, _claim_missing: true };
     placed.push({ old: entries[k].n, text: entries[k].text, end });
   }
   // New numbers follow the order the tags appear in the copy.
@@ -397,7 +399,10 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
     lastProblem.errors.every((e) => allowed(e.check))
   ) {
     const hasDisclaimerProblem = lastProblem.errors.some((e) => DISCLAIMER_CHECKS.has(e.check));
-    const final = hasDisclaimerProblem ? dropDisclaimers(lastObj) : lastObj;
+    let final = hasDisclaimerProblem ? dropDisclaimers(lastObj) : lastObj;
+    // A statistic, test or certification claim that no disclaimer supports is removed, not just flagged.
+    const cut = removeBareClaims(final.npr_long_copy);
+    if (cut.removed) final = { ...final, npr_long_copy: cut.text };
     const again = checkCopy(final, { product, sourceText, documentText: hasDisclaimerProblem ? "" : docText });
     if (again.errors.every((e) => SOFT_CHECKS.has(e.check))) {
       meta.warnings = again.warnings
@@ -408,8 +413,8 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
       meta.failedChecks = lastProblem.errors.map((e) => e.check);
       log.warn({ request_id: ids.request_id, checks: meta.failedChecks }, "returned with soft check failures");
       const extra = [];
-      if (meta.failedChecks.includes("stat_no_disclaimer")) {
-        extra.push("npr_long_copy: states a statistic with no disclaimer. Check it against the product sources before approving.");
+      if (cut.removed) {
+        extra.push(`npr_long_copy: removed ${cut.removed} sentence${cut.removed > 1 ? "s" : ""} that stated a statistic, test or certification with no supporting disclaimer.`);
       }
       if (meta.failedChecks.includes("short_claim")) {
         extra.push("npr_short_copy: contains a percentage, test or certification claim. Check it against the product sources.");

@@ -163,7 +163,9 @@ function preparePayload(raw) {
     return v;
   };
   const copy = clean(raw);
-  for (const k of ATTACHMENT_KEYS) delete copy[k];
+  for (const k of Object.keys(copy)) {
+    if (ATTACHMENT_KEYS.includes(String(k).toLowerCase().replace(/^pdf/, ""))) delete copy[k];
+  }
   return copy;
 }
 
@@ -232,12 +234,23 @@ function firstMissingRun(passage, docNorm) {
 }
 
 // Short copy must not carry claims that need a disclaimer.
-const SHORT_CLAIM = /\d(?:[.,]\d+)?\s?%|\b(?:tested|certified|accredited|independently|clinically|proven|laboratory)\b/i;
+const SHORT_CLAIM = /\d(?:[.,]\d+)?\s?%|\b(?:tested|certified|certifications?|approved by|accredited|independently|clinically|proven|laboratory)\b/i;
 // Statistics that need a disclaimer in long copy: percentages and "N times more/less/faster".
 const STAT_CLAIM = /\d(?:[.,]\d+)?\s?%|\b\d+(?:\.\d+)?\s?(?:x|times)\s+(?:more|less|faster|longer|quieter|stronger)\b/i;
 // Certification and test claims in long copy also need a disclaimer. Energy and WELS ratings do not.
 const CERT_CLAIM = /\b(?:certified|certification|accredited|independently tested|laboratory[- ]tested|clinically (?:tested|proven)|approved by)\b/i;
 const RATING_WORDS = /\b(?:energy|wels|star rating|\d[- ]star)\b/i;
+// First certification or test claim in a sentence, ignoring one that sits right next to an energy or
+// WELS rating. A rating elsewhere in the same sentence does not excuse a certification claim.
+function certIn(sent) {
+  const re = new RegExp(CERT_CLAIM.source, "gi");
+  let m;
+  while ((m = re.exec(sent))) {
+    const near = sent.slice(Math.max(0, m.index - 30), m.index + m[0].length + 30);
+    if (!RATING_WORDS.test(near)) return m;
+  }
+  return null;
+}
 // "100% cotton" is a material, not a performance claim.
 const MATERIAL_PERCENT = /\d\s?%\s+(?:\w+\s+){0,2}(?:cotton|polyester|wool|nylon|bamboo|linen|silk|leather|recycled|stainless|cashmere|acrylic|viscose|rayon|microfib\w*|fib(?:re|er)s?|merino|down|feather)\b/i;
 
@@ -535,7 +548,14 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
       const used = [...new Set([...long.matchAll(/<sup>\s*(\d+)\s*<\/sup>/gi)].map((m) => Number(m[1])))].sort((a, b) => a - b);
       const listed = entries.map((e) => e.n).sort((a, b) => a - b);
       if (used.join(",") !== listed.join(",")) {
-        err("sup_mismatch", `The <sup> numbers in npr_long_copy (${used.join(", ") || "none"}) must match the numbered disclaimers (${listed.join(", ")}).`);
+        if (copy._claim_missing) {
+          err(
+            "sup_mismatch",
+            "A claim sentence in disclaimer_evidence is not in npr_long_copy, so its disclaimer could not be attached. Either write that claim in the long copy, word for word as it appears in disclaimer_evidence, or remove that disclaimer."
+          );
+        } else {
+          err("sup_mismatch", `The <sup> numbers in npr_long_copy (${used.join(", ") || "none"}) must match the numbered disclaimers (${listed.join(", ")}).`);
+        }
       }
       // Drafted wording is allowed, but each disclaimer must carry the exact source passage
       // it rests on, and nothing in the wording may go beyond that passage.
@@ -592,6 +612,44 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
     }
   }
 
+  // A tagged sentence that states a statistic or certification must be covered by the disclaimer
+  // tagged to it. A tag from an unrelated disclaimer does not qualify the claim.
+  if (docNorm && disclaimers) {
+    const { entries } = parseDisclaimers(disclaimers);
+    const evid = Array.isArray(copy.disclaimer_evidence) ? copy.disclaimer_evidence : [];
+    const hayFor = (nums) =>
+      nums
+        .map((n) => {
+          const e = entries.find((x) => x.n === n);
+          const ev = evid.find((x) => x && Number(x.n) === n);
+          return `${e ? e.text : ""} ${ev && typeof ev.quote === "string" ? ev.quote : ""}`;
+        })
+        .join(" ")
+        .toLowerCase();
+    for (const sent of long.split(/(?<=[.!?])\s+/)) {
+      const nums = [...sent.matchAll(/<sup>\s*(\d+)\s*<\/sup>/gi)].map((m) => Number(m[1]));
+      if (!nums.length) continue;
+      const hay = hayFor(nums);
+      const stat = !MATERIAL_PERCENT.test(sent) ? sent.match(STAT_CLAIM) : null;
+      const cert = certIn(sent);
+      let covered = true;
+      if (stat) covered = hay.replace(/[.,\s]/g, "").includes(stat[0].replace(/\D/g, ""));
+      if (covered && cert) {
+        const word = cert[0].toLowerCase().replace(/[^a-z ]/g, "");
+        const stems = [word.slice(0, 5)];
+        if (/tested/.test(word)) stems.push("test");
+        covered = stems.some((st) => hay.includes(st));
+      }
+      if (!covered) {
+        err(
+          "claim_not_qualified",
+          `This sentence states a statistic or certification that its disclaimer does not cover: "${sent.replace(/<sup>\s*\d+\s*<\/sup>/gi, "").trim().slice(0, 90)}". Attach each disclaimer to the sentence that makes the claim it qualifies. If no source supports this claim, remove it.`
+        );
+        break;
+      }
+    }
+  }
+
   // Short copy stays general. Claims that need a disclaimer belong in the long copy, or nowhere.
   if (SHORT_CLAIM.test(short)) {
     err(
@@ -606,7 +664,7 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
       .filter(
         (sent) =>
           !/<sup>/i.test(sent) &&
-          ((STAT_CLAIM.test(sent) && !MATERIAL_PERCENT.test(sent)) || (CERT_CLAIM.test(sent) && !RATING_WORDS.test(sent)))
+          ((STAT_CLAIM.test(sent) && !MATERIAL_PERCENT.test(sent)) || certIn(sent))
       );
     if (bare.length) {
       err(
@@ -667,6 +725,25 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
 // ---------------------------------------------------------------------
 // urls = list of URLs Perplexity says it used. Returns retailer hostnames found.
 // review_notes from the model: a short list of plain sentences. Anything else is dropped.
+// Removes long-copy sentences that state a statistic, test or certification with no tag.
+// Used when a claim could not be supported by any disclaimer: the claim goes, not just a warning.
+function removeBareClaims(long) {
+  let removed = 0;
+  const paragraphs = String(long || "").split(/\n{2,}/).map((para) =>
+    para
+      .split(/(?<=[.!?])\s+/)
+      .filter((sent) => {
+        const bad =
+          !/<sup>/i.test(sent) &&
+          ((STAT_CLAIM.test(sent) && !MATERIAL_PERCENT.test(sent)) || certIn(sent));
+        if (bad) removed++;
+        return !bad;
+      })
+      .join(" ")
+  );
+  return { text: paragraphs.filter(Boolean).join("\n\n"), removed };
+}
+
 function cleanReviewNotes(value) {
   if (!Array.isArray(value)) return [];
   return value
@@ -691,6 +768,7 @@ function findRetailerSources(urls = []) {
 }
 
 module.exports = {
+  removeBareClaims,
   LIMITS,
   wordCount,
   validateInput,

@@ -179,14 +179,14 @@ test("a disclaimer drafted from the source, with its passage, is returned", asyn
   assert.strictEqual(r.meta.attempts, 1);
 });
 
-test("a statistic with no tag and no source is returned with a review note", async () => {
+test("a statistic with no tag and no source: the sentence is removed and a review note says so", async () => {
   const stat = { ...COPY(false, "") };
-  stat.npr_long_copy = stat.npr_long_copy.replace("school uniforms.", "school uniforms, cutting energy use by 40%.");
+  stat.npr_long_copy = stat.npr_long_copy.replace("school uniforms.", "school uniforms. Energy use drops by 40% with every cycle.");
   const r = await run(() => stat, product(null));
   assert.strictEqual(r.httpStatus, 200);
   assert.strictEqual(r.meta.attempts, 2);
-  assert.ok(r.meta.warnings.includes("stat_no_disclaimer"));
-  assert.ok(r.body.review_notes.some((n) => n.startsWith("npr_long_copy: states a statistic")));
+  assert.ok(!r.body.copy.npr_long_copy.includes("40%"), "the unsupported claim is gone");
+  assert.ok(r.body.review_notes.some((n) => n.startsWith("npr_long_copy: removed 1 sentence")));
 });
 
 test("no attachments: the official source is searched, read, and flows into the prompt", async () => {
@@ -239,7 +239,9 @@ test("tagDisclaimers numbers disclaimers in the order they appear in the copy", 
 
 test("tagDisclaimers leaves the reply alone when the claim sentence is not in the copy", () => {
   const obj = COPY(false, `(1) ${FOOTNOTE}`, [{ n: 1, claim: "A sentence that is not there.", quote: FOOTNOTE }]);
-  assert.strictEqual(tagDisclaimers(obj), obj);
+  const out = tagDisclaimers(obj);
+  assert.strictEqual(out.npr_long_copy, obj.npr_long_copy);
+  assert.strictEqual(out._claim_missing, true, "marked so the retry message can say what is wrong");
 });
 
 test("end to end: the model gives the claim sentence, the service adds the tag", async () => {
@@ -289,4 +291,23 @@ test("a plain (1) the model wrote in the copy is removed and the tag lands on th
   const out = tagDisclaimers(obj);
   assert.ok(out.npr_long_copy.includes("through the filters <sup>1</sup>."));
   assert.ok(!out.npr_long_copy.includes("clean-up is simple <sup>"));
+});
+
+test("the same product under the new Nexus field names (pdfProduct...) still gets its disclaimer", async () => {
+  const p = product(`${docBase}/a/nprFile.pdf`);
+  const moved = { ...p, pdfProductBrochures: p.productbrochures, pdfProductDocuments: [], pdfProductUserManuals: [], pdfProductWarranties: [] };
+  for (const k of ["productbrochures", "productdocuments", "productusermanuals", "productwarranties"]) delete moved[k];
+  const r = await run(() => COPY(true, `(1) ${FOOTNOTE}`), moved);
+  assert.strictEqual(r.httpStatus, 200);
+  assert.strictEqual(r.body.copy.disclaimers, `(1) ${FOOTNOTE}`);
+  assert.ok(!lastPrompt.includes("nprFile.pdf"), "document links do not go to the model");
+});
+
+test("a claim that is not in the copy: the retry message names the problem, and the disclaimer is dropped if it stays", async () => {
+  const sc = () => COPY(false, `(1) ${FOOTNOTE}`, [{ n: 1, claim: "A sentence that is not there at all.", quote: FOOTNOTE }]);
+  const r = await run(sc, product(`${docBase}/a/nprFile.pdf`));
+  assert.strictEqual(r.httpStatus, 200);
+  assert.ok(lastPrompt.includes("is not in npr_long_copy"), "the retry tells the model what is wrong");
+  assert.strictEqual(r.body.copy.disclaimers, "");
+  assert.ok(!r.body.copy.npr_long_copy.includes("<sup>"));
 });
