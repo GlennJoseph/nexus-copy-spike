@@ -327,6 +327,48 @@ function opensWithProduct(text, heading, brand = "") {
 }
 
 // ---------------------------------------------------------------------
+// Full product name on first mention (prompt v0.8 and later)
+// ---------------------------------------------------------------------
+// MM rule (Shikha, 17 Nov): the first time the product is named in the short copy, and again
+// in the long copy, it must be the full product name from the heading, without the colour or
+// finish. Later mentions may be shortened. Only checked when the caller passes fullName: true.
+function normName(s) {
+  return String(s)
+    .toLowerCase()
+    .replace(/[\u2010-\u2015\u2212]/g, "-")
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/\s+/g, " ")
+    .trim();
+}
+function escapeRe(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function headingProductName(heading, finish = "") {
+  let name = String(heading).split(/\s+[\u2013\u2014-]\s+/)[0].trim();
+  const f = String(finish || "").trim();
+  if (f && normName(name).endsWith(" " + normName(f))) name = name.slice(0, name.length - f.length).trim();
+  return name;
+}
+// Returns "missing" (full name absent), "shortened" (the brand is used before the full name), or "".
+function firstMentionIssue(text, name, brand = "", finish = "") {
+  const t = normName(text);
+  const n = normName(name);
+  if (!n) return "";
+  const at = t.indexOf(n);
+  if (at < 0) return "missing";
+  // The heading's " – colour" copied straight after the name ("Sunbeam Lower Back Heating Pad – Grey wraps...").
+  const f = normName(finish);
+  if (f && t.slice(at + n.length).startsWith(" - " + f)) return "colour";
+  const b = normName(brand).match(/[a-z0-9]+/);
+  if (b && n.includes(b[0])) {
+    const m = new RegExp("\\b" + escapeRe(b[0]) + "\\b").exec(t);
+    if (m && m.index < at) return "shortened";
+  }
+  return "";
+}
+
+// ---------------------------------------------------------------------
 // Terms that come only from the attached documents
 // ---------------------------------------------------------------------
 // Documents are for disclaimer footnotes only. If the copy uses a capitalised or
@@ -372,7 +414,7 @@ function docOnlyTerms(text, srcNorm, docNorm) {
 // product   = the cleaned payload (for modelNo, brand, finish)
 // sourceText= JSON text of the cleaned payload (so a banned claim that the
 //             product data itself makes is allowed)
-function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = {}) {
+function checkCopy(copy, { product = {}, sourceText = "", documentText = "", fullName = false } = {}) {
   const errors = [];
   const warnings = [];
   const err = (check, message) => errors.push({ check, message });
@@ -415,7 +457,13 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
     err("short_chars", `npr_short_copy is ${stats.shortChars} characters. Maximum is ${LIMITS.shortChars}.`);
   }
   if (stats.shortWords > LIMITS.shortWords) {
-    err("short_words", `npr_short_copy is ${stats.shortWords} words. Maximum is ${LIMITS.shortWords}.`);
+    err(
+      "short_words",
+      `npr_short_copy is ${stats.shortWords} words. Maximum is ${LIMITS.shortWords}.` +
+        (fullName
+          ? ` Cut at least ${stats.shortWords - LIMITS.shortWords + 4} words from the description. Keep the full product name, it counts toward the limit.`
+          : "")
+    );
   }
   if (stats.longChars > LIMITS.longChars) {
     err("long_chars", `npr_long_copy is ${stats.longChars} characters. Maximum is ${LIMITS.longChars}. Shorten it.`);
@@ -507,6 +555,30 @@ function checkCopy(copy, { product = {}, sourceText = "", documentText = "" } = 
       "opening_product_first",
       "npr_long_copy opens with the product name. Open with the everyday problem this product solves, then show how this product answers it."
     );
+  }
+
+  if (fullName && heading) {
+    const name = headingProductName(heading, product.finish);
+    for (const [field, text] of [["npr_short_copy", short], ["npr_long_copy", long]]) {
+      if (!text) continue;
+      const issue = firstMentionIssue(text, name, brand0, product.finish);
+      if (issue === "missing") {
+        err(
+          "name_first_mention",
+          `${field} never uses the full product name "${name}". The first time you name the product, write "This ${name}" exactly as in npr_heading, without the colour or finish.`
+        );
+      } else if (issue === "shortened") {
+        err(
+          "name_first_mention",
+          `${field} names the product in a shortened form before the full product name "${name}". On the first mention write the full name exactly as in npr_heading, without the colour or finish.`
+        );
+      } else if (issue === "colour") {
+        err(
+          "name_first_mention",
+          `${field} adds the colour or finish after the product name. Write "${name}" without " – ${product.finish}" in the copy.`
+        );
+      }
+    }
   }
 
   if (short && long && sameOpening(short, long)) {
@@ -768,6 +840,8 @@ function findRetailerSources(urls = []) {
 }
 
 module.exports = {
+  headingProductName,
+  firstMentionIssue,
   removeBareClaims,
   LIMITS,
   wordCount,

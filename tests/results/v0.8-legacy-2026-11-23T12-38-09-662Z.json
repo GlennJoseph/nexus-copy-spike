@@ -1,0 +1,479 @@
+{
+  "promptVersion": "v0.8",
+  "mode": "legacy",
+  "ranAt": "2026-11-23T12:38:09.662Z",
+  "results": [
+    {
+      "ean": "3838782623042",
+      "file": "3838782623042.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-3838782623042",
+        "product_id": "3838782623042",
+        "ean": "3838782623042",
+        "prompt_version": "v0.8",
+        "generated_at": "2026-11-23T12:37:29.783Z",
+        "copy": {
+          "npr_heading": "ASKO Style 86cm XXL 16pl Fully Integrated Dishwasher – Grey",
+          "npr_short_copy": "When dishes and cookware pile up after dinner, ASKO Style 86cm XXL 16pl Fully Integrated Dishwasher gives you 16 place settings, 16 wash programs and auto dosing. Floor projection shows cycle status, while Door Pop-Out helps release steam when washing finishes.",
+          "npr_long_copy": "After a large meal, loading bulky cookware and cutlery into a dishwasher can leave little room for anything else. This ASKO Style 86cm XXL 16pl Fully Integrated Dishwasher gives you an XXL tub with 16 place settings, so you can fit different sizes of cookware without needing to run multiple cycles.\n\nWhen the kitchen is facing baked-on messes, the Super Cleaning System™ provides a one-step program for tackling tougher loads. With 16 wash programs, you'll have options for different washing needs, while the Sensi Clean™ sensor helps this dishwasher respond to the load. Auto dosing adds detergent automatically, so there's less measuring before a cycle.\n\nTouch controls and an LED display make selecting a program straightforward. Floor projection uses three colours to show cycle progress and status, helping you check what's happening without opening the integrated door. Turbo Combi Drying helps finish the load, and Door Pop-Out opens the door automatically to remove steam. This dishwasher also has Wi-Fi connectivity, a child lock and a water safety system.\n\nThe fully integrated design keeps this dishwasher aligned with your cabinetry and kitchen surfaces. A cutlery basket and extra-deep knife holder help keep utensils organised during washing, while the 5-star energy rating and 6-star WELS water rating support efficient everyday use at 10.6L per wash. At 41dBA, it can handle the evening load while dinner is being cleared away, and the two-year warranty adds support for busy family kitchens.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.8",
+        "attempts": 1,
+        "durationMs": 4006,
+        "usage": {
+          "inputTokens": 4107,
+          "outputTokens": 421,
+          "costUsd": 0.00323
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 59,
+          "shortWords": 41,
+          "shortChars": 261,
+          "longWords": 237,
+          "longChars": 1509,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [],
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "3838783091253",
+      "file": "3838783091253.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-3838783091253",
+        "product_id": "3838783091253",
+        "ean": "3838783091253",
+        "prompt_version": "v0.8",
+        "generated_at": "2026-11-23T12:37:34.593Z",
+        "copy": {
+          "npr_heading": "ASKO Essence 60cm Pyrolytic Oven – Black Glass",
+          "npr_short_copy": "When baked-on spills make oven cleaning feel like another job, the ASKO Essence 60cm Pyrolytic Oven turns residue to ash for easier wiping. Precise temperature control, auto programmes, Air Fry functionality, a 50L capacity and ConnectLife app support help you manage everyday meals with less fuss.",
+          "npr_long_copy": "Busy cooking days can leave an oven covered in splashes and baked-on residue. This ASKO Essence 60cm Pyrolytic Oven uses pyrolytic cleaning to turn food residue into ash, so you can wipe away the remains after the cleaning cycle. Its 50L capacity gives you room for everyday dishes, while the black glass finish brings a clean, contemporary look to the kitchen.\n\nPrecise temperature control and CelsiusºCooking technology help keep heat consistent when you're baking, roasting or grilling. Auto programmes take the guesswork out of selecting settings for different meals, while Air Fry functionality gives you another way to prepare food. The multi-functional tray supports different cooking tasks without needing a separate appliance.\n\nA 3-inch TFT display and ConnectLife app connectivity give you clear access to cooking functions and settings. Grill functionality adds another option for finishing dishes, while oven illumination on both sides and at different heights helps you see what's happening inside. Telescopic runners make it easier to slide trays out when checking or serving food. Active cooling helps cool the oven and door glass during use.\n\nThis oven includes a grill rack, glass baking tray and middle baking pan, so you've got useful accessories for getting started. The 594mm width, 455mm height and 564mm depth suit kitchens planned for a compact 60cm oven. It's a practical fit for home cooks preparing weekday dinners, roasting on weekends or wiping down the oven after a busy family meal.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.8",
+        "attempts": 1,
+        "durationMs": 4808,
+        "usage": {
+          "inputTokens": 4182,
+          "outputTokens": 414,
+          "costUsd": 0.0017
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "vague_benefit"
+        ],
+        "stats": {
+          "headingChars": 46,
+          "shortWords": 46,
+          "shortChars": 298,
+          "longWords": 238,
+          "longChars": 1513,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [],
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "7333394138015",
+      "file": "7333394138015.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-7333394138015",
+        "product_id": "7333394138015",
+        "ean": "7333394138015",
+        "prompt_version": "v0.8",
+        "generated_at": "2026-11-23T12:37:39.482Z",
+        "copy": {
+          "npr_heading": "AEG 10kg Front Load Washing Machine, 9000 Series – White",
+          "npr_short_copy": "Laundry piles up quickly when loads are large and mixed. The AEG 10kg Front Load Washing Machine, 9000 Series uses AutoDose, steam and PreciseWash to adjust cleaning for each load, while PowerCare premixes detergent and the 5-star energy and 4.5-star WELS ratings help manage everyday washing.",
+          "npr_long_copy": "Mixed laundry can make wash day feel like a constant cycle of sorting, measuring and checking settings. This AEG 10kg Front Load Washing Machine, 9000 Series gives growing households room for larger loads, with automatic dosing and load-sensing features that take care of key choices as you wash. Its 5-star energy and 4.5-star WELS ratings support more considered everyday laundry use.\n\nAutoDose releases the detergent for each wash, so you won't need to measure it before every load. PowerCare premixes detergent to help it spread through the wash, while PreciseWash adapts energy use and settings to the load weight. When you're washing shirts, towels or a mixed family load, these features help match the cycle to what's inside.\n\nSteam options add another way to care for clothes during regular washing, and Hygiene settings give you a dedicated choice when that matters for a load. Delicate and Wool programmes help you select a gentler cycle for specific fabrics, while the stainless steel CareDrum is made for repeated laundry use. The LCD and touchscreen controls show cycle progress, load capacity and spin speed, with a maximum spin speed of 1600rpm.\n\nThe 10kg capacity suits large households, and the 86L water consumption per wash and 244kWh annual energy consumption are clearly specified for planning your laundry use. A variable spin speed, anti-crease setting, child lock and Add Clothes indicator help you manage a wash while it's running. Finished in White, this front loader comes with a 5-year warranty and fits into a busy laundry where family clothes are sorted, washed and ready for the next day.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.8",
+        "attempts": 1,
+        "durationMs": 4888,
+        "usage": {
+          "inputTokens": 4279,
+          "outputTokens": 464,
+          "costUsd": 0.00189
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 56,
+          "shortWords": 46,
+          "shortChars": 293,
+          "longWords": 263,
+          "longChars": 1619,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [],
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "8806096576335",
+      "file": "8806096576335.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-8806096576335",
+        "product_id": "8806096576335",
+        "ean": "8806096576335",
+        "prompt_version": "v0.8",
+        "generated_at": "2026-11-23T12:37:43.768Z",
+        "copy": {
+          "npr_heading": "LG CordZero Stick Vacuum with All-in-One Tower – Grey",
+          "npr_short_copy": "When dust builds up during cleaning, LG CordZero Stick Vacuum with All-in-One Tower helps keep floors under control with up to 220W suction, a 2.5L tower capacity and Kompressor technology. Dual nozzles tackle hard floors and carpets, while washable parts simplify care.",
+          "npr_long_copy": "Dust can quickly turn a simple floor clean into a stop-start job, especially when the bin needs attention. This LG CordZero Stick Vacuum with All-in-One Tower combines up to 220W suction with a tower that auto-empties dust, charges this vacuum and stores accessories, so you can move from room to room with fewer interruptions.\n\nKompressor technology compresses collected dirt to make better use of the tower’s 2.5L dust capacity. A dual nozzle system helps switch between hard floors and carpets, while the Power Drive mop supports wet cleaning when your floors need more than vacuuming. The Smart Inverter motor adds dependable operation for regular household cleaning.\n\nOne Touch Control keeps operation straightforward when you’re carrying this vacuum between rooms, and an ergonomic handle makes it easier to guide across the floor. When cleaning is finished, the washable dust bin and filters can be rinsed as part of regular care, helping you keep maintenance simple without relying on disposable replacements.\n\nFinished in grey, this vacuum measures 265mm wide, 305mm deep and 1120mm high. It’s covered by a two-year warranty and includes a tower that keeps charging and accessory storage together in one place. Whether you’re picking up crumbs from hard floors after dinner or refreshing carpet before guests arrive, this setup keeps the essential cleaning tools close at hand.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.8",
+        "attempts": 1,
+        "durationMs": 4285,
+        "usage": {
+          "inputTokens": 4072,
+          "outputTokens": 379,
+          "costUsd": 0.00157
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 53,
+          "shortWords": 42,
+          "shortChars": 270,
+          "longWords": 218,
+          "longChars": 1386,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [],
+        "reviewNotes": []
+      },
+      "knownIssues": [
+        "RESOLVED by MM (29 Oct 2026): the 2,500ml figure is the tower BAG capacity, not the vacuum's dustbin. Write it as 2.5L (vendor convention)."
+      ]
+    },
+    {
+      "ean": "9313139336898",
+      "file": "9313139336898.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9313139336898",
+        "product_id": "9313139336898",
+        "ean": "9313139336898",
+        "prompt_version": "v0.8",
+        "generated_at": "2026-11-23T12:37:47.362Z",
+        "copy": {
+          "npr_heading": "Sunbeam Lower Back Heating Pad – Grey",
+          "npr_short_copy": "Holding a heat pack in place while working or relaxing can be awkward. Sunbeam Lower Back Heating Pad wraps around your waist with an adjustable strap, five heat settings and soft machine-washable fabric, so you can keep targeted warmth where you want it.",
+          "npr_long_copy": "Keeping a heat pack against your lower back can be awkward when you're sitting at a laptop or relaxing on the sofa. Sunbeam Lower Back Heating Pad wraps around your waist with an adjustable strap that fits waists up to 54 inches, helping keep focused warmth in place while you get on with your evening.\n\nChoose from five heat settings with the digital controller, so you can adjust the warmth to suit the moment without reaching for the pad itself. Flexing construction improves body contact, while the 90-second heat-up means warmth is ready soon after switching on. The 110W heating pad is also suitable for multipurpose use around the home.\n\nTemperature-sensing technology helps maintain consistent heat, while the built-in safety auto-off cuts power after three hours of continuous use. The detachable controller makes machine washing easier, and the 220cm cord gives you room to settle near a power point. Soft polyester fabric adds a comfortable surface for everyday use.\n\nFinished in Grey, this 370mm-wide, 370mm-high heating pad weighs 0.95kg and comes with a two-year warranty. It's a useful option for anyone who wants targeted warmth while reading, working at a desk or watching TV, with the strap holding this around the lower back as the evening winds down.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.8",
+        "attempts": 1,
+        "durationMs": 3593,
+        "usage": {
+          "inputTokens": 4139,
+          "outputTokens": 354,
+          "costUsd": 0.00157
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "vague_benefit"
+        ],
+        "stats": {
+          "headingChars": 37,
+          "shortWords": 43,
+          "shortChars": 255,
+          "longWords": 208,
+          "longChars": 1270,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [],
+        "reviewNotes": []
+      },
+      "knownIssues": [
+        "UNRESOLVED, waiting on MM: Nexus says 110 W, the old Perplexity Project output said 75 W. Neither is confirmed."
+      ]
+    },
+    {
+      "ean": "9319731147146",
+      "file": "9319731147146.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9319731147146",
+        "product_id": "9319731147146",
+        "ean": "9319731147146",
+        "prompt_version": "v0.8",
+        "generated_at": "2026-11-23T12:37:52.322Z",
+        "copy": {
+          "npr_heading": "Zip HydroTap G5 BCS Home Classic Plus Tap – Chrome",
+          "npr_short_copy": "Waiting for the kettle, chilling water or preparing drinks can mean juggling several appliances. Zip HydroTap G5 BCS Home Classic Plus Tap gives you filtered boiling, chilled and sparkling water from one tap, with a safety lock, touch controls and three energy-saving modes.",
+          "npr_long_copy": "When you're making tea, filling bottles or preparing drinks for guests, switching between a kettle, fridge and sparkling-water maker can crowd the kitchen. This Zip HydroTap G5 BCS Home Classic Plus Tap brings filtered boiling, chilled and sparkling water to one tap, so you'll have the right option at the touch of a button.\n\nContinuous flow makes it easier to fill bottles and larger containers without repeatedly pressing a control. Advanced 0.2-micron filtration helps provide great-tasting water, while the system's air-cooled technology uses water efficiently. Two disposable CO2 cylinders supply sparkling water when you're mixing drinks or serving refreshments.\n\nThe full-colour interactive touch screen puts settings and water options within easy reach. A boiling-water safety lock helps prevent accidental dispensing, and pin-code protection lets you control access to the system. Three energy-saving modes include on and off timers and a sensor-activated setting that puts this system to sleep when it's dark. Quiet mode automatically adjusts fan speed, while SteriTouch antimicrobial protection is built into the touch-pad and key water paths.\n\nFinished in Chrome, this tap has a 35mm cut-out size and a 1/2-inch BSP water connection for installation planning. Leak-guard detection adds another layer of protection around the water system, while the under-bench command centre keeps controls and equipment below the worktop. With a five-year warranty, including 36 months for the appliance and an additional 24 months for the tank, it's suited to busy kitchens where tea, bottles and sparkling drinks are part of the daily routine.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.8",
+        "attempts": 1,
+        "durationMs": 4959,
+        "usage": {
+          "inputTokens": 4054,
+          "outputTokens": 425,
+          "costUsd": 0.00164
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 50,
+          "shortWords": 43,
+          "shortChars": 274,
+          "longWords": 247,
+          "longChars": 1643,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [],
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "9319731153789",
+      "file": "9319731153789.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9319731153789",
+        "product_id": "9319731153789",
+        "ean": "9319731153789",
+        "prompt_version": "v0.8",
+        "generated_at": "2026-11-23T12:37:56.321Z",
+        "copy": {
+          "npr_heading": "Zip HydroTap G5 BCSHA Home Celsius Arc All-in-One – Chrome",
+          "npr_short_copy": "Getting boiling, chilled, sparkling, hot and cold water from separate taps can clutter the kitchen. The Zip HydroTap G5 BCSHA Home Celsius Arc All-in-One brings these options together, with filtration, touch controls, energy-saving modes and a chrome finish.",
+          "npr_long_copy": "A busy kitchen can quickly become crowded when drinking water and washing-up water come from separate taps. The Zip HydroTap G5 BCSHA Home Celsius Arc All-in-One brings boiling, chilled and sparkling filtered water, plus hot and cold washing-up water, together at one tap. It requires hot and cold water supplies.\n\nMicroPurity filtration removes particles down to 0.2 micron, giving you filtered water for filling bottles, glasses and saucepans. The system includes two disposable CO2 cylinders for sparkling water, while the CO2 level indicator helps you see when a cylinder needs attention. Instant hot and cold water means washing up can happen without changing taps.\n\nAn under-bench command centre uses a full-colour interactive touch screen, with PIN code protection and customisable settings. Boiling water safety mode helps manage access, while three energy-saving modes include on and off timers and a two-hour sleep mode. Quiet mode adjusts fan speed automatically, and Steri Touch antimicrobial protection is built into key water paths. Air-cooled technology uses water efficiently.\n\nThis tap has a WELS 5 water rating and a listed water usage of 6L per minute. It needs a 50mm cut-out and uses a 1.8kW, 220-240V, 50Hz power supply. The chrome finish suits contemporary kitchens, and the warranty covers five years, including 36 months for the appliance and an additional 24 months for the tank. It’s made for a kitchen where one tap handles everything from filling a glass to washing up after dinner.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.8",
+        "attempts": 1,
+        "durationMs": 3998,
+        "usage": {
+          "inputTokens": 4053,
+          "outputTokens": 424,
+          "costUsd": 0.00167
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 58,
+          "shortWords": 38,
+          "shortChars": 258,
+          "longWords": 239,
+          "longChars": 1511,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [],
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "9343415008133",
+      "file": "9343415008133.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9343415008133",
+        "product_id": "9343415008133",
+        "ean": "9343415008133",
+        "prompt_version": "v0.8",
+        "generated_at": "2026-11-23T12:38:01.088Z",
+        "copy": {
+          "npr_heading": "Schweigen Silent Undermount Rangehood 900mm – Black Steel",
+          "npr_short_copy": "Cooking strong-smelling meals can leave your kitchen feeling heavy. Schweigen Silent Undermount Rangehood 900mm helps clear cooking air with ducted extraction, five speed levels, LED lighting and soft-touch controls, while its concealed black steel finish fits neatly into overhead cabinetry.",
+          "npr_long_copy": "Strong cooking smells and steam can quickly take over a busy kitchen, especially when overhead space is limited. Schweigen Silent Undermount Rangehood 900mm fits into 300mm-deep cabinetry, keeping this rangehood discreet while ducted extraction helps clear the air during everyday cooking and entertaining.\n\nFive speed levels let you match the airflow to what’s on the cooktop, from lighter meals to high-heat cooking. The Isodrive® SE Motor supports powerful extraction, while the silent extraction design helps keep the kitchen feeling calmer as you prepare food or chat with guests. A 15-minute auto shut-off timer means you won’t need to return to the controls after cooking.\n\nSoft-touch controls and a digital display make it easier to select a setting and operate the LED lighting. The 3W LED light helps illuminate the cooking area, while black mesh stainless steel filters capture grease during cooking. When maintenance is due, the dishwasher-safe filters can go into the dishwasher instead of being scrubbed by hand.\n\nThis ducted rangehood has a matte Black Steel finish that suits modern cabinetry and kitchens where the appliance needs to stay out of sight. Schweigen SteelFlex™ is included, and the warranty covers the motor for 10 years, the canopy for five years, the filters for life and the GU10 LED globe for life. It’s a considered fit for a concealed kitchen setup, ready for the next meal on the cooktop.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.8",
+        "attempts": 1,
+        "durationMs": 4766,
+        "usage": {
+          "inputTokens": 4079,
+          "outputTokens": 400,
+          "costUsd": 0.00161
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 57,
+          "shortWords": 40,
+          "shortChars": 292,
+          "longWords": 229,
+          "longChars": 1425,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [],
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "9343415010228",
+      "file": "9343415010228.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9343415010228",
+        "product_id": "9343415010228",
+        "ean": "9343415010228",
+        "prompt_version": "v0.8",
+        "generated_at": "2026-11-23T12:38:05.425Z",
+        "copy": {
+          "npr_heading": "Schweigen Silent Inline Motor Undermount Rangehood 120cm 1600M3/Hr – Black Steel",
+          "npr_short_copy": "Strong cooking smells can linger after dinner, especially around a large cooktop. Schweigen Silent Inline Motor Undermount Rangehood 120cm 1600M3/Hr uses ducted extraction, five speeds, LED lighting and a 15-minute auto shut-off to keep cooking areas clearer, while dishwasher-safe filters simplify maintenance.",
+          "npr_long_copy": "Large meals can leave a kitchen feeling crowded with cooking smells, particularly when several burners are working at once. Schweigen Silent Inline Motor Undermount Rangehood 120cm 1600M3/Hr gives large cooktops and island benches ducted extraction in a concealed undermount format, helping the rangehood blend into overhead cabinetry. Its black steel finish adds a bold look without placing the appliance at the centre of the kitchen.\n\nThe Isodrive® SPINL motor and five speed levels let you match extraction to what’s on the cooktop, from everyday cooking to high-heat stir-fries and multi-burner meals. A 15-minute auto shut-off timer means you can leave this running after serving dinner, then let it switch off without returning to the kitchen. The ducted extraction type supports installation where the kitchen has suitable ducting.\n\nSoft-touch controls and a digital display make it easier to select a setting while cooking, and the 3W LED lighting helps illuminate the cooktop. High-quality black stainless steel mesh filters catch cooking residue, while their dishwasher-safe design means they can be cleaned alongside the rest of the kitchen load. The included Schweigen SteelFlex™ adds to the installation package.\n\nThis 1180mm-wide rangehood fits 300mm-deep cabinetry, making it useful when overhead space is limited or you want extraction out of sight. It includes a 10-year motor warranty, five-year canopy warranty, lifetime filter warranty and lifetime GU10 LED globe warranty. After a multi-burner dinner, you can set the timer, wipe the controls and leave the kitchen ready for the evening.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.8",
+        "attempts": 1,
+        "durationMs": 4335,
+        "usage": {
+          "inputTokens": 4072,
+          "outputTokens": 459,
+          "costUsd": 0.00176
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [
+          "few_contractions"
+        ],
+        "stats": {
+          "headingChars": 80,
+          "shortWords": 42,
+          "shortChars": 311,
+          "longWords": 244,
+          "longChars": 1608,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [],
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    },
+    {
+      "ean": "9415112630013",
+      "file": "9415112630013.json",
+      "ok": true,
+      "httpStatus": 200,
+      "body": {
+        "status": "success",
+        "request_id": "test-9415112630013",
+        "product_id": "9415112630013",
+        "ean": "9415112630013",
+        "prompt_version": "v0.8",
+        "generated_at": "2026-11-23T12:38:09.661Z",
+        "copy": {
+          "npr_heading": "Haier 60cm 500 Series Freestanding Cooker – Stainless Steel",
+          "npr_short_copy": "Cooking different dishes at once can mean juggling limited bench space and oven room. Haier 60cm 500 Series Freestanding Cooker combines four ceramic cook zones with an 88L oven and 11 functions, including Air Fry and steam-assisted cooking, so weeknight meals and weekend feasts are easier to manage.",
+          "npr_long_copy": "Preparing a family meal can involve several pans, different cooking methods and a full kitchen bench. Haier 60cm 500 Series Freestanding Cooker brings a four-zone ceramic cooktop and an 88L oven together, giving home cooks one appliance for weeknight dinners, entertaining and weekend roasts.\n\nThe oven has 11 functions, including Air Fry, fan bake, grill and steam-assisted cooking, so you can choose a setting that matches the dish. Steam-assisted cooking adds another option when you're preparing meals, while Hydro clean and steam-assisted cleaning using the cavity help make wiping up after cooking less of a chore.\n\nDial controls keep selecting settings straightforward, while the oven clock and timer help you keep track of dishes as you prepare other parts of the meal. A rear internal light lets you check what's cooking without opening the door, and the cooling fan helps manage heat around the appliance. The storage drawer gives cookware a place below the oven.\n\nThis cooker includes an Air Fry tray, baking tray, grill insert and wire shelf, so you can get started with different cooking tasks. The removable oven door helps when the cavity needs cleaning, and the splashback helps protect the wall behind the cooktop. Finished in stainless steel, it can be paired with a matching Haier 60cm rangehood for a cohesive kitchen look. It's covered by a two-year warranty, ready for everything from chips on the Air Fry tray to a roast in the oven.",
+          "disclaimers": ""
+        }
+      },
+      "meta": {
+        "promptVersion": "v0.8",
+        "attempts": 1,
+        "durationMs": 4234,
+        "usage": {
+          "inputTokens": 4086,
+          "outputTokens": 419,
+          "costUsd": 0.00164
+        },
+        "failedChecks": [],
+        "retriedBecause": [],
+        "warnings": [],
+        "stats": {
+          "headingChars": 59,
+          "shortWords": 48,
+          "shortChars": 301,
+          "longWords": 239,
+          "longChars": 1456,
+          "paragraphs": 4
+        },
+        "retailerSources": [],
+        "mode": "legacy",
+        "documents": [],
+        "reviewNotes": []
+      },
+      "knownIssues": []
+    }
+  ]
+}

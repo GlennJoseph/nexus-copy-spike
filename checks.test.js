@@ -532,3 +532,89 @@ test("a certification sentence is not excused by a rating elsewhere in it", () =
   const long = SUNBEAM.copy.npr_long_copy.replace("without a long wait.", "without a long wait. It has Woolmark Green certification for wool care in the delicate programme, and also a 5-star energy rating.");
   assert.ok(names(run(SUNBEAM, { npr_long_copy: long }).errors).includes("stat_no_disclaimer"));
 });
+
+// ---- Full product name on first mention (prompt v0.8, Shikha 17 Nov) ------
+const { headingProductName, firstMentionIssue } = require("./checks");
+
+const WASHER = {
+  product: { modelNo: "HTDWF90CTW1", brand: { name: "Haier" }, finish: "White" },
+  heading: "Haier 9kg 600 Series MultiWash – White",
+};
+
+test("the product name is the heading without the colour or finish", () => {
+  assert.strictEqual(headingProductName(WASHER.heading), "Haier 9kg 600 Series MultiWash");
+  assert.strictEqual(headingProductName("Nikon Z5II C Mirrorless Camera with NIKKOR Z 24-200mm Lens – Silver"), "Nikon Z5II C Mirrorless Camera with NIKKOR Z 24-200mm Lens");
+  // a finish with no dash is still taken off the end
+  assert.strictEqual(headingProductName("Haier 9kg 600 Series MultiWash White", "White"), "Haier 9kg 600 Series MultiWash");
+});
+
+test("first mention: a shortened name is caught (Haier MultiWash)", () => {
+  const n = "Haier 9kg 600 Series MultiWash";
+  assert.strictEqual(firstMentionIssue("Laundry piles up. This Haier MultiWash has three drums.", n, "Haier"), "missing");
+  assert.strictEqual(firstMentionIssue("Laundry piles up. This Haier 9kg 600 Series MultiWash has three drums.", n, "Haier"), "");
+});
+
+test("first mention: the brand used on its own before the full name is caught", () => {
+  const n = "Tefal YumMeal Multicooker Air Fryer";
+  assert.strictEqual(firstMentionIssue("Tefal makes solo meals easy. This Tefal YumMeal Multicooker Air Fryer cooks in one bowl.", n, "Tefal"), "shortened");
+  assert.strictEqual(firstMentionIssue("Cooking for one leaves extra pots. This Tefal YumMeal Multicooker Air Fryer cooks in one bowl, and this air fryer keeps washing up low.", n, "Tefal"), "");
+});
+
+test("first mention: dash, quote and case differences do not fail it", () => {
+  const n = "Nikon Z5II C Mirrorless Camera with NIKKOR Z 24–200mm Lens";
+  assert.strictEqual(firstMentionIssue("A changing scene can feel like a missed shot. This NIKON Z5II C Mirrorless Camera with NIKKOR Z 24-200mm Lens covers it.", n, "Nikon"), "");
+});
+
+test("name_first_mention is only checked when fullName is on (older prompts are unaffected)", () => {
+  const patch = {
+    npr_heading: "Haier 9kg 600 Series MultiWash – White",
+    npr_short_copy: "Laundry piles up when delicates and everyday clothes need separate washes. This Haier MultiWash runs three loads at once.",
+  };
+  assert.ok(!names(run(LG, patch, { product: WASHER.product }).errors).includes("name_first_mention"));
+  const r = run(LG, patch, { product: WASHER.product, fullName: true });
+  assert.ok(names(r.errors).includes("name_first_mention"));
+  assert.ok(r.errors.some((e) => /npr_short_copy/.test(e.message) && /Haier 9kg 600 Series MultiWash/.test(e.message)));
+});
+
+test("name_first_mention passes when both fields use the full name first", () => {
+  const patch = {
+    npr_heading: "LG CordZero Stick Vacuum with All-in-One Tower – Grey",
+    npr_short_copy: "Dust bins that fill up mid-clean slow everyone down. This LG CordZero Stick Vacuum with All-in-One Tower pairs 220W suction and a 60-minute runtime with a tower that charges it and empties dust hygienically.",
+    npr_long_copy: LG.copy.npr_long_copy.replace("this LG CordZero suits", "this LG CordZero Stick Vacuum with All-in-One Tower suits").replace(/this vacuum/, "this LG CordZero Stick Vacuum with All-in-One Tower"),
+  };
+  assert.ok(!names(run(LG, patch, { fullName: true }).errors).includes("name_first_mention"));
+});
+
+test("the name rule applies to prompt v0.8 and later only", () => {
+  const { needsFullName } = require("./generate");
+  assert.ok(needsFullName("v0.8") && needsFullName("v0.9") && needsFullName("v0.10"));
+  assert.ok(!needsFullName("v0.7") && !needsFullName("v0.3") && !needsFullName(""));
+});
+
+test("the v0.8 prompt differs from v0.7 only by added lines about the first mention (5 in v08b)", () => {
+  const fs = require("node:fs");
+  const path = require("node:path");
+  const a = fs.readFileSync(path.join(__dirname, "prompts", "v0.7", "system.md"), "utf8").split(/\r?\n/);
+  const b = fs.readFileSync(path.join(__dirname, "prompts", "v0.8", "system.md"), "utf8").split(/\r?\n/);
+  const bs = new Set(b);
+  assert.ok(a.every((l) => bs.has(l)), "a v0.7 line is missing from v0.8");
+  const added = b.filter((l) => !new Set(a).has(l));
+  assert.strictEqual(added.length, 5);
+  assert.ok(added.every((l) => /full product name|first time|first mention/i.test(l)));
+});
+
+test("v08b: colour copied after the first-mention name is caught", () => {
+  const n = headingProductName("Sunbeam Lower Back Heating Pad – Grey", "Grey");
+  assert.strictEqual(firstMentionIssue("Desk days are long. Sunbeam Lower Back Heating Pad – Grey wraps around you.", n, "Sunbeam", "Grey"), "colour");
+  assert.strictEqual(firstMentionIssue("Desk days are long. Sunbeam Lower Back Heating Pad wraps around you.", n, "Sunbeam", "Grey"), "");
+});
+
+test("v08b: short_words feedback says how much to cut only when the full-name rule is on", () => {
+  const { checkCopy } = require("./checks");
+  const words = (k) => Array.from({ length: k }, (_, i) => "word" + i).join(" ") + ".";
+  const copy = { npr_heading: "Haier 60cm Cooker – White", npr_short_copy: words(53), npr_long_copy: "x", disclaimers: "" };
+  const on = checkCopy(copy, { product: { finish: "White" }, fullName: true }).errors.find((e) => e.check === "short_words");
+  const off = checkCopy(copy, { product: { finish: "White" } }).errors.find((e) => e.check === "short_words");
+  assert.ok(on.message.includes("Cut at least 7 words"), on.message);
+  assert.ok(!off.message.includes("Cut at least"), off.message);
+});

@@ -84,7 +84,13 @@ const DISCLAIMER_CHECKS = new Set([
 // Style rules that matter, but not enough to fail the whole request. The model
 // gets one retry. If one of these is still broken, the copy goes back anyway
 // (a person reviews every draft in Nexus) and the check is logged as a warning.
-const SOFT_CHECKS = new Set(["long_words_low", "opening_product_first", "same_opening", "health_claim", "doc_only_term", "sup_position", "short_claim", "stat_no_disclaimer"]);
+const SOFT_CHECKS = new Set(["long_words_low", "opening_product_first", "same_opening", "health_claim", "doc_only_term", "sup_position", "short_claim", "stat_no_disclaimer", "name_first_mention"]);
+
+// The first-mention name rule belongs to prompt v0.8 and later. Older prompts are not asked to follow it.
+function needsFullName(version) {
+  const m = /^v?0\.(\d+)/.exec(String(version || ""));
+  return !!m && Number(m[1]) >= 8;
+}
 
 function dropDisclaimers(obj) {
   return {
@@ -361,7 +367,7 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
     if (obj) {
       obj = tagDisclaimers(stripStrayMarkers(obj));
       lastObj = obj;
-      const checked = checkCopy(obj, { product, sourceText, documentText: docText });
+      const checked = checkCopy(obj, { product, sourceText, documentText: docText, fullName: needsFullName(promptVersion) });
       errors = checked.errors;
       meta.warnings = checked.warnings.map((w) => w.check);
       meta.stats = checked.stats;
@@ -403,7 +409,7 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
     // A statistic, test or certification claim that no disclaimer supports is removed, not just flagged.
     const cut = removeBareClaims(final.npr_long_copy);
     if (cut.removed) final = { ...final, npr_long_copy: cut.text };
-    const again = checkCopy(final, { product, sourceText, documentText: hasDisclaimerProblem ? "" : docText });
+    const again = checkCopy(final, { product, sourceText, documentText: hasDisclaimerProblem ? "" : docText, fullName: needsFullName(promptVersion) });
     if (again.errors.every((e) => SOFT_CHECKS.has(e.check))) {
       meta.warnings = again.warnings
         .map((w) => w.check)
@@ -418,6 +424,9 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
       }
       if (meta.failedChecks.includes("short_claim")) {
         extra.push("npr_short_copy: contains a percentage, test or certification claim. Check it against the product sources.");
+      }
+      if (meta.failedChecks.includes("name_first_mention")) {
+        extra.push("npr_short_copy or npr_long_copy: the product is not named in full on first mention. Check the wording against npr_heading.");
       }
       if (hasDisclaimerProblem) {
         extra.push("disclaimers: the drafted disclaimers could not be matched to a source, so none were returned. Check the long copy for claims that need one.");
@@ -436,4 +445,4 @@ async function generateCopy(rawProduct, { apiKey, requestId, log = noopLog, prom
 }
 
 module.exports = {
-  stripStrayMarkers, generateCopy, PROMPT_VERSION, buildUserPrompt, tagDisclaimers };
+  needsFullName, stripStrayMarkers, generateCopy, PROMPT_VERSION, buildUserPrompt, tagDisclaimers };
